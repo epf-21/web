@@ -1,13 +1,15 @@
+import React from 'react'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import Home from './pages/home'
+import GameDoor from './pages/GameDoor.jsx'
 
-function App() {
-
+export default function App() {
   return (
-    <>
-      <h1 className="text-3xl font-bold underline">
-        Editor de preguntas interactivas
-      </h1>
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route path='/' element={<Home />} />
+        <Route path='/GameDoor' element={<GameDoor />} />
+      </Routes>
+    </BrowserRouter>
   )
 }
-
-export default App
