@@ -1,0 +1,58 @@
+body{
+    background-color: aliceblue;
+}
+
+.container{
+    display:flex;
+    flex-direction: column;
+    gap:10px;
+    align-items: center;
+    justify-content: center;
+    padding-top:50px;
+}
+
+.piece-container{
+    display: flex;
+    gap: 10px;
+}
+
+.piece{
+    display:inline-block;
+    border:1px solid #333;
+    background:#ccc;
+    background-size:100% 100%;
+    width:44px;
+    height:44px;
+ }
+
+ .pipe-start{
+    background-image: url('../assets/pipes/pipe_start.png');
+ }
+
+ .pipe-end{
+    background-image: url('../assets/pipes/pipe_end.png');
+ }
+
+ .pipe-1{
+    background-image: url('../assets/pipes/pipe_01.png');
+ }
+
+ .pipe-2{
+    background-image: url('../assets/pipes/pipe_02.png');
+ }
+
+ .pipe-3{
+    background-image: url('../assets/pipes/pipe_03.png');
+ }
+
+ .pipe-4{
+    background-image: url('../assets/pipes/pipe_04.png');
+ }
+
+ .pipe-5{
+    background-image: url('../assets/pipes/pipe_05.png');
+ }
+
+ .pipe-6{
+    background-image: url('../assets/pipes/pipe_06.png');
+ }
