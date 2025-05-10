@@ -47,7 +47,7 @@ export default function Home() {
       <div className="bg-white rounded-lg shadow-md overflow-hidden">
         <Tabs activeTab={activeTab} onTabClick={handleTabClick} />
 
-        <div className="p-6 bg-gray-50">
+        <div className="p-6">
           <form onSubmit={handleSubmit}>
             {activeTab === 'tab1' && (
               <QuestionForm
