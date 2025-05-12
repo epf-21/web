@@ -1,7 +1,15 @@
+import { useRef } from "react";
 import { useImageUploader } from "../../hooks/useImageUploader";
+import { Trash2 } from "lucide-react";
 
 export default function ImageUploader() {
-  const { images, imageURLS, onSelectChange, removeFile } = useImageUploader();
+  const inputRef = useRef(null);
+  const { imageURLS, onSelectChange, removeFile } = useImageUploader();
+
+  const handleSelect = (e) => {
+    onSelectChange(e);
+    if (inputRef.current) inputRef.current.value = "";
+  };
 
   return (
     <div className="space-y-4">
@@ -11,25 +19,36 @@ export default function ImageUploader() {
           type="file"
           multiple
           accept="image/*"
-          onChange={onSelectChange}
+          onChange={handleSelect}
+          ref={inputRef}
           className="w-full p-2.5 text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
         />
-        <ul className="divide-y divide-gray-200">
-          {images.map((image, i) => (
-            <li className="flex items-center gap-2 py-3" key={i} >
-              <img src={imageURLS[i]} alt="not fount" className="w-16" />
-              <p className="text-gray-900 w-sm">{image.name}</p>
-              <p className="text-gray-500 w-16">{Math.floor(image.size / 1024)} Kb</p>
-              <button type="button"
-                className="px-3 py-2 text-xs font-medium text-center text-gray-900 border border-gray-300 bg-white rounded-lg hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100"
-                onClick={() => { removeFile(i) }} >
-                Remove
-              </button>
-            </li>
-          ))}
-        </ul>
+        {imageURLS.length > 0 && (
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mt-4">
+            {imageURLS.map((url, i) => (
+              <div
+                key={i}
+                className="relative group border border-gray-300 rounded-md overflow-hidden"
+              >
+                <img
+                  src={url}
+                  alt={`preview-${i}`}
+                  className="w-full h-32 object-cover"
+                />
+                <button
+                  type="button"
+                  onClick={() => removeFile(i)}
+                  className="absolute top-1 right-1 bg-blue-950 text-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition"
+                >
+                  <Trash2 size={16} />
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
         <button className="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-md text-sm px-5 py-2.5 text-center me-2 my-2">
-          Subir Archivos</button>
+          Subir Archivos
+        </button>
       </div>
     </div>
   );

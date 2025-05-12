@@ -5,7 +5,6 @@ export function useImageUploader() {
   const [imageURLS, setImageURLs] = useState([]);
 
   useEffect(() => {
-    if (images.length < 1) return
 
     const newImageUrls = images.map((image) => URL.createObjectURL(image));
     setImageURLs(newImageUrls);
@@ -18,7 +17,7 @@ export function useImageUploader() {
   const onSelectChange = (e) => {
     if (!e.target.files || e.target.files.length === 0) return;
     const fileList = Array.from(e.target.files);
-    setImages(fileList);
+    setImages((prev) => [...prev, ...fileList]);
   }
   const removeFile = (index) => {
     setImages((prev) => prev.filter((_, i) => i !== index));
