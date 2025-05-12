@@ -1,13 +1,12 @@
 import { useState } from 'react';
 import Tabs from '../components/Tabs/Tabs';
-import QuestionForm from '../components/QuestionForm/QuestiomForm';
+import QuestionForm from '../components/QuestionForm/QuestionForm';
 import ImageUploader from '../components/ImageUploader/ImageUploader';
 import PreviewPanel from '../components/PreviewPanel/PreviewPanel';
 
 export default function Home() {
   const [title, setTitle] = useState('');
-  const [instruction, setInstruction] = useState('');
-  const [image, setImage] = useState(null);
+  const [description, setDescription] = useState('');
   const [correctAnswers, setCorrectAnswers] = useState(['']);
   const [explanation, setExplanation] = useState('');
   const [activeTab, setActiveTab] = useState('tab1');
@@ -27,8 +26,7 @@ export default function Home() {
     e.preventDefault();
     console.log({
       title,
-      instruction,
-      image,
+      description,
       correctAnswers,
       explanation
     });
@@ -52,11 +50,11 @@ export default function Home() {
             {activeTab === 'tab1' && (
               <QuestionForm
                 title={title}
-                instruction={instruction}
+                instruction={description}
                 correctAnswers={correctAnswers}
                 explanation={explanation}
                 onTitleChange={(e) => setTitle(e.target.value)}
-                onInstructionChange={(e) => setInstruction(e.target.value)}
+                onInstructionChange={(e) => setDescription(e.target.value)}
                 onAnswerChange={handleCorrectAnswerChange}
                 onAddAnswer={addItemCorrectAnswer}
                 onExplanationChange={(e) => setExplanation(e.target.value)}
@@ -65,7 +63,6 @@ export default function Home() {
 
             {activeTab === 'tab2' && (
               <ImageUploader
-                onImageChange={(e) => setImage(e.target.files[0])}
               />
             )}
 

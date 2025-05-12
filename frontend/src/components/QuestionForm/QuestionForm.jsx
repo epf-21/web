@@ -3,7 +3,7 @@ import AnswerInputList from './AnswerInputList';
 
 export default function QuestionForm({
   title,
-  instruction,
+  description,
   correctAnswers,
   explanation,
   onTitleChange,
@@ -22,8 +22,8 @@ export default function QuestionForm({
       />
 
       <QuestionTextInput
-        label="Instrucciones"
-        value={instruction}
+        label="Descripción"
+        value={description}
         onChange={onInstructionChange}
         placeholder="Instrucción para el usuario"
         isTextArea

@@ -19,7 +19,6 @@ export default function AnswerInputList({ answers, onAnswerChange, onAddAnswer, 
         type="button"
         onClick={onAddAnswer}
         className="py-2 px-5 text-sm font-medium text-gray-900 bg-gray-100 rounded-lg border border-gray-200 hover:bg-gray-200 focus:outline-none focus:ring-4 focus:ring-gray-100"
-
       >
         Agregar Respuesta
       </button>
