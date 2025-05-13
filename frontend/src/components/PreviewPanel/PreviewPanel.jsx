@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import HeaderPreview from './components/HeaderPreview';
 
 export default function PreviewPanel() {
   const [filledBoxes, setFilledBoxes] = useState(0);
@@ -79,11 +80,7 @@ export default function PreviewPanel() {
   return (
     <div className="min-h-screen flex justify-center items-center p-4">
       <div className="bg-white rounded-2xl shadow-xl w-full max-w-3xl overflow-hidden">
-        <header className="bg-gradient-to-r from-blue-600 to-indigo-700 text-white p-6 text-center">
-          <h1 className="text-2xl font-bold mb-1">Actividad de Ordenamiento</h1>
-          <p className="opacity-90">Ejercicio de percepción visual</p>
-        </header>
-        
+        <HeaderPreview/>
         <div className="p-6">
           <div className="text-center mb-6">
             <p className="text-gray-700 text-lg">
@@ -93,13 +90,11 @@ export default function PreviewPanel() {
           
           <div className="flex justify-center mb-8 ">
             <img 
-              src="/api/placeholder/220/220" 
-              alt="Imagen principal con secuencia de objetos" 
-              className="w-48 h-48 object-contain"
+              src="/api/placeholder/220/220"  
+              className="w-48 h-48 object-contain bg-gray-200"
             />
           </div>
-          
-          {/* Barra de progreso */}
+
           <div className="w-full bg-gray-200 rounded-full h-2.5 mb-8">
             <div 
               className="bg-green-600 h-2.5 rounded-full transition-all duration-500" 
@@ -114,7 +109,7 @@ export default function PreviewPanel() {
                 className={`w-28 h-28 flex justify-center items-center rounded-lg transition-all duration-300 cursor-pointer
                   ${box.filled 
                     ? 'border-2 border-blue-600 bg-blue-50' 
-                    : 'border-2 border-dashed border-gray-300 bg-gray-50 hover:border-blue-400'
+                    : 'border-2 border-dashed border-gray-500 bg-gray-50 hover:border-blue-400'
                   }`}
                 onDrop={() => handleDrop(box.id)}
                 onDragOver={(e) => e.preventDefault()}
@@ -150,7 +145,7 @@ export default function PreviewPanel() {
             {options.map((option) => (
               <div
                 key={option.id}
-                className={`w-24 h-24 border-2 border-gray-200 rounded-lg overflow-hidden cursor-grab 
+                className={`w-24 h-24 border-2 border-gray-200 bg-gray-200 rounded-lg overflow-hidden cursor-grab 
                   transition-all duration-300 hover:scale-105 hover:shadow-md
                   ${!option.visible ? 'invisible' : ''}`}
                 draggable={option.visible}
