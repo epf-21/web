@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 
-export default function PreviewPanel() {
+export default function index() {
   const [filledBoxes, setFilledBoxes] = useState(0);
   const [currentlyDragging, setCurrentlyDragging] = useState(null);
   const [boxes, setBoxes] = useState([
@@ -16,58 +16,71 @@ export default function PreviewPanel() {
     { id: 3, visible: true, imgSrc: "/api/placeholder/100/100", alt: "Opción 3" },
     { id: 4, visible: true, imgSrc: "/api/placeholder/100/100", alt: "Opción 4" },
   ]);
+
+  // Función para manejar el evento de inicio de arrastre
   const handleDragStart = (optionId) => {
     setCurrentlyDragging(optionId);
   };
 
+  // Función para manejar el evento de soltar
   const handleDrop = (boxId) => {
     const targetBox = boxes.find(box => box.id === boxId);
     if (targetBox.filled) return;
     
     const draggedOption = options.find(option => option.id === currentlyDragging);
     if (!draggedOption) return;
-
+    
+    // Actualizar el estado de las cajas
     setBoxes(boxes.map(box => 
       box.id === boxId 
         ? { ...box, filled: true, content: draggedOption } 
         : box
     ));
+    
+    // Actualizar el estado de las opciones
     setOptions(options.map(option => 
       option.id === currentlyDragging 
         ? { ...option, visible: false } 
         : option
     ));
     
+    // Incrementar contador de cajas llenas
     setFilledBoxes(filledBoxes + 1);
   };
   
+  // Función para remover una imagen de una caja
   const handleRemove = (boxId) => {
     const boxToEmpty = boxes.find(box => box.id === boxId);
     if (!boxToEmpty || !boxToEmpty.filled) return;
     
     const optionId = boxToEmpty.content.id;
     
+    // Actualizar el estado de las cajas
     setBoxes(boxes.map(box => 
       box.id === boxId 
         ? { ...box, filled: false, content: null } 
         : box
     ));
     
+    // Actualizar el estado de las opciones
     setOptions(options.map(option => 
       option.id === optionId 
         ? { ...option, visible: true } 
         : option
     ));
     
+    // Decrementar contador de cajas llenas
     setFilledBoxes(filledBoxes - 1);
   };
   
+  // Función para reiniciar el juego
   const handleReset = () => {
     setBoxes(boxes.map(box => ({ ...box, filled: false, content: null })));
     setOptions(options.map(option => ({ ...option, visible: true })));
     setFilledBoxes(0);
   };
   
+  // Función para comprobar el resultado
   const handleCheck = () => {
     if (filledBoxes === boxes.length) {
       alert('¡Muy bien! Has completado el ejercicio correctamente.');
@@ -77,21 +90,24 @@ export default function PreviewPanel() {
   };
   
   return (
-    <div className="min-h-screen flex justify-center items-center p-4">
+    <div className="min-h-screen bg-gray-100 flex justify-center items-center p-4">
       <div className="bg-white rounded-2xl shadow-xl w-full max-w-3xl overflow-hidden">
+        {/* Cabecera */}
         <header className="bg-gradient-to-r from-blue-600 to-indigo-700 text-white p-6 text-center">
           <h1 className="text-2xl font-bold mb-1">Actividad de Ordenamiento</h1>
           <p className="opacity-90">Ejercicio de percepción visual</p>
         </header>
         
         <div className="p-6">
+          {/* Instrucciones */}
           <div className="text-center mb-6">
             <p className="text-gray-700 text-lg">
               Ordena las imágenes en el mismo orden que se muestra en la imagen principal
             </p>
           </div>
           
-          <div className="flex justify-center mb-8 ">
+          {/* Imagen principal */}
+          <div className="flex justify-center mb-8">
             <img 
               src="/api/placeholder/220/220" 
               alt="Imagen principal con secuencia de objetos" 
@@ -106,7 +122,8 @@ export default function PreviewPanel() {
               style={{ width: `${(filledBoxes / boxes.length) * 100}%` }}
             />
           </div>
-
+          
+          {/* Área de ordenamiento */}
           <div className="flex justify-center flex-wrap gap-4 mb-8">
             {boxes.map((box) => (
               <div
@@ -146,6 +163,7 @@ export default function PreviewPanel() {
             ))}
           </div>
           
+          {/* Opciones */}
           <div className="flex justify-center flex-wrap gap-4 mb-8">
             {options.map((option) => (
               <div
@@ -164,7 +182,8 @@ export default function PreviewPanel() {
               </div>
             ))}
           </div>
-
+          
+          {/* Botones */}
           <div className="flex justify-center gap-4">
             <button 
               onClick={handleReset}
