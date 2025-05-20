@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import { useImageUploader } from "../../hooks/useImageUploader";
+import { useImageUploader } from "../hooks/useImageUploader";
 import { Trash2 } from "lucide-react";
 
 export default function ImageUploader() {

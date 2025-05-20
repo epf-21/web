@@ -1,34 +1,32 @@
 import { useState } from 'react';
-import Tabs from '../components/Tabs/Tabs';
-import QuestionForm from '../components/QuestionForm/QuestionForm';
-import ImageUploader from '../components/ImageUploader/ImageUploader';
+import Tabs from '../components/Tabs';
+import QuestionForm from '../components/QuestionForm';
+import ImageUploader from '../components/ImageUploader';
+import { useNavigate } from 'react-router-dom';
 
 export default function Home() {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  const [correctAnswers, setCorrectAnswers] = useState(['']);
   const [explanation, setExplanation] = useState('');
   const [activeTab, setActiveTab] = useState('tab1');
 
-  const handleCorrectAnswerChange = (index, value) => {
-    const newCorrectAnswers = [...correctAnswers];
-    newCorrectAnswers[index] = value;
-    setCorrectAnswers(newCorrectAnswers);
-  };
-
-  const addItemCorrectAnswer = () => {
-    setCorrectAnswers([...correctAnswers, '']);
-  };
-
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log({
       title,
       description,
-      correctAnswers,
       explanation
     });
+
+    navigate('/Preview', {
+      state: {
+        title,
+        description,
+        explanation
+      }
+    })
   };
 
   const handleTabClick = (tab) => {
@@ -37,7 +35,7 @@ export default function Home() {
 
   return (
     <div className="mt-4 max-w-3xl mx-auto px-4">
-      <h1 className="text-lg font-semibold mb-5 text-center text-gray-900">
+      <h1 classNa me="text-lg font-semibold mb-5 text-center text-gray-900">
         Crear pregunta de orden de elementos
       </h1>
 
@@ -49,13 +47,10 @@ export default function Home() {
             {activeTab === 'tab1' && (
               <QuestionForm
                 title={title}
-                instruction={description}
-                correctAnswers={correctAnswers}
+                description={description}
                 explanation={explanation}
                 onTitleChange={(e) => setTitle(e.target.value)}
                 onInstructionChange={(e) => setDescription(e.target.value)}
-                onAnswerChange={handleCorrectAnswerChange}
-                onAddAnswer={addItemCorrectAnswer}
                 onExplanationChange={(e) => setExplanation(e.target.value)}
               />
             )}

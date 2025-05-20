@@ -1,4 +1,4 @@
-import PreviewPanel from "../components/PreviewPanel/PreviewPanel";
+import PreviewPanel from "../components/PreviewPanel";
 
 export default function Preview() {
   return (
