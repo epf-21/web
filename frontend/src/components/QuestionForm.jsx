@@ -1,5 +1,5 @@
 import QuestionTextInput from './QuestionTextInput';
-
+import DragDrop from './DragDrop';
 export default function QuestionForm({
   title,
   description,
@@ -24,6 +24,9 @@ export default function QuestionForm({
         placeholder="Instrucción para el usuario"
         isTextArea
       />
+
+      <p>Arrastrar y soltar Imagenes </p>
+      <DragDrop />
 
       <QuestionTextInput
         label="Explicación"

@@ -35,7 +35,7 @@ export default function Home() {
 
   return (
     <div className="mt-4 max-w-3xl mx-auto px-4">
-      <h1 classNa me="text-lg font-semibold mb-5 text-center text-gray-900">
+      <h1 className="text-lg font-semibold mb-5 text-center text-gray-900">
         Crear pregunta de orden de elementos
       </h1>
 
