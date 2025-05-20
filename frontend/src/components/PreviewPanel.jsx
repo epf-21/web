@@ -97,7 +97,7 @@ export default function PreviewPanel() {
 
           <div className="w-full bg-gray-200 rounded-full h-2.5 mb-8">
             <div
-              className="bg-green-600 h-2.5 rounded-full transition-all duration-500"
+              className="bg-blue-600 h-2.5 rounded-full transition-all duration-500"
               style={{ width: `${(filledBoxes / boxes.length) * 100}%` }}
             />
           </div>
@@ -170,7 +170,7 @@ export default function PreviewPanel() {
             </button>
             <button
               onClick={handleCheck}
-              className="px-6 py-3 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 
+              className="px-6 py-3 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 
                 text-white font-semibold rounded-full transition-all duration-300 transform hover:-translate-y-1"
             >
               Comprobar
