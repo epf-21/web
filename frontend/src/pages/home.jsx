@@ -2,7 +2,6 @@ import { useState } from 'react';
 import Tabs from '../components/Tabs/Tabs';
 import QuestionForm from '../components/QuestionForm/QuestionForm';
 import ImageUploader from '../components/ImageUploader/ImageUploader';
-import PreviewPanel from '../components/PreviewPanel/PreviewPanel';
 
 export default function Home() {
   const [title, setTitle] = useState('');
@@ -65,11 +64,6 @@ export default function Home() {
               <ImageUploader
               />
             )}
-
-            {activeTab === 'tab3' && (
-              <PreviewPanel />
-            )}
-
             <button
               type="submit"
               className="mt-6 w-full sm:w-auto px-5 py-2.5 text-sm font-semibold text-white bg-blue-500 rounded-lg hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300"

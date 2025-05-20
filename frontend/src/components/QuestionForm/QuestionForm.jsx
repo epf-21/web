@@ -1,15 +1,11 @@
 import QuestionTextInput from './QuestionTextInput';
-import AnswerInputList from './AnswerInputList';
 
 export default function QuestionForm({
   title,
   description,
-  correctAnswers,
   explanation,
   onTitleChange,
   onInstructionChange,
-  onAnswerChange,
-  onAddAnswer,
   onExplanationChange,
 }) {
   return (
@@ -27,13 +23,6 @@ export default function QuestionForm({
         onChange={onInstructionChange}
         placeholder="Instrucción para el usuario"
         isTextArea
-      />
-
-      <AnswerInputList
-        answers={correctAnswers}
-        onAnswerChange={onAnswerChange}
-        onAddAnswer={onAddAnswer}
-        placeholder="Añade las respues correctas"
       />
 
       <QuestionTextInput

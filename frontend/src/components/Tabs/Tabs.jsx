@@ -4,7 +4,6 @@ export default function Tabs({ activeTab, onTabClick }) {
   const tabs = [
     { id: 'tab1', label: 'Pregunta' },
     { id: 'tab2', label: 'Subir Imágenes' },
-    { id: 'tab3', label: 'Vista Previa' },
   ]
 
   return (

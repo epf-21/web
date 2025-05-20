@@ -1,6 +1,6 @@
 import React from 'react'
 
-function HeaderPreview() {
+export default function HeaderPreview() {
     return (
         <header className="bg-gradient-to-r from-blue-600 to-indigo-700 text-white p-6 text-center">
             <h1 className="text-2xl font-bold mb-1">Actividad de Ordenamiento</h1>
@@ -8,5 +8,3 @@ function HeaderPreview() {
         </header>
     )
 }
-
-export default HeaderPreview
