@@ -40,8 +40,8 @@ export default function SignUp() {
               defaultValue=""
             >
               <option value="" disabled>Selecciona un rol</option>
-              <option value="estudiante">Estudiante</option>
-              <option value="maestro">Maestro</option>
+              <option value="estudiante">Profesor</option>
+              <option value="maestro">Administrador</option>
             </select>
           </div>
 
