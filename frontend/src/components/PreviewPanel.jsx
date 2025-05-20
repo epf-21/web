@@ -1,5 +1,5 @@
-import React, { useState, useRef, useEffect } from 'react';
-import HeaderPreview from './components/HeaderPreview';
+import { useState } from 'react';
+import HeaderPreview from './HeaderPreview';
 
 export default function PreviewPanel() {
   const [filledBoxes, setFilledBoxes] = useState(0);
