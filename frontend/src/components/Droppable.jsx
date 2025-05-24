@@ -11,7 +11,7 @@ export function Droppable(props) {
   
   
   return (
-    <div className='bg-gray-100 w-50 h-50 border-2 rounded-md border-gray-500 text-center pt-20' ref={setNodeRef} style={style}>
+    <div className='bg-gray-100 w-100 h-100 border-2 rounded-md border-gray-500 flex items-center justify-items-center p-2' ref={setNodeRef} style={style}>
       {props.children}
     </div>
   );
