@@ -1,18 +1,22 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Home from './pages/home';
+import CreateQuestion from './pages/CreateQuestion';
 import Preview from './pages/Preview';
 import Login from './pages/auth/Login';
 import SignUp from './pages/auth/SignUp';
+import Home from './pages/Home';
+import QuestionManager from './pages/QuestionManager'
 
 export default function App() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path='/' element={<Home />} />
-        <Route path='/Preview' element={<Preview />} />
-        <Route path='/login' element={<Login />} />
         <Route path='/Register' element={<SignUp />} />
+        <Route path='/login' element={<Login />} />
+        <Route path='/questions' element={<QuestionManager />} />
+        <Route path='/Create-question' element={<CreateQuestion />} />
+        <Route path='/Preview' element={<Preview />} />
       </Routes>
     </BrowserRouter>
   )
