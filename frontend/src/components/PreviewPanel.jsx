@@ -9,19 +9,22 @@ export default function PreviewPanel() {
     { id: 2, filled: false, content: null },
     { id: 3, filled: false, content: null },
     { id: 4, filled: false, content: null },
+    { id: 5, filled: false, content: null },
+
   ]);
 
   const [options, setOptions] = useState([
-    { id: 1, visible: true, imgSrc: 'src/assets/tea.png', alt: "Opción 1" },
-    { id: 2, visible: true, imgSrc: 'src/assets/soup_spoon.png', alt: "Opción 2" },
-    { id: 3, visible: true, imgSrc: 'src/assets/saltine_cracker.png', alt: "Opción 3" },
-    { id: 4, visible: true, imgSrc: 'src/assets/plate.png', alt: "Opción 4" },
+    { id: 1, visible: true, imgSrc: 'src/assets/soup_spoon.png', alt: "Opción 1" },
+    { id: 2, visible: true, imgSrc: 'src/assets/saltine_cracker.png', alt: "Opción 2" },
+    { id: 3, visible: true, imgSrc: 'src/assets/plate.png', alt: "Opción 3" },
+    { id: 4, visible: true, imgSrc: 'src/assets/croissant.png', alt: "Opción 4" },
+    { id: 5, visible: true, imgSrc: 'src/assets/mug.png', alt: "Opción 5" },
   ]);
 
   const title = 'Cual es el orden que esta puesto en la mesa';
   const description = 'Bob puso la mesa';
   const explanation = 'Pon el orden correcto de los objetos en la mesa';
-  const mainImage = 'src/assets/completo.png';
+  const mainImage = 'src/assets/completo2.png';
 
   const handleDragStart = (optionId) => {
     setCurrentlyDragging(optionId);

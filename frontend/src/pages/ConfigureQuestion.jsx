@@ -11,16 +11,17 @@ export default function ConfigureQuestion() {
   const mainImage = 'src/assets/completo2.png';
 
   const uploadedImages = [
-    'src/assets/tea.png',
+    //'src/assets/tea.png',
+    'src/assets/completo2.png',
     'src/assets/soup_spoon.png',
     'src/assets/saltine_cracker.png',
     'src/assets/plate.png',
     'src/assets/croissant.png',
-    'src/assets/wine_glass.png',
-    'src/assets/bread_white.png',
+    //'src/assets/wine_glass.png',
+    //'src/assets/bread_white.png',
     'src/assets/mug.png',
-    'src/assets/salt_shaker.png',
-    'src/assets/bread_roll.png'
+    //'src/assets/salt_shaker.png',
+    //'src/assets/bread_roll.png'
   ];
 
   return (
