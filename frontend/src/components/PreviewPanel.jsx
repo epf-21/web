@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import HeaderPreview from './HeaderPreview';
+import { UserCircle2 } from 'lucide-react';
 
 export default function PreviewPanel() {
   const [filledBoxes, setFilledBoxes] = useState(0);
@@ -12,11 +12,17 @@ export default function PreviewPanel() {
   ]);
 
   const [options, setOptions] = useState([
-    { id: 1, visible: true, imgSrc: "/api/placeholder/100/100", alt: "Opción 1" },
-    { id: 2, visible: true, imgSrc: "/api/placeholder/100/100", alt: "Opción 2" },
-    { id: 3, visible: true, imgSrc: "/api/placeholder/100/100", alt: "Opción 3" },
-    { id: 4, visible: true, imgSrc: "/api/placeholder/100/100", alt: "Opción 4" },
+    { id: 1, visible: true, imgSrc: 'src/assets/tea.png', alt: "Opción 1" },
+    { id: 2, visible: true, imgSrc: 'src/assets/soup_spoon.png', alt: "Opción 2" },
+    { id: 3, visible: true, imgSrc: 'src/assets/saltine_cracker.png', alt: "Opción 3" },
+    { id: 4, visible: true, imgSrc: 'src/assets/plate.png', alt: "Opción 4" },
   ]);
+
+  const title = 'Cual es el orden que esta puesto en la mesa';
+  const description = 'Bob puso la mesa';
+  const explanation = 'Pon el orden correcto de los objetos en la mesa';
+  const mainImage = 'src/assets/completo.png';
+
   const handleDragStart = (optionId) => {
     setCurrentlyDragging(optionId);
   };
@@ -78,19 +84,24 @@ export default function PreviewPanel() {
   };
 
   return (
-    <div className="min-h-screen flex justify-center items-center p-4">
-      <div className="bg-white rounded-2xl shadow-xl w-full max-w-3xl overflow-hidden">
-        <HeaderPreview />
+    <div className="min-h-screen bg-white">
+      <header className="flex items-center justify-between px-6 py-6 bg-black-rock-950 shadow-sm">
+        <h1 className="text-xl md:text-2xl font-bold text-white">Editor de preguntas interactivas</h1>
+        <UserCircle2 className="w-8 h-8 text-white" />
+      </header>
+      <div className="bg-white w-full max-w-3xl overflow-hidden">
         <div className="p-6">
-          <div className="text-center mb-6">
-            <p className="text-gray-700 text-lg">
-              Ordena las imágenes en el mismo orden que se muestra en la imagen principal
-            </p>
+          <div className="mb-10 border-b pb-6 border-gray-300">
+            <h2 className="text-3xl font-bold text-black-rock-950">{title}</h2>
+          </div>
+          <div className="mb-4">
+            <h2 className="text-lg font-medium text-gray-900 mb-2">Descripción</h2>
+            <p className="text-base text-gray-700">{description}</p>
           </div>
 
           <div className="flex justify-center mb-8 ">
             <img
-              src="/api/placeholder/220/220"
+              src={mainImage}
               className="w-48 h-48 object-contain bg-gray-200"
             />
           </div>
@@ -100,6 +111,10 @@ export default function PreviewPanel() {
               className="bg-blue-600 h-2.5 rounded-full transition-all duration-500"
               style={{ width: `${(filledBoxes / boxes.length) * 100}%` }}
             />
+          </div>
+          <div className="py-2 rounded-md">
+            <h2 className="text-lg font-medium text-gray-900 mb-2">Explicación</h2>
+            <p className="text-sm text-gray-700">{explanation}</p>
           </div>
 
           <div className="flex justify-center flex-wrap gap-4 mb-8">
