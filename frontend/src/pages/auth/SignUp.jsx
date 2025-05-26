@@ -1,11 +1,15 @@
-import React from 'react'
+import { useNavigate } from 'react-router-dom';
 
 export default function SignUp() {
+  const navigate = useNavigate();
+  const handleSubmit = () => {
+    navigate('/');
+  };
   return (
     <div className="min-h-screen flex items-center justify-center bg-white">
       <div className="w-full max-w-sm p-6 rounded-2xl shadow-md border border-gray-200">
         <h2 className="text-2xl font-semibold text-gray-800 text-center mb-6">Crear Cuenta</h2>
-        <form className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700">Nombre completo</label>
             <input
@@ -40,8 +44,8 @@ export default function SignUp() {
               defaultValue=""
             >
               <option value="" disabled>Selecciona un rol</option>
-              <option value="estudiante">Profesor</option>
-              <option value="maestro">Administrador</option>
+              <option value="profesor">Profesor</option>
+              <option value="administrador">Administrador</option>
             </select>
           </div>
 
