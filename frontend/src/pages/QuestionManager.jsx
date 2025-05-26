@@ -34,7 +34,7 @@ export default function QuestionManager() {
           </h2>
         </div>
 
-        <div className="mb-6 flex justify-end">
+        <div className="mb-6 flex justify-start">
           <button
             onClick={handleClick}
             className="flex items-center gap-2 bg-black-rock-900 hover:bg-black-rock-950 text-white py-2 px-4 rounded-xl transition shadow-md">
