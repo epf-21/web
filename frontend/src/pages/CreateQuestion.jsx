@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import Tabs from '../components/Tabs';
 import QuestionForm from '../components/QuestionForm';
 import ImageUploader from '../components/ImageUploader';
 import { useNavigate } from 'react-router-dom';
@@ -10,7 +9,6 @@ export default function CreateQuestion() {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [explanation, setExplanation] = useState('');
-  const [activeTab, setActiveTab] = useState('tab1');
 
   const navigate = useNavigate();
 
@@ -31,10 +29,6 @@ export default function CreateQuestion() {
     })
   };
 
-  const handleTabClick = (tab) => {
-    setActiveTab(tab);
-  };
-
   return (
     <div className="min-h-screen bg-white">
       <header className="flex items-center justify-between px-6 py-6 bg-black-rock-950 shadow-sm">
@@ -47,25 +41,17 @@ export default function CreateQuestion() {
         </h2>
 
         <div className="bg-white rounded-lg shadow-md overflow-hidden">
-          <Tabs activeTab={activeTab} onTabClick={handleTabClick} />
-
           <div className="p-6">
             <form onSubmit={handleSubmit}>
-              {activeTab === 'tab1' && (
-                <QuestionForm
-                  title={title}
-                  description={description}
-                  explanation={explanation}
-                  onTitleChange={(e) => setTitle(e.target.value)}
-                  onInstructionChange={(e) => setDescription(e.target.value)}
-                  onExplanationChange={(e) => setExplanation(e.target.value)}
-                />
-              )}
-
-              {activeTab === 'tab2' && (
-                <ImageUploader
-                />
-              )}
+              <QuestionForm
+                title={title}
+                description={description}
+                explanation={explanation}
+                onTitleChange={(e) => setTitle(e.target.value)}
+                onInstructionChange={(e) => setDescription(e.target.value)}
+                onExplanationChange={(e) => setExplanation(e.target.value)}
+              />
+              <ImageUploader />
               <button
                 type="submit"
                 className="mt-6 w-full sm:w-auto px-5 py-2.5 text-sm font-semibold text-white bg-black-rock-900 hover:bg-black-rock-950 rounded-lg focus:outline-none focus:ring-4 focus:ring-blue-300"
