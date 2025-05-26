@@ -89,7 +89,7 @@ export default function PreviewPanel() {
         <h1 className="text-xl md:text-2xl font-bold text-white">Editor de preguntas interactivas</h1>
         <UserCircle2 className="w-8 h-8 text-white" />
       </header>
-      <div className="bg-white w-full max-w-3xl overflow-hidden">
+      <main className="bg-white w-full max-w-full overflow-hidden">
         <div className="p-6">
           <div className="mb-10 border-b pb-6 border-gray-300">
             <h2 className="text-3xl font-bold text-black-rock-950">{title}</h2>
@@ -123,7 +123,7 @@ export default function PreviewPanel() {
                 key={box.id}
                 className={`w-28 h-28 flex justify-center items-center rounded-lg transition-all duration-300 cursor-pointer
                   ${box.filled
-                    ? 'border-2 border-blue-600 bg-blue-50'
+                    ? 'border-2 border-black-rock-800 bg-blue-50'
                     : 'border-2 border-dashed border-gray-500 bg-gray-50 hover:border-blue-400'
                   }`}
                 onDrop={() => handleDrop(box.id)}
@@ -185,14 +185,14 @@ export default function PreviewPanel() {
             </button>
             <button
               onClick={handleCheck}
-              className="px-6 py-3 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 
+              className="px-6 py-3 bg-gradient-to-r from-black-rock-800 to-black-rock-900 hover:from-black-rock-400 hover:to-black-rock-600 
                 text-white font-semibold rounded-full transition-all duration-300 transform hover:-translate-y-1"
             >
               Comprobar
             </button>
           </div>
         </div>
-      </div>
+      </main>
     </div>
   );
 }

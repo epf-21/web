@@ -12,7 +12,7 @@ export default function QuestionManager() {
 
   useEffect(() => {
     setQuestions([
-      { id: 1, title: 'Organiza los cubiertos' },
+      { id: 1, title: 'Cual es el orden que esta puesto en la mesa' },
       { id: 2, title: 'Organiza los alimentos en el plato' }
     ])
   }, [age, level]);
