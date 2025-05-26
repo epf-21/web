@@ -53,7 +53,9 @@ export default function QuestionManager() {
                 <h3 className="text-lg font-semibold text-black-rock-950">{q.title}</h3>
               </div>
               <div className="flex gap-2">
-                <button className="p-2 rounded-full bg-black-rock-100 text-black-rock-950 hover:bg-black-rock-200 transition transform hover:scale-110">
+                <button
+                  onClick={() => navigate('/preview')}
+                  className="p-2 rounded-full bg-black-rock-100 text-black-rock-950 hover:bg-black-rock-200 transition transform hover:scale-110">
                   <Eye className="w-5 h-5" />
                 </button>
                 <button className="p-2 rounded-full bg-black-rock-100 text-black-rock-950 hover:bg-black-rock-200 transition transform hover:scale-110">

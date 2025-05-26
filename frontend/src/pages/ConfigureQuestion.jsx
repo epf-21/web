@@ -1,4 +1,9 @@
+import { useNavigate } from 'react-router-dom';
+
 export default function ConfigureQuestion() {
+
+  const navigate = useNavigate();
+
   const title = 'Cual es el orden que esta puesto en la mesa';
   const description = 'Bob puso la mesa';
   const explanation = 'Pon el orden correcto de los objetos en la mesa';
@@ -42,6 +47,14 @@ export default function ConfigureQuestion() {
 
           <div className="py-2 rounded-md">
             <h2 className="text-lg font-medium text-gray-900 mb-2">Agregar respuestas</h2>
+          </div>
+          <div className="pt-3">
+            <button
+              onClick={() => navigate('/preview')}
+              className="px-6 py-3 bg-black-rock-900 text-white rounded-xl text-sm hover:bg-black-rock-950 transition focus:outline-none focus:ring-2 focus:ring-blue-300"
+            >
+              Guardar
+            </button>
           </div>
         </div>
 

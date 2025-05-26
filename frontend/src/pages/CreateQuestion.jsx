@@ -30,7 +30,7 @@ export default function CreateQuestion() {
         explanation,
         images: imageURLS
       }
-    })
+    });
   };
 
   return (
@@ -62,7 +62,7 @@ export default function CreateQuestion() {
             onSelectChange={onSelectChange}
             removeFile={removeFile}
           />
-          <div className="flex justify-end pt-3">
+          <div className="flex justify-start pt-3">
             <button
               type="submit"
               className="px-6 py-3 bg-black-rock-900 text-white rounded-xl text-sm hover:bg-black-rock-950 transition focus:outline-none focus:ring-2 focus:ring-blue-300"
