@@ -1,10 +1,8 @@
 import { useRef } from "react";
-import { useImageUploader } from "../hooks/useImageUploader";
 import { Trash2 } from "lucide-react";
 
-export default function ImageUploader() {
+export default function ImageUploader({ imageURLS, onSelectChange, removeFile }) {
   const inputRef = useRef(null);
-  const { imageURLS, onSelectChange, removeFile } = useImageUploader();
 
   const handleSelect = (e) => {
     onSelectChange(e);

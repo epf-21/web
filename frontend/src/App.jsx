@@ -6,6 +6,7 @@ import Login from './pages/auth/Login';
 import SignUp from './pages/auth/SignUp';
 import Home from './pages/Home';
 import QuestionManager from './pages/QuestionManager'
+import ConfigureQuestion from './pages/ConfigureQuestion';
 
 export default function App() {
   return (
@@ -16,6 +17,7 @@ export default function App() {
         <Route path='/login' element={<Login />} />
         <Route path='/questions' element={<QuestionManager />} />
         <Route path='/Create-question' element={<CreateQuestion />} />
+        <Route path='/configure-question' element={<ConfigureQuestion />} />
         <Route path='/Preview' element={<Preview />} />
       </Routes>
     </BrowserRouter>

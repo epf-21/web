@@ -3,12 +3,15 @@ import QuestionForm from '../components/QuestionForm';
 import ImageUploader from '../components/ImageUploader';
 import { useNavigate } from 'react-router-dom';
 import { UserCircle2 } from 'lucide-react'
+import { useImageUploader } from '../hooks/useImageUploader';
 
 
 export default function CreateQuestion() {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [explanation, setExplanation] = useState('');
+  const { imageURLS, onSelectChange, removeFile } = useImageUploader();
+
 
   const navigate = useNavigate();
 
@@ -20,11 +23,12 @@ export default function CreateQuestion() {
       explanation
     });
 
-    navigate('/Preview', {
+    navigate('/configure-question', {
       state: {
         title,
         description,
-        explanation
+        explanation,
+        images: imageURLS
       }
     })
   };
@@ -53,13 +57,17 @@ export default function CreateQuestion() {
             onInstructionChange={(e) => setDescription(e.target.value)}
             onExplanationChange={(e) => setExplanation(e.target.value)}
           />
-          <ImageUploader />
+          <ImageUploader
+            imageURLS={imageURLS}
+            onSelectChange={onSelectChange}
+            removeFile={removeFile}
+          />
           <div className="flex justify-end pt-3">
             <button
               type="submit"
               className="px-6 py-3 bg-black-rock-900 text-white rounded-xl text-sm hover:bg-black-rock-950 transition focus:outline-none focus:ring-2 focus:ring-blue-300"
             >
-              Guardar Pregunta
+              Crear Pregunta
             </button>
           </div>
         </form>
