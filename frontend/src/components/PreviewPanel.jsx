@@ -89,13 +89,13 @@ export default function PreviewPanel() {
         <h1 className="text-xl md:text-2xl font-bold text-white">Editor de preguntas interactivas</h1>
         <UserCircle2 className="w-8 h-8 text-white" />
       </header>
-      <main className="bg-white w-full max-w-full overflow-hidden">
+      <main className="bg-white w-full p-5 max-w-full overflow-hidden">
         <div className="p-6">
           <div className="mb-10 border-b pb-6 border-gray-300">
             <h2 className="text-3xl font-bold text-black-rock-950">{title}</h2>
           </div>
           <div className="mb-4">
-            <h2 className="text-lg font-medium text-gray-900 mb-2">Descripción</h2>
+            <h2 className="text-3xl font-medium text-gray-900 mb-2">Descripción</h2>
             <p className="text-base text-gray-700">{description}</p>
           </div>
 
@@ -113,7 +113,7 @@ export default function PreviewPanel() {
             />
           </div>
           <div className="py-2 rounded-md">
-            <h2 className="text-lg font-medium text-gray-900 mb-2">Explicación</h2>
+            <h2 className="text-3xl font-medium text-gray-900 mb-2">Explicación</h2>
             <p className="text-sm text-gray-700">{explanation}</p>
           </div>
 
