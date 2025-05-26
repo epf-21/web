@@ -1,38 +1,64 @@
 import { useNavigate } from 'react-router-dom';
+import { Mail, Lock } from 'lucide-react';
+
 export default function Login() {
   const navigate = useNavigate();
-  const handleSubmit = () => {
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
     navigate('/');
   };
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-white">
-      <div className="w-full max-w-sm p-6 rounded-2xl shadow-md border border-gray-200">
-        <h2 className="text-2xl font-semibold text-gray-800 text-center mb-6">Iniciar Sesión</h2>
-        <form onSubmit={handleSubmit} className="space-y-4">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-100 to-white px-4">
+      <div className="w-full max-w-sm p-8 rounded-2xl shadow-lg border border-gray-200 bg-white">
+        <h2 className="text-2xl font-bold text-center text-black-rock-950 mb-8">
+          Iniciar sesión
+        </h2>
+
+        <form onSubmit={handleSubmit} className="space-y-5">
           <div>
-            <label className="block text-sm font-medium text-gray-700">Correo electrónico</label>
-            <input
-              type="email"
-              className="mt-1 w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="correo@ejemplo.com"
-            />
+            <label className="block text-sm font-medium text-gray-700 mb-1">Correo electrónico</label>
+            <div className="relative">
+              <Mail className="absolute left-3 top-2.5 text-gray-400 w-5 h-5" />
+              <input
+                type="email"
+                required
+                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-black-rock-950"
+                placeholder="correo@ejemplo.com"
+              />
+            </div>
           </div>
+
           <div>
-            <label className="block text-sm font-medium text-gray-700">Contraseña</label>
-            <input
-              type="password"
-              className="mt-1 w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="••••••••"
-            />
+            <label className="block text-sm font-medium text-gray-700 mb-1">Contraseña</label>
+            <div className="relative">
+              <Lock className="absolute left-3 top-2.5 text-gray-400 w-5 h-5" />
+              <input
+                type="password"
+                required
+                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-black-rock-950"
+                placeholder="••••••••"
+              />
+            </div>
           </div>
+
+          <div className="flex items-center justify-between text-sm text-gray-600">
+            <label className="flex items-center space-x-2">
+              <input type="checkbox" className="form-checkbox text-blue-600" />
+              <span>Recordarme</span>
+            </label>
+            <a href="#" className="text-black-rock-700 hover:underline">¿Olvidaste tu contraseña?</a>
+          </div>
+
           <button
             type="submit"
-            className="w-full py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition"
+            className="w-full py-2 bg-black-rock-600 text-white rounded-xl hover:bg-black-rock-800 transition-all"
           >
             Ingresar
           </button>
         </form>
       </div>
     </div>
-  )
+  );
 }
