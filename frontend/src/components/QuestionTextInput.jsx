@@ -1,18 +1,16 @@
 export default function QuestionTextInput({ label, value, onChange, placeholder }) {
   return (
-    <div>
-      <label className="block mb-2 text-sm font-semibold text-gray-900">
+    <div className="space-y-6 text-black-rock-950">
+      <label className="block mb-2 text-xl font-semibold text-black-rock-950">
         {label}
       </label>
-
       <input
         type="text"
         value={value}
         onChange={onChange}
-        className="w-full p-2.5 text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
         placeholder={placeholder}
+        className="w-full px-4 py-2.5 text-sm bg-gray-100 border-2 border-transparent rounded-xl focus:outline-none focus:border-black-rock-950 focus:bg-white transition"
       />
-
     </div>
   )
 }
