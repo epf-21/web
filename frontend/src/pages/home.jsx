@@ -1,87 +1,93 @@
-import { useState } from 'react';
-import Tabs from '../components/Tabs/Tabs';
-import QuestionForm from '../components/QuestionForm/QuestiomForm';
-import ImageUploader from '../components/ImageUploader/ImageUploader';
-import PreviewPanel from '../components/PreviewPanel/PreviewPanel';
+import { useState, useRef, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { GraduationCap, BookOpenCheck, Brain, UserCircle2, LogIn, UserPlus } from 'lucide-react';
 
 export default function Home() {
-  const [title, setTitle] = useState('');
-  const [instruction, setInstruction] = useState('');
-  const [image, setImage] = useState(null);
-  const [correctAnswers, setCorrectAnswers] = useState(['']);
-  const [explanation, setExplanation] = useState('');
-  const [activeTab, setActiveTab] = useState('tab1');
+  const navigate = useNavigate();
+  const [menuOpen, setMenuOpen] = useState(false);
+  const dropdownRef = useRef(null);
 
-  const handleCorrectAnswerChange = (index, value) => {
-    const newCorrectAnswers = [...correctAnswers];
-    newCorrectAnswers[index] = value;
-    setCorrectAnswers(newCorrectAnswers);
-  };
+  const handleSelect = (age, level) => {
+    navigate(`/questions?age=${age}&level=${level}`)
+  }
 
-  const addItemCorrectAnswer = () => {
-    setCorrectAnswers([...correctAnswers, '']);
-  };
+  const togleManu = () => setMenuOpen(!menuOpen);
 
+  const levels = [
+    { age: '6-8', level: 'facil', label: '6 a 8 años - Fácil', icon: <BookOpenCheck className="w-5 h-5 mr-2" /> },
+    { age: '8-10', level: 'medio', label: '8 a 10 años - Medio', icon: <GraduationCap className="w-5 h-5 mr-2" /> },
+    { age: '10-12', level: 'dificil', label: '10 a 12 años - Difícil', icon: <Brain className="w-5 h-5 mr-2" /> }
+  ];
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log({
-      title,
-      instruction,
-      image,
-      correctAnswers,
-      explanation
-    });
-  };
-
-  const handleTabClick = (tab) => {
-    setActiveTab(tab);
-  };
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setMenuOpen(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   return (
-    <div className="mt-4 max-w-3xl mx-auto px-4">
-      <h1 className="text-lg font-semibold mb-5 text-center text-gray-900">
-        Crear pregunta de orden de elementos
-      </h1>
+    <div className="min-h-screen bg-white relative">
+      <header className="flex items-center justify-between px-6 py-6 bg-black-rock-950 shadow-sm relative">
+        <h1 className="text-xl md:text-2xl font-bold text-white">Editor de preguntas interactivas</h1>
+        <div className="relative" ref={dropdownRef}>
+          <button onClick={togleManu}>
+            <UserCircle2 className="w-8 h-8 text-white" />
+          </button>
+          {menuOpen && (
+            <div className="absolute right-0 mt-2 w-44 bg-white border border-gray-200 rounded-md shadow-lg z-50">
+              <ul className="py-2">
+                <li
+                  className="flex items-center px-4 py-2 hover:bg-gray-100 text-gray-700 cursor-pointer"
+                  onClick={() => {
+                    navigate('/login')
+                    setMenuOpen(false)
+                  }}
+                >
+                  <LogIn className="w-4 h-4 mr-2" /> Login
+                </li>
+                <li
+                  className="flex items-center px-4 py-2 hover:bg-gray-100 text-gray-700 cursor-pointer"
+                  onClick={() => {
+                    navigate('/register')
+                    setMenuOpen(false)
+                  }}
+                >
+                  <UserPlus className="w-4 h-4 mr-2" /> Register
+                </li>
+              </ul>
+            </div>
+          )}
 
-      <div className="bg-white rounded-lg shadow-md overflow-hidden">
-        <Tabs activeTab={activeTab} onTabClick={handleTabClick} />
-
-        <div className="p-6 bg-gray-50">
-          <form onSubmit={handleSubmit}>
-            {activeTab === 'tab1' && (
-              <QuestionForm
-                title={title}
-                instruction={instruction}
-                correctAnswers={correctAnswers}
-                explanation={explanation}
-                onTitleChange={(e) => setTitle(e.target.value)}
-                onInstructionChange={(e) => setInstruction(e.target.value)}
-                onAnswerChange={handleCorrectAnswerChange}
-                onAddAnswer={addItemCorrectAnswer}
-                onExplanationChange={(e) => setExplanation(e.target.value)}
-              />
-            )}
-
-            {activeTab === 'tab2' && (
-              <ImageUploader
-                onImageChange={(e) => setImage(e.target.files[0])}
-              />
-            )}
-
-            {activeTab === 'tab3' && (
-              <PreviewPanel />
-            )}
-
-            <button
-              type="submit"
-              className="mt-6 w-full sm:w-auto px-5 py-2.5 text-sm font-semibold text-white bg-blue-500 rounded-lg hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300"
-            >
-              Guardar Pregunta
-            </button>
-          </form>
         </div>
-      </div>
+      </header>
+
+      <main className="px-6 py-10">
+        <h2 className="text-3xl font-semibold text-black-rock-950 tracking-wide text-center mb-10 drop-shadow-sm">
+          Selecciona una clasificación
+        </h2>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
+          {levels.map(({ age, level, label, icon }) => (
+            <div
+              key={level}
+              onClick={() => handleSelect(age, level)}
+              className="cursor-pointer p-6 rounded-2xl bg-gradient-to-br from-black-rock-800 to-black-rock-950 text-white hover:scale-105 transform transition-all duration-200 shadow-xl border border-black-rock-500"
+            >
+              <div className="flex items-center justify-center mb-4 bg-white/10 p-3 rounded-full">
+                {icon}
+              </div>
+              <h3 className="text-lg font-semibold text-center">{label}</h3>
+              <p className="text-sm text-gray-300 text-center mt-1">
+                Edad: {age} &bull; Nivel: {level}
+              </p>
+            </div>
+          ))}
+        </div>
+      </main>
     </div>
-  );
+  )
 }

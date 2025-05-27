@@ -1,0 +1,201 @@
+import { useState } from 'react';
+import { UserCircle2 } from 'lucide-react';
+
+export default function PreviewPanel() {
+  const [filledBoxes, setFilledBoxes] = useState(0);
+  const [currentlyDragging, setCurrentlyDragging] = useState(null);
+  const [boxes, setBoxes] = useState([
+    { id: 1, filled: false, content: null },
+    { id: 2, filled: false, content: null },
+    { id: 3, filled: false, content: null },
+    { id: 4, filled: false, content: null },
+    { id: 5, filled: false, content: null },
+
+  ]);
+
+  const [options, setOptions] = useState([
+    { id: 1, visible: true, imgSrc: 'src/assets/soup_spoon.png', alt: "Opción 1" },
+    { id: 2, visible: true, imgSrc: 'src/assets/saltine_cracker.png', alt: "Opción 2" },
+    { id: 3, visible: true, imgSrc: 'src/assets/plate.png', alt: "Opción 3" },
+    { id: 4, visible: true, imgSrc: 'src/assets/croissant.png', alt: "Opción 4" },
+    { id: 5, visible: true, imgSrc: 'src/assets/mug.png', alt: "Opción 5" },
+  ]);
+
+  const title = 'Cual es el orden que esta puesto en la mesa';
+  const description = 'Bob puso la mesa';
+  const explanation = 'Pon el orden correcto de los objetos en la mesa';
+  const mainImage = 'src/assets/completo2.png';
+
+  const handleDragStart = (optionId) => {
+    setCurrentlyDragging(optionId);
+  };
+
+  const handleDrop = (boxId) => {
+    const targetBox = boxes.find(box => box.id === boxId);
+    if (targetBox.filled) return;
+
+    const draggedOption = options.find(option => option.id === currentlyDragging);
+    if (!draggedOption) return;
+
+    setBoxes(boxes.map(box =>
+      box.id === boxId
+        ? { ...box, filled: true, content: draggedOption }
+        : box
+    ));
+    setOptions(options.map(option =>
+      option.id === currentlyDragging
+        ? { ...option, visible: false }
+        : option
+    ));
+
+    setFilledBoxes(filledBoxes + 1);
+  };
+
+  const handleRemove = (boxId) => {
+    const boxToEmpty = boxes.find(box => box.id === boxId);
+    if (!boxToEmpty || !boxToEmpty.filled) return;
+
+    const optionId = boxToEmpty.content.id;
+
+    setBoxes(boxes.map(box =>
+      box.id === boxId
+        ? { ...box, filled: false, content: null }
+        : box
+    ));
+
+    setOptions(options.map(option =>
+      option.id === optionId
+        ? { ...option, visible: true }
+        : option
+    ));
+
+    setFilledBoxes(filledBoxes - 1);
+  };
+
+  const handleReset = () => {
+    setBoxes(boxes.map(box => ({ ...box, filled: false, content: null })));
+    setOptions(options.map(option => ({ ...option, visible: true })));
+    setFilledBoxes(0);
+  };
+
+  const handleCheck = () => {
+    if (filledBoxes === boxes.length) {
+      alert('¡Muy bien! Has completado el ejercicio correctamente.');
+    } else {
+      alert('Debes completar todos los espacios antes de comprobar.');
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-white">
+      <header className="flex items-center justify-between px-6 py-6 bg-black-rock-950 shadow-sm">
+        <h1 className="text-xl md:text-2xl font-bold text-white">Editor de preguntas interactivas</h1>
+        <UserCircle2 className="w-8 h-8 text-white" />
+      </header>
+      <main className="bg-white w-full p-5 max-w-full overflow-hidden">
+        <div className="p-6">
+          <div className="mb-10 border-b pb-6 border-gray-300">
+            <h2 className="text-3xl font-bold text-black-rock-950">{title}</h2>
+          </div>
+          <div className="mb-4">
+            <h2 className="text-3xl font-medium text-gray-900 mb-2">Descripción</h2>
+            <p className="text-base text-gray-700">{description}</p>
+          </div>
+
+          <div className="flex justify-center mb-8 ">
+            <img
+              src={mainImage}
+              className="w-48 h-48 object-contain bg-gray-200"
+            />
+          </div>
+
+          <div className="w-full bg-gray-200 rounded-full h-2.5 mb-8">
+            <div
+              className="bg-blue-600 h-2.5 rounded-full transition-all duration-500"
+              style={{ width: `${(filledBoxes / boxes.length) * 100}%` }}
+            />
+          </div>
+          <div className="py-2 rounded-md">
+            <h2 className="text-3xl font-medium text-gray-900 mb-2">Explicación</h2>
+            <p className="text-sm text-gray-700">{explanation}</p>
+          </div>
+
+          <div className="flex justify-center flex-wrap gap-4 mb-8">
+            {boxes.map((box) => (
+              <div
+                key={box.id}
+                className={`w-28 h-28 flex justify-center items-center rounded-lg transition-all duration-300 cursor-pointer
+                  ${box.filled
+                    ? 'border-2 border-black-rock-800 bg-blue-50'
+                    : 'border-2 border-dashed border-gray-500 bg-gray-50 hover:border-blue-400'
+                  }`}
+                onDrop={() => handleDrop(box.id)}
+                onDragOver={(e) => e.preventDefault()}
+                onDragEnter={(e) => {
+                  e.preventDefault();
+                  if (!box.filled) {
+                    e.currentTarget.classList.add('border-blue-400', 'bg-blue-50');
+                    e.currentTarget.classList.remove('border-dashed');
+                  }
+                }}
+                onDragLeave={(e) => {
+                  if (!box.filled) {
+                    e.currentTarget.classList.remove('border-blue-400', 'bg-blue-50');
+                    e.currentTarget.classList.add('border-dashed');
+                  }
+                }}
+                onClick={() => box.filled && handleRemove(box.id)}
+              >
+                {box.filled && box.content && (
+                  <div className="w-full h-full p-1">
+                    <img
+                      src={box.content.imgSrc}
+                      alt={box.content.alt}
+                      className="w-full h-full object-contain"
+                    />
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+
+          <div className="flex justify-center flex-wrap gap-4 mb-8">
+            {options.map((option) => (
+              <div
+                key={option.id}
+                className={`w-24 h-24 border-2 border-gray-200 bg-gray-200 rounded-lg overflow-hidden cursor-grab 
+                  transition-all duration-300 hover:scale-105 hover:shadow-md
+                  ${!option.visible ? 'invisible' : ''}`}
+                draggable={option.visible}
+                onDragStart={() => handleDragStart(option.id)}
+              >
+                <img
+                  src={option.imgSrc}
+                  alt={option.alt}
+                  className="w-full h-full object-contain"
+                />
+              </div>
+            ))}
+          </div>
+
+          <div className="flex justify-center gap-4">
+            <button
+              onClick={handleReset}
+              className="px-6 py-3 bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold rounded-full 
+                transition-all duration-300 transform hover:-translate-y-1"
+            >
+              Reiniciar
+            </button>
+            <button
+              onClick={handleCheck}
+              className="px-6 py-3 bg-gradient-to-r from-black-rock-800 to-black-rock-900 hover:from-black-rock-400 hover:to-black-rock-600 
+                text-white font-semibold rounded-full transition-all duration-300 transform hover:-translate-y-1"
+            >
+              Comprobar
+            </button>
+          </div>
+        </div>
+      </main>
+    </div>
+  );
+}

@@ -1,1 +1,17 @@
 @import "tailwindcss";
+
+@theme {
+--color-black-rock-50: #e6ecff;
+--color-black-rock-100: #d2dbff;
+--color-black-rock-200: #aebcff;
+--color-black-rock-300: #7e8eff;
+--color-black-rock-400: #4b50ff;
+--color-black-rock-500: #3223ff;
+--color-black-rock-600: #2600ff;
+--color-black-rock-700: #2200ff;
+--color-black-rock-800: #1d00d7;
+--color-black-rock-900: #1d08a7;
+--color-black-rock-950: #0b0337;
+}
+
+@plugin '@tailwindcss/typography';
