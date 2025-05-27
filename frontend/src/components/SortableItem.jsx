@@ -17,7 +17,7 @@ export function SortableItem(props) {
   };
   
   return (
-    <div className='w-24 h-24 mx-1 bg-gray-200 border-2 border-gray-400 rounded-lg inline-block cursor-pointer' ref={setNodeRef} style={style} {...attributes} {...listeners}>
+    <div className='w-24 h-24 mx-1 bg-gray-200 border-2 border-gray-400 rounded-lg inline-block cursor-grab' ref={setNodeRef} style={style} {...attributes} {...listeners}>
       <img src={'src/assets/' + props.src} alt={props.name} />
       <p className='w-full text-center font-semibold'>{props.name}</p>
     </div>

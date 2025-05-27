@@ -1,87 +1,99 @@
-import React, {useState} from 'react';
-import {DndContext} from '@dnd-kit/core';
+import React, { useState } from "react";
+import { DndContext, useDraggable } from "@dnd-kit/core";
+import { Draggable } from "./Draggable";
+import { Droppable } from "./Droppable";
 
-import {Droppable} from './Droppable';
-import {Draggable} from './Draggable';
-
-export default function DragDrop() {
-  const [isDropped, setIsDropped] = useState(false);
-  const items = [
-  {
-   id:1,
-   name:'Plato',
-   imageUrl:'plate.png'
-  },
-  {
-   id:2,
-   name:'Galleta',
-   imageUrl:'saltine_cracker.png'
-  },
-  {
-   id:3,
-   name:'Cuchara de Sopa',
-   imageUrl:'soup_spoon.png'
-  },
-  {
-   id:4,
-   name:'taza de te',
-   imageUrl:'tea.png'
-  }
+const itemsData = [
+    {
+      id: 1,
+      name: 'Plato',
+      imageUrl: 'plate.png',
+      width: 256,
+      height: 256,
+      position: {
+        x: 21,
+        y: 8
+      }
+    },
+    {
+      id: 2,
+      name: 'Galleta',
+      imageUrl: 'saltine_cracker.png',
+      width: 128,
+      height: 128,
+      position: {
+        x: 94,
+        y: 36
+      }
+    },
+    {
+      id: 3,
+      name: 'Cucharilla',
+      imageUrl: 'soup_spoon.png',
+      width: 128,
+      height: 128,
+      position: {
+        x: 126,
+        y: 88
+      }
+    },
+    {
+      id: 4,
+      name: 'Taza de Café',
+      imageUrl: 'mug.png',
+      width: 256,
+      height: 256,
+      position: {
+        x: 160,
+        y: 32
+      }
+    },
+    {
+      id: 5,
+      name: 'Cuernito',
+      imageUrl: 'croissant.png',
+      width: 128,
+      height: 128,
+      position: {
+        x: 52,
+        y: 65
+      }
+    }
   ]
-  const [selectableItems, setSelectableItems] = useState(items);
-  const [selectedItems, setSelectedItems] = useState([]);
 
-  const draggableMarkup = (       
-    selectableItems.map((item, idx) =>{
-    return(
-    <Draggable key={idx} id={item.id}>
-      <img src={'src/assets/' + item.imageUrl} width={100} height={100} alt={item.name} />      
-    </Draggable>    
-    )  
-    })
-  );
-
-  const droppedMarkup = (       
-    selectedItems.map((item, idx) =>{
-    return(
-    <Draggable key={idx} id={item.id}>
-      <img src={'src/assets/' + item.imageUrl } alt={item.name} />      
-    </Draggable>    
-    )  
-    })
-  );
-  
-  return (    
-    <DndContext onDragEnd={handleDragEnd}>
-      <div className='flex gap-2'>
-      {draggableMarkup}
-      </div>
-      <Droppable> 
-        {droppedMarkup.length > 0 ? droppedMarkup :<p className='text-center w-full'>Suelta Aqui</p> }
-      </Droppable>
-    </DndContext>    
-  );
-  
+export default function FreeDragnDrop() {
+  const [items, setItems] = useState(itemsData);
   function handleDragEnd(event) {    
     if (event.over && event.over.id === 'droppable') {
-      setIsDropped(true);      
-      setSelectableItems(
-        selectableItems.filter(item => {
-          if (event.active.id == item.id){
-            setSelectedItems([...selectedItems,item]) 
-          }else{return true}
-        })
-       );              
-    }else{
-      setIsDropped(false);
-      setSelectedItems(
-        selectedItems.filter(item => {
-          if (event.active.id == item.id){
-            setSelectableItems([...selectableItems,item]) 
-          }else{return true}
-        })
-       );
-
+      const item = items.find((x) => x.id === event.active.id);
+      item.position.x += event.delta.x;
+      item.position.y += event.delta.y;    
+      const _items = items.map((x) => {
+        if (x.id === item.id) return item;
+        return x;
+      });
+      setItems(_items);
     }
   }
+
+  return (
+    <DndContext onDragEnd={handleDragEnd}>
+      <Droppable>
+        {items.map((item) => (
+          <Draggable
+            styles={{
+              position: "absolute",
+              left: `${item.position.x}px`,
+              top: `${item.position.y}px`,
+              width: `${item.width}px`,
+              height: `${item.height}px`,
+            }}
+            key={item.id}
+            id={item.id}            
+            src={item.imageUrl}
+          />
+        ))}
+      </Droppable>
+    </DndContext>
+  );
 }

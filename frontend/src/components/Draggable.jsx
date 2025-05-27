@@ -12,9 +12,10 @@ export function Draggable(props) {
   
   return (
     <div 
-    className='cursor-pointer focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100'
-    ref={setNodeRef} style={style} {...listeners} {...attributes}>
+    className='cursor-grab flex focus:ring-2 focus:ring-blue-500 rounded-sm'
+    ref={setNodeRef} style={{ ...style, ...props.styles }} {...listeners} {...attributes}>
       {props.children}      
+      <img src={'src/assets/' + props.src}  alt={props.name} />      
     </div>
   );
 }

@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import Sortable from '../components/Sortable';
+import DragDrop from '../components/DragDrop';
 
 export default function ConfigureQuestion() {
 
@@ -8,11 +9,11 @@ export default function ConfigureQuestion() {
   const title = 'Cual es el orden que esta puesto en la mesa';
   const description = 'Bob puso la mesa';
   const explanation = 'Pon el orden correcto de los objetos en la mesa';
-  const mainImage = 'src/assets/completo2.png';
+  //const mainImage = 'src/assets/completo2.png';
 
   const uploadedImages = [
     //'src/assets/tea.png',
-    'src/assets/completo2.png',
+    //'src/assets/completo2.png',
     'src/assets/soup_spoon.png',
     'src/assets/saltine_cracker.png',
     'src/assets/plate.png',
@@ -37,15 +38,13 @@ export default function ConfigureQuestion() {
             <p className="text-base text-gray-700">{description}</p>
           </div>
 
-          <div className="w-[500px] h-[350px] mb-6 border border-dashed border-gray-400 rounded-lg p-4 bg-white shadow-sm">
+          <div className="w-md mb-6 border border-dashed border-gray-400 rounded-lg p-4 bg-white shadow-sm">
             <h3 className="text-sm font-semibold text-gray-800 mb-2">Imagen principal</h3>
-            <div className="w-[400px] h-[250px] mx-auto flex items-center justify-center bg-gray-100 rounded-md overflow-hidden">
-              <img
-                src={mainImage}
-                alt="Imagen principal"
-                className="max-w-full max-h-full object-contain"
-              />
+            <p className='text-gray-500 mb-4'>(Arrastra y suelta para mover los elementos)</p>
+            <div className="mx-auto">
+               <DragDrop></DragDrop>
             </div>
+            
           </div>
 
           <div className="py-2 rounded-md">
