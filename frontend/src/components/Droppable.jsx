@@ -7,6 +7,7 @@ export function Droppable(props) {
   });
   const style = {
     color: isOver ? 'green' : undefined,
+    zIndex: 0,    
     backgroundImage: `url(${'src/assets/table.png'})`,
     backgroundSize: 'cover',
     backgroundPosition: 'center',
