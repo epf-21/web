@@ -1,7 +1,7 @@
 import prisma from '../../config/db.js'
 
 export class QuestionModel {
-  static async getQuestionsByEdad(edadMinima, edadMaxima, idUsuario) {
+  static async getQuestionsByEdad (edadMinima, edadMaxima, idUsuario) {
     return await prisma.pregunta.findMany({
       where: {
         edadMinima,

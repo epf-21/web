@@ -8,7 +8,7 @@ const QuestionYearSchema = z.object({
   idUsuario: z.string().uuid()
 })
 
-export function validateQuestionYear(data) {
+export function validateQuestionYear (data) {
   const result = QuestionYearSchema.safeParse(data)
   if (!result.success) {
     throw new AppError(result.error.errors[0].message, 400)
