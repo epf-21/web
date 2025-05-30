@@ -1,6 +1,7 @@
 import express, { json } from 'express'
 import cors from 'cors'
 import morgan from 'morgan'
+import { errorHandler } from './middlewares/errorHandler.js'
 
 const app = express()
 
@@ -9,11 +10,9 @@ app.use(json())
 app.use(morgan('dev'))
 
 app.get('/', (req, res) => {
-  res.send('Nuevo proyecto')
+  res.send('Editor de preguntas interactivas')
 })
 
-const PORT = process.env.PORT || 4000
+app.use(errorHandler)
 
-app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`)
-})
+export default app
