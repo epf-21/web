@@ -29,6 +29,8 @@ model Pregunta {
   descripcion String
   explicacion String
   estado      String
+  edadMinima  Int
+  edadMaxima  Int
   usuario     Usuario          @relation(fields: [idUsuario], references: [id])
   idUsuario   String
   respuestas  Respuesta[]
