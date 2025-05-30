@@ -4,7 +4,7 @@ import { AuthModel } from './auth.model.js'
 import { JWT_SECRET } from '../../config/env.js'
 
 export class AuthService {
-  static async register(data) {
+  static async register (data) {
     const { name, email, password, rol, phone } = data
     const exist = await AuthModel.findUserByEmail(email)
     if (exist) {
@@ -23,7 +23,7 @@ export class AuthService {
     return { id: user.id, email: user.email }
   }
 
-  static async login(data) {
+  static async login (data) {
     const { email, password } = data
     const user = await AuthModel.findUserByEmail(email)
     if (!user) {

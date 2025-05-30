@@ -1,7 +1,7 @@
 import { AuthService } from './auth.service.js'
 
 export class AuthController {
-  static async register(req, res, next) {
+  static async register (req, res, next) {
     try {
       const data = req.body
       const user = await AuthService.register(data)
@@ -14,7 +14,7 @@ export class AuthController {
     }
   }
 
-  static async login(req, res, next) {
+  static async login (req, res, next) {
     try {
       const data = req.body
       const result = await AuthService.login(data)
