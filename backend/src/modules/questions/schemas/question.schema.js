@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { AppError } from '../utils/errors.js'
+import { AppError } from '../../../utils/errors.js'
 
 const QuestionYearSchema = z.object({
   years: z

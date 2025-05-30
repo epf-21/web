@@ -1,4 +1,4 @@
-import { QuestionService } from './question.service.js'
+import { QuestionService } from '../services/question.service.js'
 
 export class QuestionController {
   static async findQuestionByYear (req, res, next) {

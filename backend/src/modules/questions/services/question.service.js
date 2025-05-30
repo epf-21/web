@@ -1,6 +1,6 @@
-import { QuestionModel } from './question.model.js'
-import { validateQuestionYear } from '../../schemas/question.schema.js'
-import { AppError } from '../../utils/errors.js'
+import { QuestionModel } from '../models/question.model.js'
+import { validateQuestionYear } from '../schemas/question.schema.js'
+import { AppError } from '../../../utils/errors.js'
 
 export class QuestionService {
   static async findQuestionsByYear (data) {

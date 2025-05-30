@@ -2,8 +2,8 @@ import express, { json } from 'express'
 import cors from 'cors'
 import morgan from 'morgan'
 import { errorHandler } from './middlewares/errorHandler.js'
-import authRouter from './modules/auth/auth.routes.js'
-import questionRouter from './modules/questions/question.routes.js'
+import authRouter from './modules/auth/routes.js'
+import questionRouter from './modules/questions/routes.js'
 
 const app = express()
 

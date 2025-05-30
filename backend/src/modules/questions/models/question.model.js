@@ -1,4 +1,4 @@
-import prisma from '../../config/db.js'
+import prisma from '../../../config/db.js'
 
 export class QuestionModel {
   static async getQuestionsByEdad (edadMinima, edadMaxima, idUsuario) {
