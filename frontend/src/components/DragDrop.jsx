@@ -55,7 +55,8 @@ export default function DragDrop({draggableItems, droppedItems, setDroppedItems,
   return (
     <DndContext onDragEnd={handleDragEnd}>      
       <div>        
-        <h3 className="text-sm font-semibold text-black-rock-950 mb-3">Imágenes subidas</h3>
+        <h3 className="text-sm font-semibold text-black-rock-950 mb-2">Imágenes subidas</h3>
+        <p className='text-gray-500 mb-2 text-xs'>(Arrastra para agregar elementos)</p>
         <div className="grid grid-cols-2 gap-1 border-2 border-gray-500 rounded-md shadow-sm p-2 w-44 min-h-24">
         {draggableItems.map(item =>{
           return(
@@ -72,6 +73,8 @@ export default function DragDrop({draggableItems, droppedItems, setDroppedItems,
         </div>
       </div>
       <div>
+        <h3 className="text-sm font-semibold text-gray-800 mb-2">Imagen principal</h3>
+        <p className='text-gray-500 mb-2 text-xs'>(Arrastra y suelta para mover elementos)</p>
         <Droppable>
           {droppedItems.map((item) => (
             <Draggable

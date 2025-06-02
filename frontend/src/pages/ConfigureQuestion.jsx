@@ -36,6 +36,28 @@ const draggableItemsData = [
         x: 0,
         y: 0
       }
+    },
+    {
+      id: 9,
+      name: 'Hamburguesa',
+      imageUrl: 'burger.png',
+      width: 128,
+      height: 128,
+      position: {
+        x: 0,
+        y: 0
+      }
+    },
+    {
+      id: 10,
+      name: 'Caja de Cereal',
+      imageUrl: 'cereal_box.png',
+      width: 128,
+      height: 128,
+      position: {
+        x: 0,
+        y: 0
+      }
     }
   ]
   
@@ -122,8 +144,7 @@ export default function ConfigureQuestion() {
           </div>
           
           <div className="w-2xl border border-dashed border-gray-400 rounded-lg p-4 bg-white shadow-sm">
-            <h3 className="text-sm font-semibold text-gray-800 mb-2">Imagen principal</h3>
-            <p className='text-gray-500 mb-4'>(Arrastra y suelta para mover los elementos)</p>
+            
             <div className="mx-auto flex gap-4">                
               <DragDrop 
               draggableItems={draggableItems} 
