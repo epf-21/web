@@ -64,7 +64,7 @@ const draggableItemsData = [
     },
     {
       id: 3,
-      name: 'Cucharilla',
+      name: 'Cuchara',
       imageUrl: 'soup_spoon.png',
       width: 100,
       height: 100,
@@ -130,10 +130,9 @@ export default function ConfigureQuestion() {
               droppedItems={droppedItems}
               setDraggableItems={setDraggableItems} 
               setDroppedItems={setDroppedItems}
-              />
+              />              
             </div>            
-          </div>
-          
+          </div>                   
 
           <div className="py-2 rounded-md">
             <h2 className="text-lg font-medium text-gray-900 mb-2">Explicación</h2>

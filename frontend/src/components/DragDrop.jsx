@@ -1,9 +1,29 @@
+import { useState } from "react";
 import { DndContext, useDraggable } from "@dnd-kit/core";
 import { Draggable } from "./Draggable";
 import { Droppable } from "./Droppable";
 
 export default function DragDrop({draggableItems, droppedItems, setDroppedItems, setDraggableItems}) {
-  function handleDragEnd(event) {    
+
+  const [sliderValue, setSliderValue] = useState(16);
+  const [activeItemId, setActiveItemId] = useState(0);
+
+  const handleSliderChange = (event) => {
+    const val = event.target.value
+    setSliderValue(val);
+    const item = droppedItems.find((x) => x.id === activeItemId)
+      if(item){
+        item.width = val;
+        item.height = val;    
+        const _items = droppedItems.map((x) => {
+          if (x.id === item.id) return item;
+          return x;
+        });
+        setDroppedItems(_items);
+      }
+  }; 
+  
+  function handleDragEnd(event) {        
     if (event.over && event.over.id === 'droppable') {
       const dgItem = draggableItems.find((x) => x.id === event.active.id)
       if(dgItem){
@@ -11,7 +31,9 @@ export default function DragDrop({draggableItems, droppedItems, setDroppedItems,
         setDroppedItems([...droppedItems,dgItem])         
       }      
       const item = droppedItems.find((x) => x.id === event.active.id)
-      if(item){
+      if(item){        
+        setActiveItemId(event.active.id)
+        setSliderValue(item.width)
         item.position.x += event.delta.x;
         item.position.y += event.delta.y;    
         const _items = droppedItems.map((x) => {
@@ -49,22 +71,36 @@ export default function DragDrop({draggableItems, droppedItems, setDroppedItems,
         }
         </div>
       </div>
-      <Droppable>
-        {droppedItems.map((item) => (
-          <Draggable
-            styles={{
-              position: "absolute",
-              left: `${item.position.x}px`,
-              top: `${item.position.y}px`,
-              width: `${item.width}px`,
-              height: `${item.height}px`,
-            }}
-            key={item.id}
-            id={item.id}            
-            src={item.imageUrl}
+      <div>
+        <Droppable>
+          {droppedItems.map((item) => (
+            <Draggable
+              styles={{
+                position: "absolute",
+                left: `${item.position.x}px`,
+                top: `${item.position.y}px`,
+                width: `${item.width}px`,
+                height: `${item.height}px`,
+              }}
+              key={item.id}
+              id={item.id}            
+              src={item.imageUrl}
+            />
+          ))}
+        </Droppable>      
+        <div className="mt-2 bg-gray-100 rounded-lg p-2">
+          <input
+          type="range"
+          min="16"
+          max="320"
+          step="16"
+          value={sliderValue}
+          onChange={handleSliderChange}
+          className="w-full cursor-pointer"
           />
-        ))}
-      </Droppable>
-    </DndContext>
+          <p className="text-sm font-semibold text-gray-900">Tamaño: {sliderValue}px</p>
+        </div>
+      </div>
+    </DndContext>    
   );
 }
