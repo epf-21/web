@@ -16,21 +16,21 @@ export class QuestionModel {
     })
   }
 
-  static async createQuestion (titulo, descripcion, explicacion, urlsImagenes, idUsuario) {
+  static async createQuestion ({ titulo, descripcion, explicacion, estado, edadMinima, edadMaxima, idUsuario, imagenes }) {
     return await prisma.pregunta.create({
       data: {
         titulo,
         descripcion,
         explicacion,
-        estado: 'ACTIVO',
-        edadMinima: 0,
-        edadMaxima: 99,
+        estado,
+        edadMinima,
+        edadMaxima,
         idUsuario,
         imagenes: {
-          create: urlsImagenes.map(url => ({
+          create: imagenes.map(({ nombre, url }) => ({
             imagen: {
               create: {
-                nombre: 'imagen',
+                nombre,
                 url
               }
             }

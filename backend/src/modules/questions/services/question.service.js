@@ -1,5 +1,5 @@
 import { QuestionModel } from '../models/question.model.js'
-import { validateQuestionYear } from '../schemas/question.schema.js'
+import { validateQuestionCreate, validateQuestionYear } from '../schemas/question.schema.js'
 import { AppError } from '../../../utils/errors.js'
 
 export class QuestionService {
@@ -19,14 +19,18 @@ export class QuestionService {
     }))
   }
 
-  static async createQuestion ({ titulo, descripcion, explicacion, imagenes, idUsuario }) {
-    return await QuestionModel.createQuestion(
+  static async createQuestion (data) {
+    const { idUsuario, titulo, descripcion, explicacion, estado, edadMinima, edadMaxima, imagenes } = validateQuestionCreate(data)
+    return await QuestionModel.createQuestion({
+      idUsuario,
       titulo,
       descripcion,
       explicacion,
-      imagenes,
-      idUsuario
-    )
+      estado,
+      edadMinima,
+      edadMaxima,
+      imagenes
+    })
   }
 
   static async deleteQuestion (id) {
