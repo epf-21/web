@@ -50,7 +50,7 @@ const draggableItemsData = [
     },
     {
       id: 10,
-      name: 'Caja de Cereal',
+      name: 'Caja Cereal',
       imageUrl: 'cereal_box.png',
       width: 128,
       height: 128,
@@ -66,8 +66,8 @@ const draggableItemsData = [
       id: 1,
       name: 'Plato',
       imageUrl: 'plate.png',
-      width: 256,
-      height: 256,
+      width: 240,
+      height: 240,
       position: {
         x: 21,
         y: 8
@@ -99,11 +99,11 @@ const draggableItemsData = [
       id: 4,
       name: 'Taza de Café',
       imageUrl: 'mug.png',
-      width: 180,
-      height: 180,
+      width: 144,
+      height: 144,
       position: {
-        x: 160,
-        y: 82
+        x: 180,
+        y: 112
       }
     },
     {
