@@ -5,3 +5,11 @@ export class AppError extends Error {
     this.status = status
   }
 }
+
+export class ValidationError extends Error {
+  constructor (message) {
+    super(message)
+    this.name = 'ValidationError'
+    this.status = 400
+  }
+}

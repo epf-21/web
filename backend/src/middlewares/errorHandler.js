@@ -1,5 +1,11 @@
 export const errorHandler = (err, req, res, next) => {
   console.error('[ERROR]', err)
+  if (err.name === 'ValidationError') {
+    return res.status(err.status).json({
+      ok: false,
+      message: err.message
+    })
+  }
   if (err.name === 'AppError') {
     return res.status(err.status).json({
       ok: false,
