@@ -36,4 +36,18 @@ export class QuestionController {
       next(error)
     }
   }
+  static async deleteQuestion(req, res, next) {
+    try {
+      const { id } = req.params
+
+      await QuestionService.deleteQuestion(id)
+
+      res.status(200).json({
+        ok: true,
+        message: 'Pregunta eliminada correctamente'
+      })
+    } catch (error) {
+      next(error)
+    }
+  }
 }

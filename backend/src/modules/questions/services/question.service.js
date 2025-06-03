@@ -25,4 +25,7 @@ export class QuestionService {
       idUsuario
     )
   }
+  static async deleteQuestion(id) {
+    return await QuestionModel.deleteQuestionById(id)
+  }
 }

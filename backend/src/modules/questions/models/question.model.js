@@ -45,4 +45,15 @@ export class QuestionModel {
       }
     });
   }
+  static async deleteQuestionById(id) {
+    await prisma.respuesta.deleteMany({
+      where: { idPregunta: id }
+    });
+    await prisma.preguntaImagen.deleteMany({
+      where: { idPregunta: id }
+    });
+    return await prisma.pregunta.delete({
+      where: { id }
+    });
+  }
 }
