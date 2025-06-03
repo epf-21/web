@@ -16,7 +16,8 @@ export class QuestionService {
       description: question.descripcion
     }))
   }
-  static async createQuestion({ titulo, descripcion, explicacion, imagenes, idUsuario }) {
+
+  static async createQuestion ({ titulo, descripcion, explicacion, imagenes, idUsuario }) {
     return await QuestionModel.createQuestion(
       titulo,
       descripcion,
@@ -25,7 +26,8 @@ export class QuestionService {
       idUsuario
     )
   }
-  static async deleteQuestion(id) {
+
+  static async deleteQuestion (id) {
     return await QuestionModel.deleteQuestionById(id)
   }
 }

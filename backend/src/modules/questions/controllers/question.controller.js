@@ -15,7 +15,8 @@ export class QuestionController {
       next(error)
     }
   }
-  static async createQuestion(req, res, next) {
+
+  static async createQuestion (req, res, next) {
     try {
       const { titulo, descripcion, explicacion, imagenes } = req.body
       const idUsuario = 'b470c7fb-588b-4aad-b7d4-30ab22d60e1e'
@@ -36,7 +37,8 @@ export class QuestionController {
       next(error)
     }
   }
-  static async deleteQuestion(req, res, next) {
+
+  static async deleteQuestion (req, res, next) {
     try {
       const { id } = req.params
 

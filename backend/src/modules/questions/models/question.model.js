@@ -1,7 +1,7 @@
 import prisma from '../../../config/db.js'
 
 export class QuestionModel {
-  static async getQuestionsByEdad(edadMinima, edadMaxima, idUsuario) {
+  static async getQuestionsByEdad (edadMinima, edadMaxima, idUsuario) {
     return await prisma.pregunta.findMany({
       where: {
         edadMinima,
@@ -15,7 +15,8 @@ export class QuestionModel {
       }
     })
   }
-  static async createQuestion(titulo, descripcion, explicacion, urlsImagenes, idUsuario) {
+
+  static async createQuestion (titulo, descripcion, explicacion, urlsImagenes, idUsuario) {
     return await prisma.pregunta.create({
       data: {
         titulo,
@@ -43,17 +44,18 @@ export class QuestionModel {
           }
         }
       }
-    });
+    })
   }
-  static async deleteQuestionById(id) {
+
+  static async deleteQuestionById (id) {
     await prisma.respuesta.deleteMany({
       where: { idPregunta: id }
-    });
+    })
     await prisma.preguntaImagen.deleteMany({
       where: { idPregunta: id }
-    });
+    })
     return await prisma.pregunta.delete({
       where: { id }
-    });
+    })
   }
 }
