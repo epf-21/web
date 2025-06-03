@@ -15,4 +15,25 @@ export class QuestionController {
       next(error)
     }
   }
+  static async createQuestion(req, res, next) {
+    try {
+      const { titulo, descripcion, explicacion, imagenes } = req.body
+      const idUsuario = 'b470c7fb-588b-4aad-b7d4-30ab22d60e1e'
+
+      const preguntaCreada = await QuestionService.createQuestion({
+        titulo,
+        descripcion,
+        explicacion,
+        imagenes,
+        idUsuario
+      })
+
+      res.status(201).json({
+        ok: true,
+        data: preguntaCreada
+      })
+    } catch (error) {
+      next(error)
+    }
+  }
 }

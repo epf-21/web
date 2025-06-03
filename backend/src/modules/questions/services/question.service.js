@@ -16,4 +16,13 @@ export class QuestionService {
       description: question.descripcion
     }))
   }
+  static async createQuestion({ titulo, descripcion, explicacion, imagenes, idUsuario }) {
+    return await QuestionModel.createQuestion(
+      titulo,
+      descripcion,
+      explicacion,
+      imagenes,
+      idUsuario
+    )
+  }
 }
