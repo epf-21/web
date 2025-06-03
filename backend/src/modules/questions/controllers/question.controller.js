@@ -1,9 +1,22 @@
 import { QuestionService } from '../services/question.service.js'
 
 export class QuestionController {
+  static async getQuestionDetail (req, res, next) {
+    try {
+      const { id } = req.params
+      const question = await QuestionService.getQuestionDetail(id)
+      res.status(200).json({
+        ok: true,
+        data: question
+      })
+    } catch (error) {
+      next(error)
+    }
+  }
+
   static async findQuestionByYear (req, res, next) {
     try {
-      const { years } = req.params
+      const { years } = req.query
       const idUsuario = 'b470c7fb-588b-4aad-b7d4-30ab22d60e1e'
 
       const questions = await QuestionService.findQuestionsByYear({ years, idUsuario })

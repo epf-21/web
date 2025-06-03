@@ -1,6 +1,20 @@
 import prisma from '../../../config/db.js'
 
 export class QuestionModel {
+  static async getQuestionById (id) {
+    return await prisma.pregunta.findUnique({
+      where: { id },
+      include: {
+        respuestas: true,
+        imagenes: {
+          include: {
+            imagen: true
+          }
+        }
+      }
+    })
+  }
+
   static async getQuestionsByEdad (edadMinima, edadMaxima, idUsuario) {
     return await prisma.pregunta.findMany({
       where: {

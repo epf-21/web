@@ -3,7 +3,8 @@ import { QuestionController } from './controllers/question.controller.js'
 
 const questionRouter = Router()
 
-questionRouter.get('/:years', QuestionController.findQuestionByYear)
+questionRouter.get('/:id', QuestionController.getQuestionDetail)
+questionRouter.get('/', QuestionController.findQuestionByYear)
 questionRouter.post('/', QuestionController.createQuestion)
 questionRouter.delete('/delete/:id', QuestionController.deleteQuestion)
 

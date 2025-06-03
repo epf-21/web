@@ -3,6 +3,32 @@ import { validateQuestionCreate, validateQuestionYear } from '../schemas/questio
 import { AppError } from '../../../utils/errors.js'
 
 export class QuestionService {
+  static async getQuestionDetail (id) {
+    const question = await QuestionModel.getQuestionById(id)
+    if (!question) {
+      throw new AppError('Pregunta no encontrada', 404)
+    }
+
+    return {
+      id: question.id,
+      title: question.titulo,
+      description: question.descripcion,
+      explanation: question.explicacion,
+      state: question.estado,
+      minAge: question.edadMinima,
+      maxAge: question.edadMaxima,
+      responses: question.respuestas.map(response => ({
+        id: response.id,
+        text: response.respuesta
+      })),
+      images: question.imagenes.map(image => ({
+        id: image.idImagen,
+        name: image.imagen.nombre,
+        url: image.imagen.url
+      }))
+    }
+  }
+
   static async findQuestionsByYear (data) {
     const { years, idUsuario } = validateQuestionYear(data)
     const [edadMinima, edadMaxima] = years.split('-').map(Number)
