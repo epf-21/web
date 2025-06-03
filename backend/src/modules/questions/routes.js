@@ -6,6 +6,6 @@ const questionRouter = Router()
 questionRouter.get('/:id', QuestionController.getQuestionDetail)
 questionRouter.get('/', QuestionController.findQuestionByYear)
 questionRouter.post('/', QuestionController.createQuestion)
-questionRouter.delete('/delete/:id', QuestionController.deleteQuestion)
+questionRouter.delete('/:id', QuestionController.deleteQuestion)
 
 export default questionRouter
