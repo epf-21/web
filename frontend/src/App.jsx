@@ -4,7 +4,7 @@ import CreateQuestion from './pages/CreateQuestion';
 import Preview from './pages/Preview';
 import Login from './pages/auth/Login';
 import SignUp from './pages/auth/SignUp';
-import Home from './pages/Home';
+import Home from './pages/Home'
 import QuestionManager from './pages/QuestionManager'
 import ConfigureQuestion from './pages/ConfigureQuestion';
 
