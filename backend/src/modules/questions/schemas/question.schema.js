@@ -1,10 +1,13 @@
 import { z } from 'zod'
 import { ValidationError } from '../../../utils/errors.js'
 
-const QuestionYearSchema = z.object({
-  years: z
-    .string()
-    .regex(/^\d{1,2}-\d{1,2}$/, 'Formato de edad inválido'),
+const QuestionLevelSchema = z.object({
+  level: z
+    .enum(['FACIL', 'MEDIO', 'DIFICIL'], {
+      required_error: 'El nivel es obligatorio',
+      invalid_type_error: 'Nivel invalido'
+    }
+    ),
   idUsuario: z.string().uuid()
 })
 
@@ -14,8 +17,10 @@ const CreateQuestionSchema = z.object({
   descripcion: z.string().min(1, 'La descripcion es obligatoria'),
   explicacion: z.string().min(1, 'La explicacion es obligatoria'),
   estado: z.string().min(1, 'El estado es obligatorio'),
-  edadMinima: z.number().int().min(6, 'La edad mínima debe ser al menos 6'),
-  edadMaxima: z.number().int().max(12, 'La edad máxima deber ser maximo 12'),
+  nivel: z.enum(['FACIL', 'MEDIO', 'DIFICIL'], {
+    required_error: 'El nivel es obligatorio',
+    invalid_type_error: 'Nivel invalido'
+  }),
   imagenes: z.array(
     z.object({
       nombre: z.string().min(1, 'El nombre de la imagen es obligatorio'),
@@ -25,7 +30,7 @@ const CreateQuestionSchema = z.object({
 })
 
 export function validateQuestionYear (data) {
-  const result = QuestionYearSchema.safeParse(data)
+  const result = QuestionLevelSchema.safeParse(data)
 
   if (!result.success) {
     throw new ValidationError(result.error.errors[0].message)

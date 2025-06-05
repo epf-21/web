@@ -13,6 +13,12 @@ enum Rol {
   ADMINISTRADOR
 }
 
+enum Nivel {
+  FACIL
+  MEDIO
+  DIFICIL
+}
+
 model Usuario {
   id          String     @id @default(uuid())
   nombre      String
@@ -24,37 +30,29 @@ model Usuario {
 }
 
 model Pregunta {
-  id          String           @id @default(uuid())
+  id          String      @id @default(uuid())
   titulo      String
   descripcion String
   explicacion String
   estado      String
-  edadMinima  Int
-  edadMaxima  Int
-  usuario     Usuario          @relation(fields: [idUsuario], references: [id])
+  nivel       Nivel
+  usuario     Usuario     @relation(fields: [idUsuario], references: [id])
   idUsuario   String
   respuestas  Respuesta[]
-  imagenes    PreguntaImagen[]
+  imagenes    Imagen[]
 }
 
 model Respuesta {
   id         String   @id @default(uuid())
-  respuesta  String
+  respuesta  String[]
   pregunta   Pregunta @relation(fields: [idPregunta], references: [id])
   idPregunta String
 }
 
 model Imagen {
-  id        String           @id @default(uuid())
-  nombre    String
-  url       String
-  preguntas PreguntaImagen[]
-}
-
-model PreguntaImagen {
   id         String   @id @default(uuid())
-  pregunta   Pregunta @relation(fields: [idPregunta], references: [id])
+  nombre     String
+  url        String
   idPregunta String
-  imagen     Imagen   @relation(fields: [idImagen], references: [id])
-  idImagen   String
+  pregunta   Pregunta @relation(fields: [idPregunta], references: [id])
 }

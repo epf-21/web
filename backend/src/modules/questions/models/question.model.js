@@ -6,20 +6,15 @@ export class QuestionModel {
       where: { id },
       include: {
         respuestas: true,
-        imagenes: {
-          include: {
-            imagen: true
-          }
-        }
+        imagenes: true
       }
     })
   }
 
-  static async getQuestionsByEdad (edadMinima, edadMaxima, idUsuario) {
+  static async getQuestionsByEdad ({ nivel, idUsuario }) {
     return await prisma.pregunta.findMany({
       where: {
-        edadMinima,
-        edadMaxima,
+        nivel,
         idUsuario
       },
       select: {
@@ -30,33 +25,24 @@ export class QuestionModel {
     })
   }
 
-  static async createQuestion ({ titulo, descripcion, explicacion, estado, edadMinima, edadMaxima, idUsuario, imagenes }) {
+  static async createQuestion ({ titulo, descripcion, explicacion, estado, nivel, idUsuario, imagenes }) {
     return await prisma.pregunta.create({
       data: {
         titulo,
         descripcion,
         explicacion,
         estado,
-        edadMinima,
-        edadMaxima,
+        nivel,
         idUsuario,
         imagenes: {
           create: imagenes.map(({ nombre, url }) => ({
-            imagen: {
-              create: {
-                nombre,
-                url
-              }
-            }
+            nombre,
+            url
           }))
         }
       },
       include: {
-        imagenes: {
-          include: {
-            imagen: true
-          }
-        }
+        imagenes: true
       }
     })
   }
@@ -65,7 +51,7 @@ export class QuestionModel {
     await prisma.respuesta.deleteMany({
       where: { idPregunta: id }
     })
-    await prisma.preguntaImagen.deleteMany({
+    await prisma.imagen.deleteMany({
       where: { idPregunta: id }
     })
     return await prisma.pregunta.delete({

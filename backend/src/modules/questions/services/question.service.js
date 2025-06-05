@@ -15,29 +15,23 @@ export class QuestionService {
       description: question.descripcion,
       explanation: question.explicacion,
       state: question.estado,
-      minAge: question.edadMinima,
-      maxAge: question.edadMaxima,
+      level: question.nivel,
       responses: question.respuestas.map(response => ({
         id: response.id,
-        text: response.respuesta
+        responses: response.respuesta
       })),
       images: question.imagenes.map(image => ({
-        id: image.idImagen,
-        name: image.imagen.nombre,
-        url: image.imagen.url
+        id: image.id,
+        name: image.nombre,
+        url: image.url
       }))
     }
   }
 
   static async findQuestionsByYear (data) {
-    const { years, idUsuario } = validateQuestionYear(data)
-    const [edadMinima, edadMaxima] = years.split('-').map(Number)
+    const { level, idUsuario } = validateQuestionYear(data)
 
-    if (edadMinima >= edadMaxima) {
-      throw new AppError('La edad mínima debe ser menor que la edad máxima', 400)
-    }
-
-    const questions = await QuestionModel.getQuestionsByEdad(edadMinima, edadMaxima, idUsuario)
+    const questions = await QuestionModel.getQuestionsByEdad({ nivel: level, idUsuario })
     return questions.map(question => ({
       id: question.id,
       title: question.titulo,
@@ -46,15 +40,14 @@ export class QuestionService {
   }
 
   static async createQuestion (data) {
-    const { idUsuario, titulo, descripcion, explicacion, estado, edadMinima, edadMaxima, imagenes } = validateQuestionCreate(data)
+    const { idUsuario, titulo, descripcion, explicacion, estado, nivel, imagenes } = validateQuestionCreate(data)
     return await QuestionModel.createQuestion({
       idUsuario,
       titulo,
       descripcion,
       explicacion,
       estado,
-      edadMinima,
-      edadMaxima,
+      nivel,
       imagenes
     })
   }
