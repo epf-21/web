@@ -1,27 +1,52 @@
 import { create } from 'zustand';
 import { jwtDecode } from 'jwt-decode';
 
-export const useAuthStore = create((set) => ({
-  user: null,
-  token: localStorage.getItem('token'),
+function isTokenExpired(token) {
+  try {
+    const { exp } = jwtDecode(token);
+    const now = Date.now() / 1000;
+    return exp < now;
+  } catch (e) {
+    console.log(e.message)
+    return true;
+  }
+}
 
-  login: (token) => {
-    localStorage.setItem('token', token);
+export const useAuthStore = create((set) => {
+  const token = localStorage.getItem('token');
+  let user = null;
+
+  if (token && !isTokenExpired(token)) {
     const decode = jwtDecode(token);
-    set({
-      token,
-      user: {
-        id: decode.id,
-        email: decode.email,
-        rol: decode.rol
-      }
-    })
-  },
+    user = {
+      id: decode.id,
+      email: decode.email,
+      rol: decode.rol
+    };
+  } else {
+    localStorage.removeItem('token')
+  }
 
-  logout: () => {
-    localStorage.removeItem('token');
-    set({ token: null, user: null });
-  },
+  return {
+    token: token && !isTokenExpired(token) ? token : null,
+    user,
 
-  setUser: (user) => set({ user })
-}))
+    login: (token) => {
+      localStorage.setItem('token', token);
+      const decode = jwtDecode(token);
+      set({
+        token,
+        user: {
+          id: decode.id,
+          email: decode.email,
+          rol: decode.rol
+        },
+      });
+    },
+
+    logout: () => {
+      localStorage.removeItem('token');
+      set({ token: null, user: null });
+    },
+  }
+})
