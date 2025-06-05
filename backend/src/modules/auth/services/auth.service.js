@@ -2,13 +2,15 @@ import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import { AuthModel } from '../models/auth.model.js'
 import { JWT_SECRET } from '../../../config/env.js'
+import { AppError } from '../../../utils/errors.js'
+import { validateLogin, validateRegister } from '../schema/auth.schema.js'
 
 export class AuthService {
   static async register (data) {
-    const { name, email, password, rol, phone } = data
+    const { name, email, password, rol, phone } = validateRegister(data)
     const exist = await AuthModel.findUserByEmail(email)
     if (exist) {
-      throw new Error('El correo ya está registrado')
+      throw new AppError('El correo ya está registrado')
     }
 
     const hashedPassword = await bcrypt.hash(password, 10)
@@ -20,19 +22,28 @@ export class AuthService {
       rol,
       telefono: phone
     })
-    return { id: user.id, email: user.email }
+    const token = jwt.sign({ id: user.id, email: user.email, rol: user.rol }, JWT_SECRET, { expiresIn: '1d' })
+    return {
+      user: {
+        id: user.id,
+        name: user.nombre,
+        rol: user.rol,
+        email: user.email
+      },
+      token
+    }
   }
 
   static async login (data) {
-    const { email, password } = data
+    const { email, password } = validateLogin(data)
     const user = await AuthModel.findUserByEmail(email)
     if (!user) {
-      throw new Error('Usuario no encontrado')
+      throw new AppError('Usuario no encontrado', 404)
     }
 
     const valid = await bcrypt.compare(password, user.contrasenia)
     if (!valid) {
-      throw new Error('Contraseña incorrecta')
+      throw new AppError('Contraseña incorrecta')
     }
     const token = jwt.sign({ id: user.id, email: user.email, rol: user.rol }, JWT_SECRET, { expiresIn: '1d' })
 

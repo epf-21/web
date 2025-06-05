@@ -4,10 +4,10 @@ export class AuthController {
   static async register (req, res, next) {
     try {
       const data = req.body
-      const user = await AuthService.register(data)
+      const result = await AuthService.register(data)
       res.status(201).json({
         ok: true,
-        user
+        ...result
       })
     } catch (error) {
       next(error)
