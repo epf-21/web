@@ -24,12 +24,6 @@ export class AuthService {
     })
     const token = jwt.sign({ id: user.id, email: user.email, rol: user.rol }, JWT_SECRET, { expiresIn: '1d' })
     return {
-      user: {
-        id: user.id,
-        name: user.nombre,
-        rol: user.rol,
-        email: user.email
-      },
       token
     }
   }
@@ -48,12 +42,6 @@ export class AuthService {
     const token = jwt.sign({ id: user.id, email: user.email, rol: user.rol }, JWT_SECRET, { expiresIn: '1d' })
 
     return {
-      user: {
-        id: user.id,
-        name: user.nombre,
-        rol: user.rol,
-        email: user.email
-      },
       token
     }
   }
