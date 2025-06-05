@@ -4,19 +4,19 @@ import { useAuthStore } from '../stores/useAuthStore';
 import { useNavigate } from 'react-router-dom';
 
 export const useRegister = () => {
-  const loginStore = useAuthStore((state) => state.login);
+  const { login } = useAuthStore();
   const navigate = useNavigate();
   return useMutation({
     mutationFn: register,
     onSuccess: (data) => {
-      loginStore(data.token);
+      login(data.token);
       navigate('/')
     },
   })
 }
 
 export const useLogin = () => {
-  const loginStore = useAuthStore((state) => state.login);
+  const { login: loginStore } = useAuthStore();
   const navigate = useNavigate();
   return useMutation({
     mutationFn: login,

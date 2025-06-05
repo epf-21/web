@@ -17,8 +17,8 @@ export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
   const dropdownRef = useRef(null);
 
-  const user = useAuthStore((state) => state.user);
-  const logout = useAuthStore((state) => state.logout);
+  const { user } = useAuthStore();
+  const { logout } = useAuthStore();
 
   const handleSelect = (age, level) => {
     navigate(`/questions?age=${age}&level=${level}`);
