@@ -4,7 +4,7 @@ import { useLogin } from '../../hooks/useAuth';
 
 export default function Login() {
   const [form, setForm] = useState({ email: '', password: '' });
-  const { mutate, isPending, isError, error } = useLogin();
+  const { mutate: login, isPending, isError, error } = useLogin();
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value })
@@ -12,7 +12,7 @@ export default function Login() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    mutate(form)
+    login(form)
   };
 
   return (

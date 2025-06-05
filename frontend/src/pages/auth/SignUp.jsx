@@ -10,7 +10,7 @@ export default function SignUp() {
     rol: '',
   })
 
-  const { mutate, isPending, isError, error } = useRegister();
+  const { mutate: register, isPending, isError, error } = useRegister();
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -18,7 +18,7 @@ export default function SignUp() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    mutate(form);
+    register(form);
   };
 
   return (
