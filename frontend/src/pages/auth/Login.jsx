@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Mail, Lock } from 'lucide-react';
 import { useLogin } from '../../hooks/useAuth';
+import { Link } from 'react-router-dom';
 
 export default function Login() {
   const [form, setForm] = useState({ email: '', password: '' });
@@ -54,28 +55,30 @@ export default function Login() {
               />
             </div>
           </div>
+
           {isError && (
             <p className="text-sm text-red-500">
               {error?.response?.data?.message || 'Error al iniciar sesión.'}
             </p>
           )}
 
-          {/*<div className="flex items-center justify-between text-sm text-gray-600">
-            <label className="flex items-center space-x-2">
-              <input type="checkbox" className="form-checkbox text-blue-600" />
-              <span>Recordarme</span>
-            </label>
-            <a href="#" className="text-black-rock-700 hover:underline">¿Olvidaste tu contraseña?</a>
-          </div>*/}
-
           <button
             type="submit"
             disabled={isPending}
-            className="w-full py-2 bg-black-rock-600 text-white rounded-xl hover:bg-black-rock-800 transition-all"
+            className="w-full py-2 bg-black-rock-950 text-white rounded-xl hover:bg-black transition-all"
           >
             {isPending ? 'Iniciando sesión...' : 'Iniciar sesión'}
           </button>
         </form>
+        <p className="text-sm text-center text-gray-500 mt-6">
+          ¿No tienes cuenta? {' '}
+          <Link
+            to="/register"
+            className="text-black-rock-950 font-medium underline"
+          >
+            Registrate aquí
+          </Link>
+        </p>
       </div>
     </div>
   );

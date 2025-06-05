@@ -104,7 +104,7 @@ export default function SignUp() {
 
           <button
             type="submit"
-            className="w-full py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-all"
+            className="w-full py-2 bg-black-rock-950 text-white rounded-xl hover:bg-black transition-all"
           >
             {isPending ? 'Registrando...' : 'Registrarse'}
           </button>
