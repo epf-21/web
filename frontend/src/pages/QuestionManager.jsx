@@ -1,6 +1,6 @@
 import { useSearchParams, useNavigate } from 'react-router-dom'
 import { useEffect } from 'react'
-import { Eye, Pencil, Trash2, Plus, UserCircle2 } from 'lucide-react'
+import Icon from '../components/Icon';
 import { useAuthStore } from '../stores/useAuthStore';
 import { useDeleteQuestion, useQuestionByLevel } from '../hooks/useQuestion';
 import Header from '../components/Header';
@@ -52,7 +52,7 @@ export default function QuestionManager() {
           <button
             onClick={handleClick}
             className="flex items-center gap-2 bg-black-rock-900 hover:bg-black-rock-950 text-white py-2 px-4 rounded-xl transition shadow-md">
-            <Plus className="w-5 h-5" />
+            <Icon name="Plus" />
             Crear nueva pregunta
           </button>
         </div>
@@ -77,16 +77,16 @@ export default function QuestionManager() {
                 <button
                   onClick={() => navigate('/preview')}
                   className="p-2 rounded-full bg-black-rock-100 text-black-rock-950 hover:bg-black-rock-200 transition transform hover:scale-110">
-                  <Eye className="w-5 h-5" />
+                  <Icon name="Eye" />
                 </button>
                 <button className="p-2 rounded-full bg-black-rock-100 text-black-rock-950 hover:bg-black-rock-200 transition transform hover:scale-110">
-                  <Pencil className="w-5 h-5" />
+                  <Icon name="Pencil" />
                 </button>
                 <button
                   onClick={() => deleteQuestion(q.id)}
                   disabled={isPending}
                   className="p-2 rounded-full bg-black-rock-100 text-black-rock-950 hover:bg-black-rock-200 transition transform hover:scale-110">
-                  <Trash2 className="w-5 h-5" />
+                  <Icon name="Trash2" />
                 </button>
               </div>
             </div>

@@ -1,9 +1,14 @@
 import { useState } from 'react';
-import { UserCircle2 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import Header from './Header';
+import { useAuthStore } from '../stores/useAuthStore';
 
 export default function PreviewPanel() {
+  const navigate = useNavigate();
+
   const [filledBoxes, setFilledBoxes] = useState(0);
   const [currentlyDragging, setCurrentlyDragging] = useState(null);
+  const { user, logout } = useAuthStore();
   const [boxes, setBoxes] = useState([
     { id: 1, filled: false, content: null },
     { id: 2, filled: false, content: null },
@@ -86,12 +91,18 @@ export default function PreviewPanel() {
     }
   };
 
+  const handleLogout = () => {
+    logout();
+    navigate('/');
+  };
+
   return (
     <div className="min-h-screen bg-white">
-      <header className="flex items-center justify-between px-6 py-6 bg-black-rock-950 shadow-sm">
-        <h1 className="text-xl md:text-2xl font-bold text-white">Editor de preguntas interactivas</h1>
-        <UserCircle2 className="w-8 h-8 text-white" />
-      </header>
+      <Header
+        user={user}
+        login={() => navigate('/login')}
+        logout={handleLogout}
+      />
       <main className="bg-white w-full p-5 max-w-full overflow-hidden">
         <div className="p-6">
           <div className="mb-10 border-b pb-6 border-gray-300">

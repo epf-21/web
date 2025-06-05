@@ -26,8 +26,8 @@ export default function Home() {
     <div className="min-h-screen bg-white relative">
       <Header
         user={user}
-        logout={handleLogout}
         login={() => navigate('/login')}
+        logout={handleLogout}
       />
       <main className="px-6 py-10">
         <h2 className="text-3xl font-semibold text-black-rock-950 tracking-wide text-center mb-10 drop-shadow-sm">
