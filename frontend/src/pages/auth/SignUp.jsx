@@ -1,12 +1,24 @@
-import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { useRegister } from '../../hooks/useAuth';
 import { Mail, Lock, User, UserCog } from 'lucide-react';
 
 export default function SignUp() {
-  const navigate = useNavigate();
+  const [form, setForm] = useState({
+    name: '',
+    email: '',
+    password: '',
+    rol: '',
+  })
+
+  const { mutate, isPending, isError, error } = useRegister();
+
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    navigate('/');
+    mutate(form);
   };
 
   return (
@@ -23,6 +35,9 @@ export default function SignUp() {
               <User className="absolute left-3 top-2.5 text-gray-400 w-5 h-5" />
               <input
                 type="text"
+                name="name"
+                value={form.name}
+                onChange={handleChange}
                 required
                 className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-black-rock-950"
                 placeholder="Tu nombre"
@@ -36,9 +51,12 @@ export default function SignUp() {
               <Mail className="absolute left-3 top-2.5 text-gray-400 w-5 h-5" />
               <input
                 type="email"
+                name="email"
+                value={form.email}
+                onChange={handleChange}
                 required
                 className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-black-rock-950"
-                placeholder="correo@ejemplo.com"
+                placeholder="correo@gmail.com"
               />
             </div>
           </div>
@@ -49,6 +67,9 @@ export default function SignUp() {
               <Lock className="absolute left-3 top-2.5 text-gray-400 w-5 h-5" />
               <input
                 type="password"
+                name="password"
+                value={form.password}
+                onChange={handleChange}
                 required
                 className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-black-rock-950"
                 placeholder="••••••••"
@@ -61,22 +82,31 @@ export default function SignUp() {
             <div className="relative">
               <UserCog className="absolute left-3 top-2.5 text-gray-400 w-5 h-5" />
               <select
+                name="rol"
+                value={form.rol}
+                onChange={handleChange}
                 required
                 className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-black-rock-950"
                 defaultValue=""
               >
                 <option value="" disabled>Selecciona un rol</option>
-                <option value="profesor">Profesor</option>
-                <option value="administrador">Administrador</option>
+                <option value="PROFESOR">Profesor</option>
+                <option value="ADMINISTRADOR">Administrador</option>
               </select>
             </div>
           </div>
+
+          {isError && (
+            <p className="text-sm text-red-500">
+              {error?.response?.data?.message || 'Error al registrarse'}
+            </p>
+          )}
 
           <button
             type="submit"
             className="w-full py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-all"
           >
-            Registrarse
+            {isPending ? 'Registrando...' : 'Registrarse'}
           </button>
         </form>
       </div>

@@ -1,17 +1,35 @@
 import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { GraduationCap, BookOpenCheck, Brain, UserCircle2, LogIn, UserPlus } from 'lucide-react';
+import {
+  GraduationCap,
+  BookOpenCheck,
+  Brain,
+  UserCircle2,
+  LogIn,
+  UserPlus,
+  LogOut,
+} from 'lucide-react';
+
+import { useAuthStore } from '../stores/useAuthStore';
 
 export default function Home() {
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
   const dropdownRef = useRef(null);
 
+  const user = useAuthStore((state) => state.user);
+  const logout = useAuthStore((state) => state.logout);
+
   const handleSelect = (age, level) => {
-    navigate(`/questions?age=${age}&level=${level}`)
-  }
+    navigate(`/questions?age=${age}&level=${level}`);
+  };
 
   const togleManu = () => setMenuOpen(!menuOpen);
+
+  const handleLogout = () => {
+    logout();
+    setMenuOpen(false);
+  };
 
   const levels = [
     { age: '6-8', level: 'facil', label: '6 a 8 años - Fácil', icon: <BookOpenCheck className="w-5 h-5 mr-2" /> },
@@ -24,7 +42,7 @@ export default function Home() {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setMenuOpen(false);
       }
-    }
+    };
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
@@ -33,35 +51,48 @@ export default function Home() {
     <div className="min-h-screen bg-white relative">
       <header className="flex items-center justify-between px-6 py-6 bg-black-rock-950 shadow-sm relative">
         <h1 className="text-xl md:text-2xl font-bold text-white">Editor de preguntas interactivas</h1>
+
         <div className="relative" ref={dropdownRef}>
-          <button onClick={togleManu}>
-            <UserCircle2 className="w-8 h-8 text-white" />
+          <button onClick={togleManu} className="flex items-center gap-2 text-white">
+            {user && <span className="hidden sm:inline text-white font-medium">{user.email}</span>}
+            <UserCircle2 className="w-8 h-8" />
           </button>
+
           {menuOpen && (
             <div className="absolute right-0 mt-2 w-44 bg-white border border-gray-200 rounded-md shadow-lg z-50">
               <ul className="py-2">
-                <li
-                  className="flex items-center px-4 py-2 hover:bg-gray-100 text-gray-700 cursor-pointer"
-                  onClick={() => {
-                    navigate('/login')
-                    setMenuOpen(false)
-                  }}
-                >
-                  <LogIn className="w-4 h-4 mr-2" /> Login
-                </li>
-                <li
-                  className="flex items-center px-4 py-2 hover:bg-gray-100 text-gray-700 cursor-pointer"
-                  onClick={() => {
-                    navigate('/register')
-                    setMenuOpen(false)
-                  }}
-                >
-                  <UserPlus className="w-4 h-4 mr-2" /> Register
-                </li>
+                {user ? (
+                  <li
+                    className="flex items-center px-4 py-2 hover:bg-gray-100 text-gray-700 cursor-pointer"
+                    onClick={handleLogout}
+                  >
+                    <LogOut className="w-4 h-4 mr-2" /> Cerrar sesión
+                  </li>
+                ) : (
+                  <>
+                    <li
+                      className="flex items-center px-4 py-2 hover:bg-gray-100 text-gray-700 cursor-pointer"
+                      onClick={() => {
+                        navigate('/login');
+                        setMenuOpen(false);
+                      }}
+                    >
+                      <LogIn className="w-4 h-4 mr-2" /> Login
+                    </li>
+                    <li
+                      className="flex items-center px-4 py-2 hover:bg-gray-100 text-gray-700 cursor-pointer"
+                      onClick={() => {
+                        navigate('/register');
+                        setMenuOpen(false);
+                      }}
+                    >
+                      <UserPlus className="w-4 h-4 mr-2" /> Register
+                    </li>
+                  </>
+                )}
               </ul>
             </div>
           )}
-
         </div>
       </header>
 
@@ -89,5 +120,5 @@ export default function Home() {
         </div>
       </main>
     </div>
-  )
+  );
 }
