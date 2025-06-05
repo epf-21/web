@@ -2,7 +2,7 @@ import { useSearchParams, useNavigate } from 'react-router-dom'
 import { useEffect } from 'react'
 import { Eye, Pencil, Trash2, Plus, UserCircle2 } from 'lucide-react'
 import { useAuthStore } from '../stores/useAuthStore';
-import { useQuestionByLevel } from '../hooks/useQuestion';
+import { useDeleteQuestion, useQuestionByLevel } from '../hooks/useQuestion';
 import Header from '../components/Header';
 
 export default function QuestionManager() {
@@ -14,7 +14,6 @@ export default function QuestionManager() {
 
   const { token, user, logout } = useAuthStore();
 
-
   useEffect(() => {
     if (!level || !age || !token) {
       navigate('/');
@@ -23,6 +22,8 @@ export default function QuestionManager() {
 
 
   const { data, isLoading, error } = useQuestionByLevel({ level: levelUpper, enabled: !!level && !!token })
+
+  const { mutate: deleteQuestion, isPending } = useDeleteQuestion();
 
   const handleClick = () => {
     navigate('/Create-question');
@@ -81,7 +82,10 @@ export default function QuestionManager() {
                 <button className="p-2 rounded-full bg-black-rock-100 text-black-rock-950 hover:bg-black-rock-200 transition transform hover:scale-110">
                   <Pencil className="w-5 h-5" />
                 </button>
-                <button className="p-2 rounded-full bg-black-rock-100 text-black-rock-950 hover:bg-black-rock-200 transition transform hover:scale-110">
+                <button
+                  onClick={() => deleteQuestion(q.id)}
+                  disabled={isPending}
+                  className="p-2 rounded-full bg-black-rock-100 text-black-rock-950 hover:bg-black-rock-200 transition transform hover:scale-110">
                   <Trash2 className="w-5 h-5" />
                 </button>
               </div>
