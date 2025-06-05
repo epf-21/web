@@ -17,7 +17,7 @@ export class QuestionController {
   static async findQuestionByYear (req, res, next) {
     try {
       const { level } = req.query
-      const idUsuario = 'b470c7fb-588b-4aad-b7d4-30ab22d60e1e'
+      const idUsuario = req.user.id
 
       const questions = await QuestionService.findQuestionsByYear({ level, idUsuario })
       res.status(200).json({
@@ -32,7 +32,7 @@ export class QuestionController {
   static async createQuestion (req, res, next) {
     try {
       const body = req.body
-      const idUsuario = 'b470c7fb-588b-4aad-b7d4-30ab22d60e1e'
+      const idUsuario = req.user.id
 
       const preguntaCreada = await QuestionService.createQuestion({ idUsuario, ...body })
 

@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { AppError } from '../../../utils/errors'
+import { AppError } from '../../../utils/errors.js'
 
 const RegisterSchema = z.object({
   name: z.string().min(1, 'El nombre es obligatorio'),
