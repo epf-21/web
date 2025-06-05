@@ -3,6 +3,7 @@ import { useEffect } from 'react'
 import { Eye, Pencil, Trash2, Plus, UserCircle2 } from 'lucide-react'
 import { useAuthStore } from '../stores/useAuthStore';
 import { useQuestionByLevel } from '../hooks/useQuestion';
+import Header from '../components/Header';
 
 export default function QuestionManager() {
   const [searchParams] = useSearchParams();
@@ -11,7 +12,7 @@ export default function QuestionManager() {
   const level = searchParams.get('level');
   const levelUpper = level?.toUpperCase();
 
-  const { token, user } = useAuthStore();
+  const { token, user, logout } = useAuthStore();
 
 
   useEffect(() => {
@@ -26,15 +27,18 @@ export default function QuestionManager() {
   const handleClick = () => {
     navigate('/Create-question');
   }
+  const handleLogout = () => {
+    logout();
+    navigate('/');
+  };
+
   return (
     <div className="min-h-screen bg-white">
-      <header className="flex items-center justify-between px-6 py-6 bg-black-rock-950 shadow-sm">
-        <h1 className="text-xl md:text-2xl font-bold text-white">Editor de preguntas interactivas</h1>
-        <div className="flex items-center gap-2 text-white">
-          {user?.email && <span className="text-sm">{user.email}</span>}
-          <UserCircle2 className="w-8 h-8" />
-        </div>
-      </header>
+      <Header
+        user={user}
+        logout={handleLogout}
+        login={() => navigate('/login')}
+      />
 
       <main className="px-6 py-10">
         <div className="mb-8">

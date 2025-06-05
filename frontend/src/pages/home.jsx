@@ -3,17 +3,15 @@ import {
   GraduationCap,
   BookOpenCheck,
   Brain,
-  UserCircle2,
-  LogOut,
 } from 'lucide-react';
 
 import { useAuthStore } from '../stores/useAuthStore';
+import Header from '../components/Header';
 
 export default function Home() {
   const navigate = useNavigate();
 
-  const { user } = useAuthStore();
-  const { logout } = useAuthStore();
+  const { user, logout } = useAuthStore();
 
   const handleSelect = (age, level) => {
     navigate(`/questions?age=${age}&level=${level}`);
@@ -29,37 +27,13 @@ export default function Home() {
     navigate('/');
   };
 
-
-
   return (
     <div className="min-h-screen bg-white relative">
-      <header className="flex items-center justify-between px-6 py-6 bg-black-rock-950 shadow-sm">
-        <h1 className="text-xl md:text-2xl font-bold text-white">Editor de preguntas interactivas</h1>
-        <div className="flex items-center gap-3 text-white">
-          {user ? (
-            <>
-              <span className="hidden sm:inline text-sm">{user.email}</span>
-              <button
-                onClick={handleLogout}
-                className="hover:text-gray-300 transition-colors"
-                title="Cerrar sesión"
-              >
-                <LogOut className="w-6 h-6" />
-              </button>
-            </>
-          ) : (
-            <button
-              onClick={() => navigate('/login')}
-              className="hover:text-black-rock-200 transition-colors"
-              title="Iniciar sesión"
-            >
-              <UserCircle2 className="w-8 h-8" />
-            </button>
-          )}
-        </div>
-      </header>
-
-
+      <Header
+        user={user}
+        logout={handleLogout}
+        login={() => navigate('/login')}
+      />
       <main className="px-6 py-10">
         <h2 className="text-3xl font-semibold text-black-rock-950 tracking-wide text-center mb-10 drop-shadow-sm">
           Selecciona una clasificación
