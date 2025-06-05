@@ -9,7 +9,12 @@ export default function Home() {
   const { user, logout } = useAuthStore();
 
   const handleSelect = (age, level) => {
-    navigate(`/questions?age=${age}&level=${level}`);
+    const path = `/questions?age=${age}&level=${level}`;
+    if (!user) {
+      navigate('/login', { state: { redirectTo: path } })
+    } else {
+      navigate(path);
+    }
   };
 
   const handleLogout = () => {

@@ -1,7 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 import { register, login } from '../services/auth.service';
 import { useAuthStore } from '../stores/useAuthStore';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 export const useRegister = () => {
   const { login } = useAuthStore();
@@ -18,11 +18,13 @@ export const useRegister = () => {
 export const useLogin = () => {
   const { login: loginStore } = useAuthStore();
   const navigate = useNavigate();
+  const location = useLocation();
+  const path = location.state?.redirectTo || '/';
   return useMutation({
     mutationFn: login,
     onSuccess: (data) => {
       loginStore(data.token);
-      navigate('/')
+      navigate(path)
     },
   })
 }
