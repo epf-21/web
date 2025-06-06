@@ -5,6 +5,11 @@ export const getQuestionByLevel = async (level) => {
   return response.data.data;
 }
 
+export const getQuestionById = async (id) => {
+  const response = await api.get(`/questions/${id}`)
+  return response.data.data;
+}
+
 export const deleteQuestion = async (id) => {
   const response = await api.delete(`/questions/${id}`)
   return response.data;

@@ -1,37 +1,47 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import Header from './Header';
 import { useAuthStore } from '../stores/useAuthStore';
+import { useQuestionById } from '../hooks/useQuestion';
 
 export default function PreviewPanel() {
   const navigate = useNavigate();
 
   const { id } = useParams();
 
+  const { data: question, isLoading, error } = useQuestionById(id);
+
   const [filledBoxes, setFilledBoxes] = useState(0);
   const [currentlyDragging, setCurrentlyDragging] = useState(null);
   const { user, logout } = useAuthStore();
-  const [boxes, setBoxes] = useState([
-    { id: 1, filled: false, content: null },
-    { id: 2, filled: false, content: null },
-    { id: 3, filled: false, content: null },
-    { id: 4, filled: false, content: null },
-    { id: 5, filled: false, content: null },
+  const [boxes, setBoxes] = useState([]);
 
-  ]);
+  const [options, setOptions] = useState([]);
 
-  const [options, setOptions] = useState([
-    { id: 1, visible: true, imgSrc: 'src/assets/soup_spoon.png', alt: "Opción 1" },
-    { id: 2, visible: true, imgSrc: 'src/assets/saltine_cracker.png', alt: "Opción 2" },
-    { id: 3, visible: true, imgSrc: 'src/assets/plate.png', alt: "Opción 3" },
-    { id: 4, visible: true, imgSrc: 'src/assets/croissant.png', alt: "Opción 4" },
-    { id: 5, visible: true, imgSrc: 'src/assets/mug.png', alt: "Opción 5" },
-  ]);
+  const mainImage = '../assets/completo2.png';
 
-  const title = 'Cual es el orden que esta puesto en la mesa';
-  const description = 'Bob puso la mesa';
-  const explanation = 'Pon el orden correcto de los objetos en la mesa';
-  const mainImage = 'src/assets/completo2.png';
+  useEffect(() => {
+    if (!question || !question.images) return;
+
+    const formattedOptions = question.images.map((img) => ({
+      id: img.id,
+      visible: true,
+      imgSrc: img.url,
+      alt: img.name,
+    }));
+
+    setOptions(formattedOptions);
+
+    const initialBoxes = formattedOptions.map((_, index) => ({
+      id: index + 1,
+      filled: false,
+      content: null,
+    }));
+
+    setBoxes(initialBoxes);
+    setFilledBoxes(0);
+  }, [question]);
+
 
   const handleDragStart = (optionId) => {
     setCurrentlyDragging(optionId);
@@ -98,6 +108,9 @@ export default function PreviewPanel() {
     navigate('/');
   };
 
+  if (isLoading) return <p className="text-gray-500">Cargando pregunta...</p>;
+  if (error) return <p className="text-gray-500">No se pudo cargar la Pregunta.</p>;
+
   return (
     <div className="min-h-screen bg-white">
       <Header
@@ -108,11 +121,11 @@ export default function PreviewPanel() {
       <main className="bg-white w-full p-5 max-w-full overflow-hidden">
         <div className="p-6">
           <div className="mb-10 border-b pb-6 border-gray-300">
-            <h2 className="text-3xl font-bold text-black-rock-950">{title}</h2>
+            <h2 className="text-3xl font-bold text-black-rock-950">{question.title}</h2>
           </div>
           <div className="mb-4">
             <h2 className="text-3xl font-medium text-gray-900 mb-2">Descripción</h2>
-            <p className="text-base text-gray-700">{description}</p>
+            <p className="text-base text-gray-700">{question.description}</p>
           </div>
 
           <div className="flex justify-center mb-8 ">
@@ -130,7 +143,7 @@ export default function PreviewPanel() {
           </div>
           <div className="py-2 rounded-md">
             <h2 className="text-3xl font-medium text-gray-900 mb-2">Explicación</h2>
-            <p className="text-sm text-gray-700">{explanation}</p>
+            <p className="text-sm text-gray-700">{question.explanation}</p>
           </div>
 
           <div className="flex justify-center flex-wrap gap-4 mb-8">

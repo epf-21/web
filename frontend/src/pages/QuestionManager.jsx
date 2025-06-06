@@ -79,7 +79,9 @@ export default function QuestionManager() {
                   className="p-2 rounded-full bg-black-rock-100 text-black-rock-950 hover:bg-black-rock-200 transition transform hover:scale-110">
                   <Icon name="Eye" />
                 </button>
-                <button className="p-2 rounded-full bg-black-rock-100 text-black-rock-950 hover:bg-black-rock-200 transition transform hover:scale-110">
+                <button
+                  onClick={() => navigate(`/configure-question/${q.id}`)}
+                  className="p-2 rounded-full bg-black-rock-100 text-black-rock-950 hover:bg-black-rock-200 transition transform hover:scale-110">
                   <Icon name="Pencil" />
                 </button>
                 <button
