@@ -1,118 +1,32 @@
-import { useState } from "react";
+import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import DragDrop from '../components/DragDrop';
 import { useQuestionById } from "../hooks/useQuestion";
-
-const draggableItemsData = [
-  {
-    id: 1,
-    name: 'Plato',
-    imageUrl: 'plate.png',
-    x: 0,
-    y: 0,
-    width: 220,
-    height: 220,
-    group: 1
-  },
-  {
-    id: 2,
-    name: 'Galleta',
-    imageUrl: 'saltine_cracker.png',
-    x: 0,
-    y: 0,
-    width: 128,
-    height: 128,
-    group: 2
-  },
-  {
-    id: 3,
-    name: 'Cuchara',
-    imageUrl: 'soup_spoon.png',
-    x: 0,
-    y: 0,
-    width: 100,
-    height: 100,
-    group: 3
-  },
-  {
-    id: 4,
-    name: 'Taza de Café',
-    imageUrl: 'mug.png',
-    x: 0,
-    y: 0,
-    width: 144,
-    height: 144,
-    group: 4
-  },
-  {
-    id: 5,
-    name: 'Cuernito',
-    imageUrl: 'croissant.png',
-    x: 0,
-    y: 0,
-    width: 128,
-    height: 128,
-    group: 5
-  },
-  {
-    id: 6,
-    name: 'Pan blanco',
-    imageUrl: 'bread_white.png',
-    x: 0,
-    y: 0,
-    width: 128,
-    height: 128,
-    group: 0
-  },
-  {
-    id: 7,
-    name: 'Pastel',
-    imageUrl: 'cake.png',
-    x: 0,
-    y: 0,
-    width: 100,
-    height: 100,
-    group: 0
-  },
-  {
-    id: 8,
-    name: 'Leche',
-    imageUrl: 'milk.png',
-    x: 0,
-    y: 0,
-    width: 128,
-    height: 128,
-    group: 0
-  },
-  {
-    id: 9,
-    name: 'Hamburguesa',
-    imageUrl: 'burger.png',
-    x: 0,
-    y: 0,
-    width: 128,
-    height: 128,
-    group: 0
-  },
-  {
-    id: 10,
-    name: 'Caja Cereal',
-    imageUrl: 'cereal_box.png',
-    x: 0,
-    y: 0,
-    width: 128,
-    height: 128,
-    group: 0
-  }
-]
 
 export default function ConfigureQuestion() {
   const navigate = useNavigate();
   const { id } = useParams();
   const { data: question, isLoading, error } = useQuestionById(id);
 
-  const [draggableItems, setDraggableItems] = useState(draggableItemsData)
+  const [draggableItems, setDraggableItems] = useState([])
   const [droppedItems, setDroppedItems] = useState([]);
+
+  useEffect(() => {
+    if (!question) return;
+
+    const processedItems = question.images.map((img) => ({
+      id: img.id,
+      name: img.name,
+      imageUrl: img.url,
+      x: 0,
+      y: 0,
+      width: 128,
+      height: 128,
+      group: 0,
+    }));
+
+    setDraggableItems(processedItems);
+  }, [question]);
 
   if (isLoading) return <p className="text-gray-500">Cargando pregunta...</p>;
   if (error) return <p className="text-gray-500">No se pudo cargar la Pregunta.</p>;
@@ -153,7 +67,7 @@ export default function ConfigureQuestion() {
               <li>
                 {droppedItems.map((item, i) => (
                   <div key={i} className="w-12 h-12 inline-block mx-1">
-                    <img src={'src/assets/' + item.imageUrl} alt={item.name} />
+                    <img src={item.imageUrl} alt={item.name} />
                   </div>
                 ))}
               </li>

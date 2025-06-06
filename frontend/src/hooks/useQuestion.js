@@ -14,6 +14,11 @@ export const useQuestionById = (id) => {
     queryKey: ['question', id],
     queryFn: () => getQuestionById(id),
     enabled: !!id,
+    staleTime: 1000 * 60 * 5,
+    cacheTime: 1000 * 60 * 10,
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
+    refetchOnReconnect: false,
   })
 }
 
