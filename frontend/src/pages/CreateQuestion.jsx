@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import QuestionForm from '../components/QuestionForm';
 import ImageUploader from '../components/ImageUploader';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { UserCircle2 } from 'lucide-react'
 import { useImageUploader } from '../hooks/useImageUploader';
 import { useUploadImages } from '../hooks/useUploadImage';
@@ -9,10 +9,15 @@ import { useCreateQuestion } from '../hooks/useQuestion';
 
 export default function CreateQuestion() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const age = searchParams.get('age');
+  const level = searchParams.get('level')?.toUpperCase();
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [explanation, setExplanation] = useState('');
   const { images, imageURLS, onSelectChange, removeFile } = useImageUploader();
+
+  console.log(age);
 
   const { mutateAsync: uploadImages, isPending } = useUploadImages();
   const { mutate: createQuestion } = useCreateQuestion();
@@ -27,7 +32,7 @@ export default function CreateQuestion() {
         descripcion: description,
         explicacion: explanation,
         estado: "ACTIVA",
-        nivel: "FACIL",
+        nivel: level,
         imagenes: uploadedImages,
       };
 

@@ -26,7 +26,7 @@ export default function QuestionManager() {
   const { mutate: deleteQuestion, isPending } = useDeleteQuestion();
 
   const handleClick = () => {
-    navigate('/Create-question');
+    navigate(`/create-question?age=${age}&level=${level}`);
   }
   const handleLogout = () => {
     logout();
