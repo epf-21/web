@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import QuestionForm from '../components/QuestionForm';
-import ImageUploader from '../components/ImageUploader';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { UserCircle2 } from 'lucide-react'
+import QuestionForm from '../components/QuestionForm';
+import ImageUploader from '../components/ImageUploader';
 import { useImageUploader } from '../hooks/useImageUploader';
 import { useUploadImages } from '../hooks/useUploadImage';
 import { useCreateQuestion } from '../hooks/useQuestion';
@@ -19,8 +19,8 @@ export default function CreateQuestion() {
 
   console.log(age);
 
-  const { mutateAsync: uploadImages, isPending } = useUploadImages();
-  const { mutate: createQuestion } = useCreateQuestion();
+  const { mutateAsync: uploadImages, isPending: isPendingImage } = useUploadImages();
+  const { mutate: createQuestion, isPending } = useCreateQuestion();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -37,8 +37,9 @@ export default function CreateQuestion() {
       };
 
       createQuestion(questionData, {
-        onSuccess: () => {
-          navigate('/configure-question');
+        onSuccess: (data) => {
+          const id = data.data.id;
+          navigate(`/configure-question/${id}`);
         },
         onError: () => {
           alert('Error al crear la pregunta')
@@ -85,11 +86,10 @@ export default function CreateQuestion() {
               type="submit"
               className="px-6 py-3 bg-black-rock-900 text-white rounded-xl text-sm hover:bg-black-rock-950 transition focus:outline-none focus:ring-2 focus:ring-blue-300"
             >
-              Crear Pregunta
+              {(isPending || isPendingImage) ? 'Guardando' : 'Guardar'}
             </button>
           </div>
         </form>
-        {isPending && <p className="text-gray-500"> Subiendo imagenes</p>}
       </main>
     </div>
   );

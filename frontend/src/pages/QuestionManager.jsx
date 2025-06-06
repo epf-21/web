@@ -1,9 +1,9 @@
-import { useSearchParams, useNavigate } from 'react-router-dom'
 import { useEffect } from 'react'
+import { useSearchParams, useNavigate } from 'react-router-dom'
 import Icon from '../components/Icon';
+import Header from '../components/Header';
 import { useAuthStore } from '../stores/useAuthStore';
 import { useDeleteQuestion, useQuestionByLevel } from '../hooks/useQuestion';
-import Header from '../components/Header';
 
 export default function QuestionManager() {
   const [searchParams] = useSearchParams();
@@ -75,7 +75,7 @@ export default function QuestionManager() {
               </div>
               <div className="flex gap-2">
                 <button
-                  onClick={() => navigate('/preview')}
+                  onClick={() => navigate(`/preview/${q.id}`)}
                   className="p-2 rounded-full bg-black-rock-100 text-black-rock-950 hover:bg-black-rock-200 transition transform hover:scale-110">
                   <Icon name="Eye" />
                 </button>

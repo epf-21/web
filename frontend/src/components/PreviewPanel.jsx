@@ -1,10 +1,12 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Header from './Header';
 import { useAuthStore } from '../stores/useAuthStore';
 
 export default function PreviewPanel() {
   const navigate = useNavigate();
+
+  const { id } = useParams();
 
   const [filledBoxes, setFilledBoxes] = useState(0);
   const [currentlyDragging, setCurrentlyDragging] = useState(null);

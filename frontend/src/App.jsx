@@ -17,8 +17,8 @@ export default function App() {
         <Route path='/login' element={<Login />} />
         <Route path='/questions' element={<QuestionManager />} />
         <Route path='/Create-question' element={<CreateQuestion />} />
-        <Route path='/configure-question' element={<ConfigureQuestion />} />
-        <Route path='/preview' element={<Preview />} />
+        <Route path='/configure-question/:id' element={<ConfigureQuestion />} />
+        <Route path='/preview/:id' element={<Preview />} />
       </Routes>
     </BrowserRouter>
   )
