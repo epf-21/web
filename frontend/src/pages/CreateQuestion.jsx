@@ -4,33 +4,46 @@ import ImageUploader from '../components/ImageUploader';
 import { useNavigate } from 'react-router-dom';
 import { UserCircle2 } from 'lucide-react'
 import { useImageUploader } from '../hooks/useImageUploader';
-
+import { useUploadImages } from '../hooks/useUploadImage';
+import { useCreateQuestion } from '../hooks/useQuestion';
 
 export default function CreateQuestion() {
+  const navigate = useNavigate();
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [explanation, setExplanation] = useState('');
-  const { imageURLS, onSelectChange, removeFile } = useImageUploader();
+  const { images, imageURLS, onSelectChange, removeFile } = useImageUploader();
 
+  const { mutateAsync: uploadImages, isPending } = useUploadImages();
+  const { mutate: createQuestion } = useCreateQuestion();
 
-  const navigate = useNavigate();
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log({
-      title,
-      description,
-      explanation
-    });
 
-    navigate('/configure-question', {
-      state: {
-        title,
-        description,
-        explanation,
-        images: imageURLS
-      }
-    });
+    try {
+      const uploadedImages = await uploadImages(images);
+      const questionData = {
+        titulo: title,
+        descripcion: description,
+        explicacion: explanation,
+        estado: "ACTIVA",
+        nivel: "FACIL",
+        imagenes: uploadedImages,
+      };
+
+      createQuestion(questionData, {
+        onSuccess: () => {
+          navigate('/configure-question');
+        },
+        onError: () => {
+          alert('Error al crear la pregunta')
+        }
+      })
+    } catch (error) {
+      console.error(error);
+      alert('Error al subir las imágenes');
+    }
+
   };
 
   return (
@@ -71,6 +84,7 @@ export default function CreateQuestion() {
             </button>
           </div>
         </form>
+        {isPending && <p className="text-gray-500"> Subiendo imagenes</p>}
       </main>
     </div>
   );
