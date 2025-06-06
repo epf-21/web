@@ -1,142 +1,128 @@
 import { useState } from "react";
 import { useNavigate } from 'react-router-dom';
-import Sortable from '../components/Sortable';
 import DragDrop from '../components/DragDrop';
 
 const draggableItemsData = [
     {
-      id: 6,
-      name: 'Pan blanco',
-      imageUrl: 'bread_white.png',
-      width: 128,
-      height: 128,
-      position: {
-        x: 0,
-        y: 0
-      }
-    },
-    {
-      id: 7,
-      name: 'Pastel',
-      imageUrl: 'cake.png',
-      width: 100,
-      height: 100,
-      position: {
-        x: 0,
-        y: 0
-      }
-    },
-    {
-      id: 8,
-      name: 'Leche',
-      imageUrl: 'milk.png',
-      width: 128,
-      height: 128,
-      position: {
-        x: 0,
-        y: 0
-      }
-    },
-    {
-      id: 9,
-      name: 'Hamburguesa',
-      imageUrl: 'burger.png',
-      width: 128,
-      height: 128,
-      position: {
-        x: 0,
-        y: 0
-      }
-    },
-    {
-      id: 10,
-      name: 'Caja Cereal',
-      imageUrl: 'cereal_box.png',
-      width: 128,
-      height: 128,
-      position: {
-        x: 0,
-        y: 0
-      }
-    }
-  ]
-  
-  const droppedItemsData = [
-    {
       id: 1,
       name: 'Plato',
       imageUrl: 'plate.png',
-      width: 240,
-      height: 240,
-      position: {
-        x: 21,
-        y: 8
-      }
+      x: 0,
+      y: 0,
+      width: 220,
+      height: 220, 
+      group: 1
     },
     {
       id: 2,
       name: 'Galleta',
       imageUrl: 'saltine_cracker.png',
+      x: 0,
+      y: 0,
       width: 128,
-      height: 128,
-      position: {
-        x: 94,
-        y: 36
-      }
+      height: 128, 
+      group: 2
     },
     {
       id: 3,
       name: 'Cuchara',
       imageUrl: 'soup_spoon.png',
+      x: 0,
+      y: 0,
       width: 100,
       height: 100,
-      position: {
-        x: 126,
-        y: 110
-      }
+      group: 3
     },
     {
       id: 4,
       name: 'Taza de Café',
       imageUrl: 'mug.png',
+      x: 0,
+      y: 0,
       width: 144,
       height: 144,
-      position: {
-        x: 180,
-        y: 112
-      }
+      group: 4
     },
     {
       id: 5,
       name: 'Cuernito',
       imageUrl: 'croissant.png',
+      x: 0,
+      y: 0,
       width: 128,
       height: 128,
-      position: {
-        x: 52,
-        y: 65
-      }
+      group: 5
+    },
+    {
+      id: 6,
+      name: 'Pan blanco',
+      imageUrl: 'bread_white.png',
+      x: 0,
+      y: 0,
+      width: 128,
+      height: 128,
+      group: 0
+    },
+    {
+      id: 7,
+      name: 'Pastel',
+      imageUrl: 'cake.png',
+      x: 0,
+      y: 0,
+      width: 100,
+      height: 100,
+      group: 0
+    },
+    {
+      id: 8,
+      name: 'Leche',
+      imageUrl: 'milk.png',
+      x: 0,
+      y: 0,
+      width: 128,
+      height: 128,
+      group: 0
+    },
+    {
+      id: 9,
+      name: 'Hamburguesa',
+      imageUrl: 'burger.png',
+      x: 0,
+      y: 0,
+      width: 128,
+      height: 128,
+      group: 0
+    },
+    {
+      id: 10,
+      name: 'Caja Cereal',
+      imageUrl: 'cereal_box.png',
+      x: 0,
+      y: 0,
+      width: 128,
+      height: 128,
+      group: 0
     }
   ]
-
+  
 export default function ConfigureQuestion() {
 
   const navigate = useNavigate();
 
-  const title = 'Cual es el orden que esta puesto en la mesa';
+  const title = '¿Cual es el orden en que estan puestos los objetos en la mesa?';
   const description = 'Bob puso la mesa';
   const explanation = 'Pon el orden correcto de los objetos en la mesa';  
   
   const [draggableItems, setDraggableItems] = useState(draggableItemsData)
-  const [droppedItems, setDroppedItems] = useState(droppedItemsData);
+  const [droppedItems, setDroppedItems] = useState([]);
   
   return (
-    <div className="min-h-screen bg-gray-50 px-8 py-14">
-      <div className="mb-10 border-b pb-6 border-gray-300">
-        <h1 className="text-3xl font-bold text-black-rock-950">{title}</h1>
+    <div className="min-h-screen bg-gray-50 px-8 py-10">
+      <div className="mb-4 border-b pb-2 border-gray-300">
+        <h1 className="text-2xl font-bold text-black-rock-950">{title}</h1>
       </div>
 
-      <div className="flex flex-col md:flex-row gap-8">
+      <div className="flex flex-col md:flex-row gap-4">
         <div className="flex-1">
           <div className="mb-4">
             <h2 className="text-lg font-medium text-gray-900 mb-2">Descripción</h2>
@@ -161,12 +147,16 @@ export default function ConfigureQuestion() {
           </div>
 
           <div className="py-2 rounded-md">
-            <h2 className="text-lg font-medium text-gray-900 mb-2">Agregar respuestas</h2>
-            <p className='text-gray-500 mb-4'>(Arrastra y suelta para ordenar los elementos)</p>
-            <Sortable 
-            items={droppedItems}
-            setItems={setDroppedItems}
-            />
+            <h2 className="text-lg font-medium text-gray-900 mb-2">Vista previa respuestas</h2>
+            <ol>
+              <li>
+              {droppedItems.map((item, i) => (              
+                <div key={i} className="w-12 h-12 inline-block mx-1">
+                  <img  src={'src/assets/' + item.imageUrl} alt={item.name} />
+                </div>              
+              ))}
+              </li>
+            </ol>            
           </div>
           <div className="pt-3">
             <button
