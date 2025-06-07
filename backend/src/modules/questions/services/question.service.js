@@ -1,5 +1,5 @@
 import { QuestionModel } from '../models/question.model.js'
-import { validateQuestionCreate, validateQuestionYear } from '../schemas/question.schema.js'
+import { validateQuestionCreate, validateQuestionLevel } from '../schemas/question.schema.js'
 import { AppError } from '../../../utils/errors.js'
 
 export class QuestionService {
@@ -16,10 +16,6 @@ export class QuestionService {
       explanation: question.explicacion,
       state: question.estado,
       level: question.nivel,
-      responses: question.respuestas.map(response => ({
-        id: response.id,
-        responses: response.respuesta
-      })),
       images: question.imagenes.map(image => ({
         id: image.id,
         name: image.nombre,
@@ -28,10 +24,10 @@ export class QuestionService {
     }
   }
 
-  static async findQuestionsByYear (data) {
-    const { level, idUsuario } = validateQuestionYear(data)
+  static async findQuestionsByLevel (data) {
+    const { level, idUsuario } = validateQuestionLevel(data)
 
-    const questions = await QuestionModel.getQuestionsByEdad({ nivel: level, idUsuario })
+    const questions = await QuestionModel.getQuestionsByLevel({ nivel: level, idUsuario })
     return questions.map(question => ({
       id: question.id,
       title: question.titulo,

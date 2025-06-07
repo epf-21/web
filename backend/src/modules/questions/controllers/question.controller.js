@@ -14,12 +14,12 @@ export class QuestionController {
     }
   }
 
-  static async findQuestionByYear (req, res, next) {
+  static async findQuestionByLevel (req, res, next) {
     try {
       const { level } = req.query
       const idUsuario = req.user.id
 
-      const questions = await QuestionService.findQuestionsByYear({ level, idUsuario })
+      const questions = await QuestionService.findQuestionsByLevel({ level, idUsuario })
       res.status(200).json({
         ok: true,
         data: questions

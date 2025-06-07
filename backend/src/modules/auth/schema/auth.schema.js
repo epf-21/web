@@ -4,7 +4,10 @@ import { AppError } from '../../../utils/errors.js'
 const RegisterSchema = z.object({
   name: z.string().min(1, 'El nombre es obligatorio'),
   email: z.string().email('Correo invalido'),
-  password: z.string().min(6, 'La contraseña debe tener al menos 6 caracteres'),
+  password: z.string().regex(
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/,
+    'La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula, un número y un carácter especial'
+  ),
   rol: z.enum(['PROFESOR', 'ADMINISTRADOR'], {
     errorMap: () => ({ message: 'Rol invalido' })
   }),

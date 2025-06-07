@@ -29,7 +29,7 @@ const CreateQuestionSchema = z.object({
   ).min(1, 'Debe haber al menos una imagen')
 })
 
-export function validateQuestionYear (data) {
+export function validateQuestionLevel (data) {
   const result = QuestionLevelSchema.safeParse(data)
 
   if (!result.success) {

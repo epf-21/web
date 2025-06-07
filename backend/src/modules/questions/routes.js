@@ -5,7 +5,7 @@ import { authMiddleware } from '../../middlewares/authMiddleware.js'
 const questionRouter = Router()
 
 questionRouter.get('/:id', authMiddleware, QuestionController.getQuestionDetail)
-questionRouter.get('/', authMiddleware, QuestionController.findQuestionByYear)
+questionRouter.get('/', authMiddleware, QuestionController.findQuestionByLevel)
 questionRouter.post('/', authMiddleware, QuestionController.createQuestion)
 questionRouter.delete('/:id', authMiddleware, QuestionController.deleteQuestion)
 

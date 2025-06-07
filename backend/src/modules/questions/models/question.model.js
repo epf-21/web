@@ -5,13 +5,12 @@ export class QuestionModel {
     return await prisma.pregunta.findUnique({
       where: { id },
       include: {
-        respuestas: true,
         imagenes: true
       }
     })
   }
 
-  static async getQuestionsByEdad ({ nivel, idUsuario }) {
+  static async getQuestionsByLevel ({ nivel, idUsuario }) {
     return await prisma.pregunta.findMany({
       where: {
         nivel,
