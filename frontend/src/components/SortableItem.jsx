@@ -25,7 +25,7 @@ export function SortableItem(props) {
   ]
 
   return (
-    <div className='relative inline-block mx-1 w-18 h-18 bg-gray-100 border-3 border-gray-500 rounded-md focus: focus:border-blue-500 cursor-grab'
+    <div className='relative inline-block mx-1 p-1 w-18 h-18 bg-gray-100 border-3 border-gray-500 rounded-md focus: focus:border-blue-500 cursor-grab'
       ref={setNodeRef} style={style} {...attributes} {...listeners}>
       <button type='button'
         className='absolute hover:bg-gray-300 font-semibold text-gray-700 w-5 h-5 p-0 text-xs rounded-sm top-0 right-0'
@@ -33,7 +33,7 @@ export function SortableItem(props) {
         onPointerDown={(event) => event.stopPropagation()}
 
       > X </button>
-      <img src={props.src} alt={props.name} />
+      <img src={props.src} alt={props.name} className='max-w-16 max-h-16' />
       <span className='absolute block w-full h-3 left-0 bottom-0 rounded-b-sm text-xs text-white font-bold leading-none text-center'
         style={{ backgroundColor: groupColors[props.group] }} >{props.group}</span>
     </div>
