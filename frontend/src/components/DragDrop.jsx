@@ -39,8 +39,7 @@ export default function DragDrop({ draggableItems, droppedItems, setDroppedItems
     if (event.over && event.over.id === 'droppable') {
       const dgItem = draggableItems.find((x) => x.id === event.active.id)
       if (dgItem) {
-        if (droppedItems.length < maxItems) {
-          dgItem.group = droppedItems.length + 1
+        if (droppedItems.length < maxItems) {          
           setDraggableItems(draggableItems.filter((x) => x.id !== event.active.id))
           setDroppedItems([...droppedItems, dgItem])
         }
@@ -51,7 +50,7 @@ export default function DragDrop({ draggableItems, droppedItems, setDroppedItems
         setSliderValue(item.width)
         setSelectGroup(item.group)
         item.x += event.delta.x;
-        item.y += event.delta.y;        
+        item.y += event.delta.y;                
         const _items = [...droppedItems];
         setDroppedItems(_items);        
       }
@@ -68,31 +67,52 @@ export default function DragDrop({ draggableItems, droppedItems, setDroppedItems
     }
   }
 
-  const contains = (a, b) => !(
-      b.x < a.x ||
-      b.y < a.y ||
-      (b.x + b.width) > (a.x + a.width) ||
-      (b.y + b.height) > (a.y + a.height)
+  
+  const contains = (a, b) =>(
+    b.x >= a.x &&
+    b.y >= a.y &&
+    b.x + b.width <= a.x + a.width &&
+    b.y + b.height <= a.y + a.height
+  );
+  
+  const overlaps = (a, b) => (
+    a.x < b.x + b.width &&
+    a.x + a.width > b.x &&
+    a.y < b.y + b.height &&
+    a.y + a.height > b.y
   );
 
-  function overlaps(a, b) {
-    // no horizontal overlap
-    if (a.x >= (b.x + b.width) || b.x >= a.x + a.width) return false;
-    // no vertical overlap
-    if (a.y >= b.y + b.height || b.y >= a.y + a.height) return false;
-    return true;
-  }
-
-  const checkFullOverlay = () => {
-    for (let i = droppedItems.length - 1; i >= 0; i--) {      
-      for (let j = i - 1; j >= 0; j--) {
-        if (contains(droppedItems[i], droppedItems[j])) {
+  const isCovered = () => {
+    for (let i = 1; i < droppedItems.length; i++) {    
+      for (let j = 0; j < i; j++) {
+        if(contains(droppedItems[i], droppedItems[j])){
           return true
         }
       }
-    }    
-    return false
+    }
+  return false;
   }
+
+  const setGroups =()=>{
+    const levels = getLayerLevels()
+    droppedItems.map((item,i) => {
+      item.group = levels[i]
+    })
+  }
+
+  function getLayerLevels() {      
+    const layerLevels = new Array(droppedItems.length).fill(0);
+    for (let i = 0; i < droppedItems.length; i++) {
+      let maxOverlapLevel = 0;
+      for (let j = 0; j < droppedItems.length; j++) {
+        if (i !== j && overlaps(droppedItems[i], droppedItems[j])) {
+          maxOverlapLevel = Math.max(maxOverlapLevel, layerLevels[j]);
+        }
+      }
+      layerLevels[i] = maxOverlapLevel + 1;      
+    }    
+    return layerLevels;    
+  }      
 
   function getPermutations(arr) {
     const permutations = [];
@@ -154,7 +174,8 @@ export default function DragDrop({ draggableItems, droppedItems, setDroppedItems
               />
             ))}
           </Droppable>
-          {(checkFullOverlay()) && <p className="text-xs text-red-500 font-semibold">Advertencia hay elementos completamente cubiertos</p>}
+          {(isCovered()) && <p className="text-xs text-red-500 font-semibold">Advertencia hay elementos completamente cubiertos</p>}
+          {(droppedItems)&& setGroups()}
           <div className="py-2 rounded-md">
             <p className="text-sm font-semibold text-gray-900 mb-1">Orden de los elementos</p>
             <p className='text-xs text-gray-500 mb-4'>(Arrastra y suelta para ordenar los elementos)</p>
