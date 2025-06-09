@@ -4,7 +4,13 @@ import { Draggable } from "./Draggable";
 import { Droppable } from "./Droppable";
 import Sortable from './Sortable';
 
-export default function DragDrop({ draggableItems, droppedItems, setDroppedItems, setDraggableItems }) {
+export default function DragDrop({ 
+  draggableItems, 
+  droppedItems, 
+  setDroppedItems, 
+  setDraggableItems, 
+  getAllAnswers
+}) {
 
   const maxItems = 5
 
@@ -21,6 +27,7 @@ export default function DragDrop({ draggableItems, droppedItems, setDroppedItems
       item.group = event.target.value
       const _items = [...droppedItems]
       setDroppedItems(_items)
+      getAllAnswers(_items)
     }
   }
 
@@ -33,7 +40,9 @@ export default function DragDrop({ draggableItems, droppedItems, setDroppedItems
       item.height = val
       setIsCovered(checkCoveredItems(droppedItems))
       const _items = [...droppedItems]      
-      setDroppedItems(_items)      
+      setDroppedItems(_items)
+      updateGroups(_items)
+      getAllAnswers(_items)
     }
   }
 
@@ -47,6 +56,7 @@ export default function DragDrop({ draggableItems, droppedItems, setDroppedItems
           dgItem.group = levels[levels.length - 1]
           setDraggableItems(draggableItems.filter((x) => x.id !== event.active.id))
           setDroppedItems([...droppedItems, dgItem])
+          getAllAnswers([...droppedItems, dgItem])
         }
       }
       const item = droppedItems.find((x) => x.id === event.active.id)
@@ -60,6 +70,7 @@ export default function DragDrop({ draggableItems, droppedItems, setDroppedItems
         const _items = [...droppedItems];
         updateGroups(_items)
         setDroppedItems(_items);
+        getAllAnswers(_items)
       }
     } else {
       const item = droppedItems.find((x) => x.id === event.active.id)
@@ -70,6 +81,7 @@ export default function DragDrop({ draggableItems, droppedItems, setDroppedItems
         const filteredItems = droppedItems.filter((x) => x.id !== event.active.id)
         setDroppedItems(filteredItems)
         setDraggableItems([...draggableItems, item])
+        getAllAnswers(filteredItems)
       }
     }    
   }
@@ -175,6 +187,7 @@ export default function DragDrop({ draggableItems, droppedItems, setDroppedItems
               updateGroups={updateGroups}
               checkCoveredItems={checkCoveredItems}
               setIsCovered={setIsCovered}
+              getAllAnswers={getAllAnswers}
             />
           </div>
 

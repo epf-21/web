@@ -50,11 +50,11 @@ export default function ConfigureQuestion() {
     return permutations;
   }
 
-  const getAllAnswers = ()=>{ 
+  const getAllAnswers = (items)=>{ 
     const allAnswers = []   
     const grouppedItems=[]    
-    for (let i = 0; i < droppedItems.length; i++) {
-      const group = droppedItems.filter((x) => x.group === (i+1))
+    for (let i = 0; i < items.length; i++) {
+      const group = items.filter((x) => x.group === (i+1))
       if(group.length > 1){
         grouppedItems.push(group)      
       }
@@ -64,12 +64,12 @@ export default function ConfigureQuestion() {
       for (let j = 0; j < permutations.length; j++) {
         const answersIds =[]
         let c = 0
-        for (let k = 0; k < droppedItems.length; k++) {
-          if(droppedItems[k].group === (i + 1)){
+        for (let k = 0; k < items.length; k++) {
+          if(items[k].group === (i + 1)){
             answersIds.push(permutations[j][c].id)            
             c++
           }else{
-            answersIds.push(droppedItems[k].id)            
+            answersIds.push(items[k].id)
           }
         }
         allAnswers.push(answersIds)        
@@ -77,7 +77,7 @@ export default function ConfigureQuestion() {
     }
     if(allAnswers.length === 0){
         const singleAnswer =[]
-        droppedItems.map(item =>
+        items.map(item =>
           singleAnswer.push(item.id)
         )
         allAnswers.push(singleAnswer)
@@ -106,6 +106,7 @@ export default function ConfigureQuestion() {
                 droppedItems={droppedItems}
                 setDraggableItems={setDraggableItems}
                 setDroppedItems={setDroppedItems}
+                getAllAnswers={getAllAnswers}
               />
             </div>
           </div>
@@ -116,13 +117,7 @@ export default function ConfigureQuestion() {
           </div>
 
           <div className="py-2 rounded-md">
-            <h2 className="text-lg font-medium text-gray-900 mb-2">Vista previa respuestas</h2>
-            <button type="button" 
-            className='text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 mb-4' 
-            onClick={getAllAnswers}
-            >
-              Obtener respuestas
-            </button>
+            <h2 className="text-lg font-medium text-gray-900 mb-2">Vista previa respuestas</h2>            
             <ol>              
               {answers.map((arr, i) => (
                 <li key={i}> <span className='inline-block w-8'>{i+1}</span>
