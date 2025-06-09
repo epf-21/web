@@ -10,6 +10,7 @@ export default function ConfigureQuestion() {
 
   const [draggableItems, setDraggableItems] = useState([])
   const [droppedItems, setDroppedItems] = useState([]);
+  const [answers, setAnswers] = useState([]);
 
   useEffect(() => {
     if (!question) return;
@@ -30,6 +31,32 @@ export default function ConfigureQuestion() {
 
   if (isLoading) return <p className="text-gray-500">Cargando pregunta...</p>;
   if (error) return <p className="text-gray-500">No se pudo cargar la Pregunta.</p>;
+
+  const getPermutations = (arr) =>{
+    const permutations = [];  
+    function permute(current, remaining) {
+      if (remaining.length === 0) {
+        permutations.push(current);
+        return;
+      }
+
+      for (let i = 0; i < remaining.length; i++) {
+        const next = current.concat(remaining[i]);
+        const rest = remaining.slice(0, i).concat(remaining.slice(i + 1));
+        permute(next, rest);
+      }
+    }  
+    permute([], arr);
+    return permutations;
+  }
+
+  const getAllAnswers = ()=>{    
+    const grouppedItems=[]
+    for (let i = 0; i < droppedItems.length; i++) {
+      grouppedItems.push(droppedItems.filter((x) => x.group === (i+1) ))      
+    }
+    return grouppedItems
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 px-8 py-10">
@@ -63,14 +90,16 @@ export default function ConfigureQuestion() {
 
           <div className="py-2 rounded-md">
             <h2 className="text-lg font-medium text-gray-900 mb-2">Vista previa respuestas</h2>
-            <ol>
-              <li>
-                {droppedItems.map((item, i) => (
-                  <div key={i} className="w-12 h-12 inline-block mx-1">
+            <ol>              
+              {answers.map((arr, i) => (
+                <li key={i}> 
+                {arr.map((item, j) => (
+                  <div key={j} className="w-12 h-12 inline-block mx-1">
                     <img src={item.imageUrl} alt={item.name} />
                   </div>
                 ))}
-              </li>
+                </li>
+              ))}
             </ol>
           </div>
           <div className="pt-3">

@@ -15,7 +15,18 @@ import {
 
 import { SortableItem } from './SortableItem';
 
-export default function Sortable({draggableItems, setDraggableItems, droppedItems, setDroppedItems, setActiveItemId, setSliderValue, setSelectGroup}) {
+export default function Sortable({
+  draggableItems, 
+  setDraggableItems, 
+  droppedItems, 
+  setDroppedItems, 
+  setActiveItemId, 
+  setSliderValue, 
+  setSelectGroup, 
+  updateGroups, 
+  checkCoveredItems, 
+  setIsCovered
+  }) {
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -28,16 +39,19 @@ export default function Sortable({draggableItems, setDraggableItems, droppedItem
     const { active, over } = event;
 
     if (active.id !== over.id) {
-        setDroppedItems((droppedItems) => {
-        const oldIndex = droppedItems.findIndex(item => item.id === active.id);
-        const newIndex = droppedItems.findIndex(item => item.id === over.id);        
-        return arrayMove(droppedItems, oldIndex, newIndex);
-      });      
+      const _items = [...droppedItems]
+      const oldIndex = _items.findIndex(item => item.id === active.id);
+      const newIndex = _items.findIndex(item => item.id === over.id);
+      const orderedItems = arrayMove(_items, oldIndex, newIndex)
+      setIsCovered(checkCoveredItems(orderedItems))
+      updateGroups(orderedItems)
+      setDroppedItems(orderedItems)        
     }
     const item = droppedItems.find((x) => x.id === event.active.id)
     setActiveItemId(item.id)
     setSliderValue(item.width)
-    setSelectGroup(item.group)
+    setSelectGroup(item.group)    
+    
   }
 
   const removeItem = (id) => {
@@ -48,8 +62,6 @@ export default function Sortable({draggableItems, setDraggableItems, droppedItem
     setDroppedItems(droppedItems.filter((x) => x.id !== id))
     setDraggableItems([...draggableItems,item])    
   }
-
-
 
   return (
     <DndContext

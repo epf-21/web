@@ -12,6 +12,7 @@ export default function DragDrop({ draggableItems, droppedItems, setDroppedItems
   const [sliderValue, setSliderValue] = useState(32);
   const groups = [1, 2, 3, 4, 5]
   const [selectGroup, setSelectGroup] = useState(0);
+  const [isCovered, setIsCovered] = useState(false);
 
   const handleSelectChange = (event) => {
     setSelectGroup(event.target.value)
@@ -30,7 +31,8 @@ export default function DragDrop({ draggableItems, droppedItems, setDroppedItems
     if (item) {
       item.width = val
       item.height = val
-      const _items = [...droppedItems]
+      setIsCovered(checkCoveredItems(droppedItems))
+      const _items = [...droppedItems]      
       setDroppedItems(_items)      
     }
   }
@@ -39,7 +41,10 @@ export default function DragDrop({ draggableItems, droppedItems, setDroppedItems
     if (event.over && event.over.id === 'droppable') {
       const dgItem = draggableItems.find((x) => x.id === event.active.id)
       if (dgItem) {
-        if (droppedItems.length < maxItems) {          
+        if (droppedItems.length < maxItems) {
+          setIsCovered(checkCoveredItems([...droppedItems, dgItem]))
+          const levels = getLayerLevels([...droppedItems, dgItem])          
+          dgItem.group = levels[levels.length - 1]
           setDraggableItems(draggableItems.filter((x) => x.id !== event.active.id))
           setDroppedItems([...droppedItems, dgItem])
         }
@@ -50,9 +55,11 @@ export default function DragDrop({ draggableItems, droppedItems, setDroppedItems
         setSliderValue(item.width)
         setSelectGroup(item.group)
         item.x += event.delta.x;
-        item.y += event.delta.y;                
+        item.y += event.delta.y;
+        setIsCovered(checkCoveredItems(droppedItems))
         const _items = [...droppedItems];
-        setDroppedItems(_items);        
+        updateGroups(_items)
+        setDroppedItems(_items);
       }
     } else {
       const item = droppedItems.find((x) => x.id === event.active.id)
@@ -64,10 +71,9 @@ export default function DragDrop({ draggableItems, droppedItems, setDroppedItems
         setDroppedItems(filteredItems)
         setDraggableItems([...draggableItems, item])
       }
-    }
+    }    
   }
 
-  
   const contains = (a, b) =>(
     b.x >= a.x &&
     b.y >= a.y &&
@@ -82,10 +88,10 @@ export default function DragDrop({ draggableItems, droppedItems, setDroppedItems
     a.y + a.height > b.y
   );
 
-  const isCovered = () => {
-    for (let i = 1; i < droppedItems.length; i++) {    
+  const checkCoveredItems = (items) => {
+    for (let i = 1; i < items.length; i++) {    
       for (let j = 0; j < i; j++) {
-        if(contains(droppedItems[i], droppedItems[j])){
+        if(contains(items[i], items[j])){
           return true
         }
       }
@@ -93,49 +99,29 @@ export default function DragDrop({ draggableItems, droppedItems, setDroppedItems
   return false;
   }
 
-  const setGroups =()=>{
-    const levels = getLayerLevels()
-    droppedItems.map((item,i) => {
+  const updateGroups = (items) =>{
+    const levels = getLayerLevels(items)
+    items.map((item,i) => {
       item.group = levels[i]
-    })
+    })    
   }
 
-  function getLayerLevels() {      
-    const layerLevels = new Array(droppedItems.length).fill(0);
-    for (let i = 0; i < droppedItems.length; i++) {
+  function getLayerLevels(items) {      
+    const layerLevels = new Array(items.length).fill(0);
+    for (let i = 0; i < items.length; i++) {
       let maxOverlapLevel = 0;
-      for (let j = 0; j < droppedItems.length; j++) {
-        if (i !== j && overlaps(droppedItems[i], droppedItems[j])) {
+      for (let j = 0; j < items.length; j++) {
+        if (i !== j && overlaps(items[i], items[j])) {
           maxOverlapLevel = Math.max(maxOverlapLevel, layerLevels[j]);
         }
       }
-      layerLevels[i] = maxOverlapLevel + 1;      
+      layerLevels[i] = maxOverlapLevel + 1;
     }    
     return layerLevels;    
-  }      
+  }       
 
-  function getPermutations(arr) {
-    const permutations = [];
-
-    function permute(current, remaining) {
-      if (remaining.length === 0) {
-        permutations.push(current);
-        return;
-      }
-
-      for (let i = 0; i < remaining.length; i++) {
-        const next = current.concat(remaining[i]);
-        const rest = remaining.slice(0, i).concat(remaining.slice(i + 1));
-        permute(next, rest);
-      }
-    }
-
-    permute([], arr);
-    return permutations;
-  }
-
-  return (
-    <DndContext onDragEnd={handleDragEnd}>
+  return (    
+    <DndContext onDragEnd={handleDragEnd}>    
       <div className="flex flex-col gap-4 md:flex-row">
         <div>
           <p className="text-sm font-semibold text-black-rock-950 mb-1">Imágenes subidas</p>
@@ -174,8 +160,7 @@ export default function DragDrop({ draggableItems, droppedItems, setDroppedItems
               />
             ))}
           </Droppable>
-          {(isCovered()) && <p className="text-xs text-red-500 font-semibold">Advertencia hay elementos completamente cubiertos</p>}
-          {(droppedItems)&& setGroups()}
+          {(isCovered) && <p className="text-xs text-red-500 font-semibold">Advertencia hay elementos completamente cubiertos</p>}          
           <div className="py-2 rounded-md">
             <p className="text-sm font-semibold text-gray-900 mb-1">Orden de los elementos</p>
             <p className='text-xs text-gray-500 mb-4'>(Arrastra y suelta para ordenar los elementos)</p>
@@ -187,6 +172,9 @@ export default function DragDrop({ draggableItems, droppedItems, setDroppedItems
               setActiveItemId={setActiveItemId}
               setSliderValue={setSliderValue}
               setSelectGroup={setSelectGroup}
+              updateGroups={updateGroups}
+              checkCoveredItems={checkCoveredItems}
+              setIsCovered={setIsCovered}
             />
           </div>
 
