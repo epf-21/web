@@ -50,12 +50,39 @@ export default function ConfigureQuestion() {
     return permutations;
   }
 
-  const getAllAnswers = ()=>{    
-    const grouppedItems=[]
+  const getAllAnswers = ()=>{ 
+    const allAnswers = []   
+    const grouppedItems=[]    
     for (let i = 0; i < droppedItems.length; i++) {
-      grouppedItems.push(droppedItems.filter((x) => x.group === (i+1) ))      
+      const group = droppedItems.filter((x) => x.group === (i+1))
+      if(group.length > 1){
+        grouppedItems.push(group)      
+      }
+    }    
+    for (let i = 0; i < grouppedItems.length; i++) {
+      const permutations = getPermutations(grouppedItems[i])      
+      for (let j = 0; j < permutations.length; j++) {
+        const answersIds =[]
+        let c = 0
+        for (let k = 0; k < droppedItems.length; k++) {
+          if(droppedItems[k].group === (i + 1)){
+            answersIds.push(permutations[j][c].id)            
+            c++
+          }else{
+            answersIds.push(droppedItems[k].id)            
+          }
+        }
+        allAnswers.push(answersIds)        
+      }
     }
-    return grouppedItems
+    if(allAnswers.length === 0){
+        const singleAnswer =[]
+        droppedItems.map(item =>
+          singleAnswer.push(item.id)
+        )
+        allAnswers.push(singleAnswer)
+    }
+    setAnswers(allAnswers) 
   }
 
   return (
@@ -90,14 +117,26 @@ export default function ConfigureQuestion() {
 
           <div className="py-2 rounded-md">
             <h2 className="text-lg font-medium text-gray-900 mb-2">Vista previa respuestas</h2>
+            <button type="button" 
+            className='text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 mb-4' 
+            onClick={getAllAnswers}
+            >
+              Obtener respuestas
+            </button>
             <ol>              
               {answers.map((arr, i) => (
-                <li key={i}> 
-                {arr.map((item, j) => (
-                  <div key={j} className="w-12 h-12 inline-block mx-1">
-                    <img src={item.imageUrl} alt={item.name} />
+                <li key={i}> <span className='inline-block w-8'>{i+1}</span>
+                {arr.map((id, j) => {
+                const item = droppedItems.find((x) => x.id === id)
+                if(item){
+                return (
+                  <div key={j} className="w-12 h-12 inline-block mx-1 bg-gray-300 rounded-sm">                    
+                    <img src={item.imageUrl} alt={item.name} className='max-w-12 max-h-12' />
                   </div>
-                ))}
+                )}
+                } 
+              )}
+                
                 </li>
               ))}
             </ol>
