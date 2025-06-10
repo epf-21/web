@@ -25,7 +25,8 @@ export default function Sortable({
   setSelectGroup, 
   updateGroups, 
   checkCoveredItems, 
-  setIsCovered
+  setIsCovered,
+  getAllAnswers
   }) {
 
   const sensors = useSensors(
@@ -45,7 +46,8 @@ export default function Sortable({
       const orderedItems = arrayMove(_items, oldIndex, newIndex)
       setIsCovered(checkCoveredItems(orderedItems))
       updateGroups(orderedItems)
-      setDroppedItems(orderedItems)        
+      setDroppedItems(orderedItems)
+      getAllAnswers(orderedItems)
     }
     const item = droppedItems.find((x) => x.id === event.active.id)
     setActiveItemId(item.id)
@@ -61,6 +63,8 @@ export default function Sortable({
     item.y = 0    
     setDroppedItems(droppedItems.filter((x) => x.id !== id))
     setDraggableItems([...draggableItems,item])    
+    updateGroups(droppedItems)
+    getAllAnswers(droppedItems)
   }
 
   return (

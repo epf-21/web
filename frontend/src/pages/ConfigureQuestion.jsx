@@ -50,12 +50,41 @@ export default function ConfigureQuestion() {
     return permutations;
   }
 
-  const getAllAnswers = ()=>{    
+  const getAllAnswers = (allItems)=>{ 
+    const allAnswers = []   
     const grouppedItems=[]
-    for (let i = 0; i < droppedItems.length; i++) {
-      grouppedItems.push(droppedItems.filter((x) => x.group === (i+1) ))      
+    const items = [...allItems]
+    items.sort((a, b) => a.group - b.group);
+    for (let i = 0; i < items.length; i++) {
+      const group = items.filter((x) => x.group === (i+1))
+      if(group.length > 1){
+        grouppedItems.push(group)      
+      }
+    }    
+    for (let i = 0; i < grouppedItems.length; i++) {
+      const permutations = getPermutations(grouppedItems[i])      
+      for (let j = 0; j < permutations.length; j++) {
+        const answersIds =[]
+        let c = 0
+        for (let k = 0; k < items.length; k++) {
+          if(items[k].group === (i + 1)){
+            answersIds.push(permutations[j][c].id)            
+            c++
+          }else{
+            answersIds.push(items[k].id)
+          }
+        }
+        allAnswers.push(answersIds)        
+      }
     }
-    return grouppedItems
+    if(allAnswers.length === 0){
+        const singleAnswer =[]
+        items.map(item =>
+          singleAnswer.push(item.id)
+        )
+        allAnswers.push(singleAnswer)
+    }
+    setAnswers(allAnswers) 
   }
 
   return (
@@ -79,6 +108,7 @@ export default function ConfigureQuestion() {
                 droppedItems={droppedItems}
                 setDraggableItems={setDraggableItems}
                 setDroppedItems={setDroppedItems}
+                getAllAnswers={getAllAnswers}
               />
             </div>
           </div>
@@ -89,15 +119,21 @@ export default function ConfigureQuestion() {
           </div>
 
           <div className="py-2 rounded-md">
-            <h2 className="text-lg font-medium text-gray-900 mb-2">Vista previa respuestas</h2>
+            <h2 className="text-lg font-medium text-gray-900 mb-2">Vista previa respuestas</h2>            
             <ol>              
               {answers.map((arr, i) => (
-                <li key={i}> 
-                {arr.map((item, j) => (
-                  <div key={j} className="w-12 h-12 inline-block mx-1">
-                    <img src={item.imageUrl} alt={item.name} />
+                <li key={i}> <span className='inline-block w-8'>{i+1}</span>
+                {arr.map((id, j) => {
+                const item = droppedItems.find((x) => x.id === id)
+                if(item){
+                return (
+                  <div key={j} className="w-12 h-12 inline-block mx-1 bg-gray-300 rounded-sm">                    
+                    <img src={item.imageUrl} alt={item.name} className='max-w-12 max-h-12' />
                   </div>
-                ))}
+                )}
+                } 
+              )}
+                
                 </li>
               ))}
             </ol>
