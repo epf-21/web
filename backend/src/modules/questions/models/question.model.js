@@ -57,4 +57,28 @@ export class QuestionModel {
       where: { id }
     })
   }
+  static async updateQuestionById(id, { titulo, descripcion, explicacion, estado, nivel, imagenes }) {
+    await prisma.imagen.deleteMany({
+      where: { idPregunta: id }
+    })
+    return await prisma.pregunta.update({
+      where: { id },
+      data: {
+        titulo,
+        descripcion,
+        explicacion,
+        estado,
+        nivel,
+        imagenes: {
+          create: imagenes.map(({ nombre, url }) => ({
+            nombre,
+            url
+          }))
+        }
+      },
+      include: {
+        imagenes: true
+      }
+    })
+  }
 }

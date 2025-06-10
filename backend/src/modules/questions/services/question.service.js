@@ -51,4 +51,36 @@ export class QuestionService {
   static async deleteQuestion (id) {
     return await QuestionModel.deleteQuestionById(id)
   }
+  static async updateQuestion(id, data) {
+    const { titulo, descripcion, explicacion, estado, nivel, imagenes } = validateQuestionCreate(data)
+
+    const existing = await QuestionModel.getQuestionById(id)
+    if (!existing) {
+      throw new AppError('Pregunta no encontrada', 404)
+    }
+
+    const updated = await QuestionModel.updateQuestionById(id, {
+      titulo,
+      descripcion,
+      explicacion,
+      estado,
+      nivel,
+      imagenes
+    })
+
+    return {
+      id: updated.id,
+      title: updated.titulo,
+      description: updated.descripcion,
+      explanation: updated.explicacion,
+      state: updated.estado,
+      level: updated.nivel,
+      images: updated.imagenes.map(image => ({
+        id: image.id,
+        name: image.nombre,
+        url: image.url
+      }))
+    }
+  }
+
 }

@@ -8,5 +8,6 @@ questionRouter.get('/:id', authMiddleware, QuestionController.getQuestionDetail)
 questionRouter.get('/', authMiddleware, QuestionController.findQuestionByLevel)
 questionRouter.post('/', authMiddleware, QuestionController.createQuestion)
 questionRouter.delete('/:id', authMiddleware, QuestionController.deleteQuestion)
+questionRouter.put('/:id', authMiddleware, QuestionController.updateQuestion)
 
 export default questionRouter
