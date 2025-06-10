@@ -18,6 +18,7 @@ export default function DragDrop({
   const [sliderValue, setSliderValue] = useState(32);
   const groups = [1, 2, 3, 4, 5]
   const [selectGroup, setSelectGroup] = useState(0);
+  const [checked, setChecked] = useState(false);
   const [isCovered, setIsCovered] = useState(false);
 
   const handleSelectChange = (event) => {
@@ -164,7 +165,8 @@ export default function DragDrop({
                   left: `${item.x}px`,
                   top: `${item.y}px`,
                   width: `${item.width}px`,
-                  height: `${item.height}px`,
+                  height: `${item.height}px`,                  
+                  outline: checked ? '1px solid #aaa' : 'none'
                 }}
                 key={item.id}
                 id={item.id}
@@ -172,7 +174,14 @@ export default function DragDrop({
               />
             ))}
           </Droppable>
-          {(isCovered) && <p className="text-xs text-red-500 font-semibold">Advertencia hay elementos completamente cubiertos</p>}          
+          {(isCovered) && <p className="text-xs text-red-500 font-semibold">Advertencia hay elementos completamente cubiertos</p>}
+          <div className="flex justify-end mt-2">            
+            <label className="inline-flex items-center cursor-pointer">
+              <input type="checkbox" value="" onChange={e => setChecked(!checked)} className="sr-only peer" />
+              <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600 dark:peer-checked:bg-blue-600"></div>
+              <span className="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">Mostrar bordes</span>
+            </label>
+          </div>
           <div className="py-2 rounded-md">
             <p className="text-sm font-semibold text-gray-900 mb-1">Orden de apilamiento de las imagenes</p>
             <p className='text-xs text-gray-500 mb-4'>(Arrastra y suelta para ordenar los elementos)</p>
