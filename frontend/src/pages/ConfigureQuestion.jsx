@@ -50,9 +50,11 @@ export default function ConfigureQuestion() {
     return permutations;
   }
 
-  const getAllAnswers = (items)=>{ 
+  const getAllAnswers = (allItems)=>{ 
     const allAnswers = []   
-    const grouppedItems=[]    
+    const grouppedItems=[]
+    const items = [...allItems]
+    items.sort((a, b) => a.group - b.group);
     for (let i = 0; i < items.length; i++) {
       const group = items.filter((x) => x.group === (i+1))
       if(group.length > 1){

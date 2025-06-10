@@ -174,7 +174,7 @@ export default function DragDrop({
           </Droppable>
           {(isCovered) && <p className="text-xs text-red-500 font-semibold">Advertencia hay elementos completamente cubiertos</p>}          
           <div className="py-2 rounded-md">
-            <p className="text-sm font-semibold text-gray-900 mb-1">Orden de los elementos</p>
+            <p className="text-sm font-semibold text-gray-900 mb-1">Orden de apilamiento de las imagenes</p>
             <p className='text-xs text-gray-500 mb-4'>(Arrastra y suelta para ordenar los elementos)</p>
             <Sortable
               draggableItems={draggableItems}
