@@ -22,7 +22,7 @@ enum Nivel {
 model Usuario {
   id          String     @id @default(uuid())
   nombre      String
-  rol         Rol
+  rol         Rol        @default(PROFESOR)
   email       String     @unique
   contrasenia String
   telefono    String?
@@ -30,16 +30,17 @@ model Usuario {
 }
 
 model Pregunta {
-  id          String      @id @default(uuid())
-  titulo      String
-  descripcion String
-  explicacion String
-  estado      String
-  nivel       Nivel
-  usuario     Usuario     @relation(fields: [idUsuario], references: [id])
-  idUsuario   String
-  respuestas  Respuesta[]
-  imagenes    Imagen[]
+  id              String      @id @default(uuid())
+  titulo          String
+  descripcion     String
+  explicacion     String
+  estado          String
+  imagenPrincipal String?
+  nivel           Nivel
+  usuario         Usuario     @relation(fields: [idUsuario], references: [id])
+  idUsuario       String
+  respuestas      Respuesta[]
+  imagenes        Imagen[]
 }
 
 model Respuesta {
