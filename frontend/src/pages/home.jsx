@@ -39,7 +39,7 @@ export default function Home() {
             <div
               key={level}
               onClick={() => handleSelect(age, level)}
-              className="cursor-pointer p-6 rounded-2xl bg-gradient-to-br from-black-rock-800 to-black-rock-950 text-white hover:scale-105 transform transition-all duration-200 shadow-xl border border-black-rock-500"
+              className="cursor-pointer p-6 rounded-2xl bg-black-rock-950 text-white hover:scale-105 transform transition-all duration-200 shadow-xl border border-black-rock-900"
             >
               <div className="flex items-center justify-center mb-4 bg-white/10 p-3 rounded-full">
                 <Icon name={icon} className="mr-2" />
