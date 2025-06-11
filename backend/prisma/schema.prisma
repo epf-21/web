@@ -25,7 +25,6 @@ model Usuario {
   rol         Rol        @default(PROFESOR)
   email       String     @unique
   contrasenia String
-  telefono    String?
   preguntas   Pregunta[]
 }
 

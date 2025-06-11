@@ -7,7 +7,7 @@ import { validateLogin, validateRegister } from '../schema/auth.schema.js'
 
 export class AuthService {
   static async register (data) {
-    const { name, email, password, rol, phone } = validateRegister(data)
+    const { name, email, password } = validateRegister(data)
     const exist = await AuthModel.findUserByEmail(email)
     if (exist) {
       throw new AppError('El correo ya está registrado')
@@ -19,8 +19,7 @@ export class AuthService {
       nombre: name,
       email,
       contrasenia: hashedPassword,
-      rol,
-      telefono: phone
+      rol: 'PROFESOR'
     })
     const token = jwt.sign({ id: user.id, email: user.email, rol: user.rol }, JWT_SECRET, { expiresIn: '1d' })
     return {

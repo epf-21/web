@@ -7,11 +7,7 @@ const RegisterSchema = z.object({
   password: z.string().regex(
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/,
     'La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula, un número y un carácter especial'
-  ),
-  rol: z.enum(['PROFESOR', 'ADMINISTRADOR'], {
-    errorMap: () => ({ message: 'Rol invalido' })
-  }),
-  phone: z.string().optional()
+  )
 })
 
 const LoginSchema = z.object({
