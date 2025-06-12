@@ -100,17 +100,14 @@ export default function ConfigureQuestion() {
             <p className="text-base text-gray-700">{question.description}</p>
           </div>
 
-          <div className="w-2xl border border-dashed border-gray-400 rounded-lg p-4 bg-white shadow-sm">
-
-            <div className="mx-auto flex gap-4">
+          <div>
               <DragDrop
                 draggableItems={draggableItems}
                 droppedItems={droppedItems}
                 setDraggableItems={setDraggableItems}
                 setDroppedItems={setDroppedItems}
                 getAllAnswers={getAllAnswers}
-              />
-            </div>
+              />            
           </div>
 
           <div className="py-2 rounded-md">

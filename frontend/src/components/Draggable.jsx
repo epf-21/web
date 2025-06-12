@@ -14,7 +14,7 @@ export function Draggable(props) {
       className='cursor-grab flex focus:ring-2 focus:ring-blue-500 rounded-sm'
       ref={setNodeRef} style={{ ...style, ...props.styles }} {...listeners} {...attributes}>
       {props.children}
-      <img src={props.src} alt={props.name} className={'self-center max-w-full max-h-full'} />
+      
     </div>
   );
 }

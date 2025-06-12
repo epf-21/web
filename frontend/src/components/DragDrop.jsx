@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { DndContext } from "@dnd-kit/core";
+import { DndContext} from "@dnd-kit/core";
 import { Draggable } from "./Draggable";
 import { Droppable } from "./Droppable";
 import Sortable from './Sortable';
@@ -12,15 +12,29 @@ export default function DragDrop({
   getAllAnswers
 }) {
 
+  const backgroundImages =[{
+    'id':1,
+    'name':'mesa',
+    'imgUrl': '../src/assets/table.png'
+  },
+  {
+    'id':2,
+    'name':'sofa',
+    'imgUrl': '../src/assets/sofa.png'
+  },
+
+  ]
+
   const maxItems = 5
 
-  const [activeItemId, setActiveItemId] = useState(null);
+  const [activeItemId, setActiveItemId] = useState(null);  
   const [sliderValue, setSliderValue] = useState(32);
   const groups = [1, 2, 3, 4, 5]
   const [selectGroup, setSelectGroup] = useState(0);
   const [checked, setChecked] = useState(false);
   const [isCovered, setIsCovered] = useState(false);
-
+  const [backgroundImg, setBackgroundImg] = useState(null);
+  
   const handleSelectChange = (event) => {
     setSelectGroup(event.target.value)
     const item = droppedItems.find((x) => x.id === activeItemId)
@@ -46,11 +60,11 @@ export default function DragDrop({
       getAllAnswers(_items)
     }
   }
-
+  
   function handleDragEnd(event) {
-    if (event.over && event.over.id === 'droppable') {
+    if (event.over && event.over.id === 'droppable') {      
       const dgItem = draggableItems.find((x) => x.id === event.active.id)
-      if (dgItem) {
+      if (dgItem) {        
         if (droppedItems.length < maxItems) {
           setIsCovered(checkCoveredItems([...droppedItems, dgItem]))
           const levels = getLayerLevels([...droppedItems, dgItem])          
@@ -61,7 +75,7 @@ export default function DragDrop({
         }
       }
       const item = droppedItems.find((x) => x.id === event.active.id)
-      if (item) {
+      if (item) {        
         setActiveItemId(item.id)
         setSliderValue(item.width)
         setSelectGroup(item.group)
@@ -134,30 +148,32 @@ export default function DragDrop({
   }       
 
   return (    
-    <DndContext onDragEnd={handleDragEnd}>    
-      <div className="flex flex-col gap-4 md:flex-row">
+    <DndContext onDragEnd={handleDragEnd}>
+      <div className="flex flex-col gap-2 md:flex-row max-w-2xl p-2 border border-dashed border-gray-400 rounded-lg bg-white shadow-sm">
         <div>
           <p className="text-sm font-semibold text-black-rock-950 mb-1">Imágenes subidas</p>
           <p className='text-gray-500 mb-2 text-xs'>(Arrastra hasta {maxItems} elementos)</p>
-          <div className="grid grid-cols-2 gap-2 border-2 border-gray-500 rounded-md shadow-sm p-2 w-44 min-h-24">
+          <div className="flex flex-wrap gap-2 w-full md:w-38 min-h-24 border-2 border-gray-500 rounded-md shadow-sm p-2">
             {draggableItems.map(item => {
               return (
-                <Draggable key={item.id} id={item.id} src={item.imageUrl} 
+                <Draggable key={item.id} id={item.id}
                   styles={{
-                    width: '64px',
-                    height: '64px',
+                    width: '60px',
+                    height: '60px',
                     zIndex: 1,
                   }}
-                />
+                >
+                <img src={item.imageUrl} alt={item.name} className='self-center max-w-full max-h-full' />
+                </Draggable>
               )
             })
             }
-          </div>
+          </div>          
         </div>
         <div>
           <h3 className="text-sm font-semibold text-gray-800 mb-1">Imagen principal</h3>
           <p className='text-gray-500 mb-2 text-xs'>(Arrastra y suelta para mover elementos)</p>
-          <Droppable>
+          <Droppable styles={{backgroundImage: 'url(' + backgroundImg + ')'}}>
             {droppedItems.map((item) => (
               <Draggable
                 styles={{
@@ -170,8 +186,9 @@ export default function DragDrop({
                 }}
                 key={item.id}
                 id={item.id}
-                src={item.imageUrl}                
-              />
+              >
+              <img src={item.imageUrl} alt={item.name} className='self-center max-w-full max-h-full' />
+              </Draggable>
             ))}
           </Droppable>
           {(isCovered) && <p className="text-xs text-red-500 font-semibold">Advertencia hay elementos completamente cubiertos</p>}
@@ -222,6 +239,20 @@ export default function DragDrop({
                 ))}
               </select>
             </div>
+          </div>
+        </div>
+        <div>
+          <h3 className="text-sm font-semibold text-gray-800 mb-1">Fondo</h3>
+          <p className='text-gray-500 mb-2 text-xs'>(selecciona 1)</p>
+          <div className="flex flex-wrap gap-2 w-full md:w-20 min-h-24 border-2 border-gray-500 rounded-md shadow-sm p-2">
+            {backgroundImages.map((img,i) => (
+              <label key={i} className="inline-flex items-center cursor-pointer">
+                <input type="radio" name="bgOptions" value={img.imgUrl} onChange={e => setBackgroundImg(e.target.value)} className="sr-only peer" />
+                <div className="relative w-16 h-16 bg-gray-200 border-3 border-gray-200 peer-checked:border-green-600 rounded-md">
+                  <img src={img.imgUrl} alt={img.name} />
+                </div>                
+              </label>
+             ))}
           </div>
         </div>
       </div>
