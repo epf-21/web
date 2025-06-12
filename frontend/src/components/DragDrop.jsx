@@ -182,7 +182,7 @@ export default function DragDrop({
                   top: `${item.y}px`,
                   width: `${item.width}px`,
                   height: `${item.height}px`,                  
-                  outline: checked ? '1px solid #aaa' : 'none'
+                  outline: checked ? '2px solid #00FF00' : 'none'
                 }}
                 key={item.id}
                 id={item.id}
@@ -248,7 +248,7 @@ export default function DragDrop({
             {backgroundImages.map((img,i) => (
               <label key={i} className="inline-flex items-center cursor-pointer">
                 <input type="radio" name="bgOptions" value={img.imgUrl} onChange={e => setBackgroundImg(e.target.value)} className="sr-only peer" />
-                <div className="relative w-16 h-16 bg-gray-200 border-3 border-gray-200 peer-checked:border-green-600 rounded-md">
+                <div className="relative w-16 h-16 bg-gray-200 border-3 border-gray-200 peer-checked:border-blue-600 rounded-md">
                   <img src={img.imgUrl} alt={img.name} />
                 </div>                
               </label>
