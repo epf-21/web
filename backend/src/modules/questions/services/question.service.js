@@ -16,6 +16,7 @@ export class QuestionService {
       explanation: question.explicacion,
       state: question.estado,
       level: question.nivel,
+      imageMain: question.imagenPrincipal,
       images: question.imagenes.map(image => ({
         id: image.id,
         name: image.nombre,
@@ -51,7 +52,8 @@ export class QuestionService {
   static async deleteQuestion (id) {
     return await QuestionModel.deleteQuestionById(id)
   }
-  static async updateQuestion(id, data) {
+
+  static async updateQuestion (id, data) {
     const { titulo, descripcion, explicacion, estado, nivel, imagenes } = validateQuestionCreate(data)
 
     const existing = await QuestionModel.getQuestionById(id)
@@ -82,5 +84,4 @@ export class QuestionService {
       }))
     }
   }
-
 }

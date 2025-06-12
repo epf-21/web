@@ -59,7 +59,8 @@ export class QuestionController {
       next(error)
     }
   }
-  static async updateQuestion(req, res, next) {
+
+  static async updateQuestion (req, res, next) {
     try {
       const { id } = req.params
       const data = req.body
@@ -68,8 +69,7 @@ export class QuestionController {
 
       res.status(200).json(updatedQuestion)
     } catch (error) {
-      next(error instanceof AppError ? error : new AppError('Error al actualizar la pregunta', 500))
+      next(error)
     }
   }
-
 }
