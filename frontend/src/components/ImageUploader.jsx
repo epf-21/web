@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import { Trash2 } from "lucide-react";
 
-export default function ImageUploader({ imageURLS, onSelectChange, removeFile }) {
+export default function ImageUploader({ imageURLS, onSelectChange, removeFile, error }) {
   const inputRef = useRef(null);
 
   const handleSelect = (e) => {
@@ -47,6 +47,7 @@ export default function ImageUploader({ imageURLS, onSelectChange, removeFile })
           </div>
         </div>
       )}
+      {error.imagenes && <p className="text-red-500 text-sm">{error.imagenes}</p>}
     </div>
   );
 }

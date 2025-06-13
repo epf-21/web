@@ -7,6 +7,7 @@ export default function QuestionForm({
   onTitleChange,
   onInstructionChange,
   onExplanationChange,
+  error,
 }) {
   return (
     <div className="space-y-8 text-black-rock-950">
@@ -16,6 +17,7 @@ export default function QuestionForm({
           value={title}
           onChange={onTitleChange}
           placeholder="Título de la pregunta"
+          error={error.titulo ? error.titulo : null}
         />
 
         <QuestionTextInput
@@ -23,6 +25,7 @@ export default function QuestionForm({
           value={description}
           onChange={onInstructionChange}
           placeholder="Descripción de la pregunta"
+          error={error.descripcion ? error.descripcion : null}
         />
 
         <QuestionTextInput
@@ -30,6 +33,7 @@ export default function QuestionForm({
           value={explanation}
           onChange={onExplanationChange}
           placeholder="Explicación de la pregunta"
+          error={error.explicacion ? error.explicacion : null}
         />
       </section>
     </div>

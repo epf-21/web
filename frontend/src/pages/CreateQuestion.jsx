@@ -6,24 +6,56 @@ import ImageUploader from '../components/ImageUploader';
 import { useImageUploader } from '../hooks/useImageUploader';
 import { useUploadImages } from '../hooks/useUploadImage';
 import { useCreateQuestion } from '../hooks/useQuestion';
+import { validateQuestion } from '../schemas/question.schema';
 
 export default function CreateQuestion() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const age = searchParams.get('age');
   const level = searchParams.get('level')?.toUpperCase();
+
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [explanation, setExplanation] = useState('');
-  const { images, imageURLS, onSelectChange, removeFile } = useImageUploader();
+  const [formErrors, setFormErrors] = useState({})
 
-  console.log(age);
+  const { images, imageURLS, onSelectChange, removeFile } = useImageUploader();
 
   const { mutateAsync: uploadImages, isPending: isPendingImage } = useUploadImages();
   const { mutate: createQuestion, isPending } = useCreateQuestion();
 
+  const handleTitleChange = (e) => {
+    setTitle(e.target.value);
+    if (formErrors.titulo) {
+      setFormErrors(prev => ({ ...prev, titulo: undefined }));
+    }
+  };
+
+  const handleDescriptionChange = (e) => {
+    setDescription(e.target.value);
+    if (formErrors.descripcion) {
+      setFormErrors(prev => ({ ...prev, descripcion: undefined }));
+    }
+  };
+
+  const handleExplanationChange = (e) => {
+    setExplanation(e.target.value);
+    if (formErrors.explicacion) {
+      setFormErrors(prev => ({ ...prev, explicacion: undefined }));
+    }
+  };
+
+
+  const handleImageChange = (e) => {
+    onSelectChange(e);
+    if (formErrors.imagenes) {
+      setFormErrors(prev => ({ ...prev, imagenes: undefined }));
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setFormErrors({});
 
     try {
       const uploadedImages = await uploadImages(images);
@@ -35,6 +67,16 @@ export default function CreateQuestion() {
         nivel: level,
         imagenes: uploadedImages,
       };
+
+      const result = validateQuestion(questionData);
+      if (!result.success) {
+        const fieldErrors = {};
+        result.error.errors.forEach((err) => {
+          fieldErrors[err.path[0]] = err.message;
+        });
+        setFormErrors(fieldErrors);
+        return;
+      }
 
       createQuestion(questionData, {
         onSuccess: (data) => {
@@ -72,15 +114,18 @@ export default function CreateQuestion() {
             title={title}
             description={description}
             explanation={explanation}
-            onTitleChange={(e) => setTitle(e.target.value)}
-            onInstructionChange={(e) => setDescription(e.target.value)}
-            onExplanationChange={(e) => setExplanation(e.target.value)}
+            onTitleChange={handleTitleChange}
+            onInstructionChange={handleDescriptionChange}
+            onExplanationChange={handleExplanationChange}
+            error={formErrors}
           />
           <ImageUploader
             imageURLS={imageURLS}
-            onSelectChange={onSelectChange}
+            onSelectChange={handleImageChange}
             removeFile={removeFile}
+            error={formErrors}
           />
+
           <div className="flex justify-start pt-3">
             <button
               type="submit"
