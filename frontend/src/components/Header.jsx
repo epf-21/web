@@ -1,8 +1,14 @@
-import { Link } from 'react-router-dom';
-import { UserCircle2, LogOut } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuthStore } from '../stores/useAuthStore';
 import Icon from './Icon';
 
-export default function Header({ user, logout, login }) {
+export default function Header() {
+  const navigate = useNavigate();
+  const { user, logout } = useAuthStore();
+  const handleLogout = () => {
+    logout();
+    navigate('/');
+  };
   return (
     <header className="flex items-center justify-between px-6 py-6 bg-black-rock-950 shadow-sm">
       <Link to="/">
@@ -13,7 +19,7 @@ export default function Header({ user, logout, login }) {
           <>
             <span className="hidden sm:inline text-sm">{user.email}</span>
             <button
-              onClick={logout}
+              onClick={handleLogout}
               className="cursor-pointer"
             >
               <Icon name="LogOut" className="w-6 h-6" />
@@ -21,7 +27,7 @@ export default function Header({ user, logout, login }) {
           </>
         ) : (
           <button
-            onClick={login}
+            onClick={() => navigate('/login')}
             className="cursor-pointer"
           >
             <Icon name="UserCircle2" className="w-8 h-8" />

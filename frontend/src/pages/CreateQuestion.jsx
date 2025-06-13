@@ -7,6 +7,7 @@ import { useImageUploader } from '../hooks/useImageUploader';
 import { useUploadImages } from '../hooks/useUploadImage';
 import { useCreateQuestion } from '../hooks/useQuestion';
 import { validateQuestion } from '../schemas/question.schema';
+import Header from '../components/Header';
 
 export default function CreateQuestion() {
   const navigate = useNavigate();
@@ -96,12 +97,7 @@ export default function CreateQuestion() {
 
   return (
     <div className="min-h-screen bg-white">
-      <header className="flex items-center justify-between px-6 py-6 bg-black-rock-950 shadow-sm">
-        <h1 className="text-xl md:text-2xl font-bold text-white">
-          Editor de preguntas interactivas
-        </h1>
-        <UserCircle2 className="w-8 h-8 text-white" />
-      </header>
+      <Header />
       <main className="w-full px-6 md:px-12 py-10">
         <h2 className="text-3xl font-bold mb-10 text-black-rock-950 text-center">
           Crear Nueva Pregunta

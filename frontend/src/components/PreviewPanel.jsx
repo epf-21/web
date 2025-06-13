@@ -1,23 +1,17 @@
 import { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import Header from './Header';
-import { useAuthStore } from '../stores/useAuthStore';
 import { useQuestionById } from '../hooks/useQuestion';
 
 export default function PreviewPanel() {
-  const navigate = useNavigate();
-
   const { id } = useParams();
-
-  const { data: question, isLoading, error } = useQuestionById(id);
 
   const [filledBoxes, setFilledBoxes] = useState(0);
   const [currentlyDragging, setCurrentlyDragging] = useState(null);
-  const { user, logout } = useAuthStore();
   const [boxes, setBoxes] = useState([]);
-
   const [options, setOptions] = useState([]);
 
+  const { data: question, isLoading, error } = useQuestionById(id);
   const mainImage = '../assets/completo2.png';
 
   useEffect(() => {
@@ -103,21 +97,12 @@ export default function PreviewPanel() {
     }
   };
 
-  const handleLogout = () => {
-    logout();
-    navigate('/');
-  };
-
   if (isLoading) return <p className="text-gray-500">Cargando pregunta...</p>;
   if (error) return <p className="text-gray-500">No se pudo cargar la Pregunta.</p>;
 
   return (
     <div className="min-h-screen bg-white">
-      <Header
-        user={user}
-        login={() => navigate('/login')}
-        logout={handleLogout}
-      />
+      <Header />
       <main className="bg-white w-full p-5 max-w-full overflow-hidden">
         <div className="p-6">
           <div className="mb-10 border-b pb-6 border-gray-300">

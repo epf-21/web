@@ -12,7 +12,7 @@ export default function QuestionManager() {
   const level = searchParams.get('level');
   const levelUpper = level?.toUpperCase();
 
-  const { token, user, logout } = useAuthStore();
+  const { token } = useAuthStore();
 
   useEffect(() => {
     if (!level || !age || !token) {
@@ -28,18 +28,10 @@ export default function QuestionManager() {
   const handleClick = () => {
     navigate(`/create-question?age=${age}&level=${level}`);
   }
-  const handleLogout = () => {
-    logout();
-    navigate('/');
-  };
 
   return (
     <div className="min-h-screen bg-white">
-      <Header
-        user={user}
-        logout={handleLogout}
-        login={() => navigate('/login')}
-      />
+      <Header />
 
       <main className="px-6 py-10">
         <div className="mb-8">

@@ -5,7 +5,12 @@ export const useQuestionByLevel = ({ level, enabled = true }) => {
   return useQuery({
     queryKey: ['questions', level],
     queryFn: () => getQuestionByLevel(level),
-    enabled
+    enabled,
+    staleTime: 1000 * 60 * 5,
+    cacheTime: 1000 * 60 * 10,
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
+    refetchOnReconnect: false,
   })
 }
 

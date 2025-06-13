@@ -6,7 +6,7 @@ import { LEVELS } from '../constants/levels';
 
 export default function Home() {
   const navigate = useNavigate();
-  const { user, logout } = useAuthStore();
+  const { user } = useAuthStore();
 
   const handleSelect = (age, level) => {
     const path = `/questions?age=${age}&level=${level}`;
@@ -17,18 +17,10 @@ export default function Home() {
     }
   };
 
-  const handleLogout = () => {
-    logout();
-    navigate('/');
-  };
 
   return (
     <div className="min-h-screen bg-white relative">
-      <Header
-        user={user}
-        login={() => navigate('/login')}
-        logout={handleLogout}
-      />
+      <Header />
       <main className="px-6 py-10">
         <h2 className="text-3xl font-semibold text-black-rock-950 tracking-wide text-center mb-10 drop-shadow-sm">
           Selecciona una clasificación
