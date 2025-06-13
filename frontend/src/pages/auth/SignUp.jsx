@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useRegister } from '../../hooks/useAuth';
 import { Mail, Lock, User, Eye, EyeOff } from 'lucide-react';
-import { validate } from '../../schemas/register.schema';
+import { validateRegister } from '../../schemas/auth.schema';
 
 export default function SignUp() {
   const [showPassword, setShowPassword] = useState(false);
@@ -23,7 +23,7 @@ export default function SignUp() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const result = validate(form);
+    const result = validateRegister(form);
     if (!result.success) {
       const formattedErrors = result.error.flatten().fieldErrors;
       console.log('Errores:', formattedErrors);

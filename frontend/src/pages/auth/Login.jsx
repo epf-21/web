@@ -1,18 +1,30 @@
 import { useState } from 'react';
-import { Mail, Lock } from 'lucide-react';
-import { useLogin } from '../../hooks/useAuth';
 import { Link } from 'react-router-dom';
+import { Mail, Lock, Eye, EyeOff } from 'lucide-react';
+import { useLogin } from '../../hooks/useAuth';
+import { validateLogin } from '../../schemas/auth.schema';
 
 export default function Login() {
+  const [showPassword, setShowPassword] = useState(false);
+  const [errors, setErrors] = useState({});
   const [form, setForm] = useState({ email: '', password: '' });
   const { mutate: login, isPending, isError, error } = useLogin();
 
   const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value })
+    const { name, value } = e.target;
+    setForm((prev) => ({ ...prev, [name]: value }));
+    setErrors((prev) => ({ ...prev, [name]: undefined }));
   }
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    const result = validateLogin(form);
+    if (!result.success) {
+      const fieldErrors = result.error.flatten().fieldErrors;
+      setErrors(fieldErrors);
+      return;
+    }
     login(form)
   };
 
@@ -29,15 +41,17 @@ export default function Login() {
             <div className="relative">
               <Mail className="absolute left-3 top-2.5 text-gray-400 w-5 h-5" />
               <input
-                type="email"
+                type="text"
                 name="email"
                 value={form.email}
                 onChange={handleChange}
-                required
                 className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-black-rock-950"
                 placeholder="correo@gmail.com"
               />
             </div>
+            {errors.email && (
+              <p className="text-sm text-red-500 mt-1">{errors.email[0]}</p>
+            )}
           </div>
 
           <div>
@@ -45,15 +59,24 @@ export default function Login() {
             <div className="relative">
               <Lock className="absolute left-3 top-2.5 text-gray-400 w-5 h-5" />
               <input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 name="password"
                 value={form.password}
                 onChange={handleChange}
-                required
                 className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-black-rock-950"
                 placeholder="••••••••"
               />
+              <button
+                type="button"
+                className="absolute right-3 top-2.5 text-gray-500 cursor-pointer"
+                onClick={() => setShowPassword((prev) => !prev)}
+              >
+                {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+              </button>
             </div>
+            {errors.password && (
+              <p className="text-sm text-red-500 mt-1">{errors.password[0]}</p>
+            )}
           </div>
 
           {isError && (

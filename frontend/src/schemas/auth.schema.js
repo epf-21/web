@@ -15,4 +15,13 @@ const registerSchema = z.object({
     .regex(/[^A-Za-z0-9]/, 'Debe tener al menos un carácter especial'),
 })
 
-export const validate = (data) => registerSchema.safeParse(data);
+const loginSchema = z.object({
+  email: z.string()
+    .email('Formato de correo inválido'),
+  password: z.string()
+    .min(1, 'La contraseña es obligatoria'),
+})
+
+export const validateRegister = (data) => registerSchema.safeParse(data);
+
+export const validateLogin = (data) => loginSchema.safeParse(data);
