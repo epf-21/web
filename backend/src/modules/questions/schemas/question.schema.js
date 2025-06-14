@@ -46,3 +46,11 @@ export function validateQuestionCreate (data) {
   }
   return result.data
 }
+
+export function validateQuestionUpdate (data) {
+  const result = CreateQuestionSchema.partial().safeParse(data)
+  if (!result.success) {
+    throw new ValidationError(result.error.errors[0].message)
+  }
+  return result.data
+}

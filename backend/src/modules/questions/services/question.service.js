@@ -1,5 +1,5 @@
 import { QuestionModel } from '../models/question.model.js'
-import { validateQuestionCreate, validateQuestionLevel } from '../schemas/question.schema.js'
+import { validateQuestionCreate, validateQuestionLevel, validateQuestionUpdate } from '../schemas/question.schema.js'
 import { AppError } from '../../../utils/errors.js'
 
 export class QuestionService {
@@ -54,14 +54,15 @@ export class QuestionService {
   }
 
   static async updateQuestion (id, data) {
-    const { titulo, descripcion, explicacion, estado, nivel, imagenes } = validateQuestionCreate(data)
+    const { titulo, descripcion, explicacion, estado, nivel, imagenes } = validateQuestionUpdate(data)
 
     const existing = await QuestionModel.getQuestionById(id)
     if (!existing) {
       throw new AppError('Pregunta no encontrada', 404)
     }
 
-    const updated = await QuestionModel.updateQuestionById(id, {
+    const updated = await QuestionModel.updateQuestionById({
+      id,
       titulo,
       descripcion,
       explicacion,

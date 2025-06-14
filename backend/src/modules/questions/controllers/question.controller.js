@@ -67,7 +67,10 @@ export class QuestionController {
 
       const updatedQuestion = await QuestionService.updateQuestion(id, data)
 
-      res.status(200).json(updatedQuestion)
+      res.status(200).json({
+        ok: true,
+        data: updatedQuestion
+      })
     } catch (error) {
       next(error)
     }
