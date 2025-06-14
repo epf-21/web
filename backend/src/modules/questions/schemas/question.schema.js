@@ -17,6 +17,7 @@ const CreateQuestionSchema = z.object({
   descripcion: z.string().min(1, 'La descripcion es obligatoria'),
   explicacion: z.string().min(1, 'La explicacion es obligatoria'),
   estado: z.string().min(1, 'El estado es obligatorio'),
+  imagenPrincipal: z.string().url('La URL de la imagen principal es inválida').optional(),
   nivel: z.enum(['FACIL', 'MEDIO', 'DIFICIL'], {
     required_error: 'El nivel es obligatorio',
     invalid_type_error: 'Nivel invalido'

@@ -85,4 +85,15 @@ export class QuestionModel {
       }
     })
   }
+
+  static async updateImageMain ({ id, imagenPrincipal }) {
+    return await prisma.pregunta.update({
+      where: {
+        id
+      },
+      data: {
+        imagenPrincipal
+      }
+    })
+  }
 }

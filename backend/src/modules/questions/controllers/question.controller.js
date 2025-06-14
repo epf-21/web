@@ -75,4 +75,18 @@ export class QuestionController {
       next(error)
     }
   }
+
+  static async updateImageMain (req, res, next) {
+    try {
+      const { id } = req.params
+      const body = req.body
+      const updated = await QuestionService.updateImageMain(id, body)
+      res.status(200).json({
+        ok: true,
+        data: updated
+      })
+    } catch (error) {
+      next(error)
+    }
+  }
 }

@@ -4,6 +4,7 @@ import morgan from 'morgan'
 import { errorHandler } from './middlewares/errorHandler.js'
 import authRouter from './modules/auth/routes.js'
 import questionRouter from './modules/questions/routes.js'
+import solutionRouter from './modules/solutions/routes.js'
 
 const app = express()
 
@@ -17,6 +18,7 @@ app.get('/', (req, res) => {
 
 app.use('/api/auth', authRouter)
 app.use('/api/questions', questionRouter)
+app.use('/api/solution', solutionRouter)
 
 app.use(errorHandler)
 

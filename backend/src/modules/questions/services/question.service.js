@@ -85,4 +85,19 @@ export class QuestionService {
       }))
     }
   }
+
+  static async updateImageMain (id, data) {
+    const { imagenPrincipal } = validateQuestionUpdate(data)
+    const existing = await QuestionModel.getQuestionById(id)
+    if (!existing) {
+      throw new AppError('Pregunta no encontrada', 404)
+    }
+
+    const updated = await QuestionModel.updateImageMain({ id, imagenPrincipal })
+    return {
+      id: updated.id,
+      title: updated.titulo,
+      imageMain: updated.imagenPrincipal
+    }
+  }
 }

@@ -9,5 +9,6 @@ questionRouter.get('/', authMiddleware, QuestionController.findQuestionByLevel)
 questionRouter.post('/', authMiddleware, QuestionController.createQuestion)
 questionRouter.delete('/:id', authMiddleware, QuestionController.deleteQuestion)
 questionRouter.put('/:id', authMiddleware, QuestionController.updateQuestion)
+questionRouter.patch('/:id/image-main', authMiddleware, QuestionController.updateImageMain)
 
 export default questionRouter
