@@ -1,7 +1,7 @@
-import { AppError } from '../../../utils/errors'
-import { QuestionModel } from '../../questions/models/question.model'
-import { SolutionModel } from '../models/solution.model'
-import { validateCreateSolution } from '../schemas/solution.schema'
+import { AppError } from '../../../utils/errors.js'
+import { QuestionModel } from '../../questions/models/question.model.js'
+import { SolutionModel } from '../models/solution.model.js'
+import { validateCreateSolution } from '../schemas/solution.schema.js'
 
 export class SolutionService {
   static async createSolutions (idPregunta, data) {

@@ -1,4 +1,4 @@
-import { SolutionService } from '../services/solution.service'
+import { SolutionService } from '../services/solution.service.js'
 
 export class SolutionController {
   static async createSolutions (req, res, next) {
