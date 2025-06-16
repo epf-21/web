@@ -22,6 +22,11 @@ const DragDrop = forwardRef(({
     'name': 'sofa',
     'imgUrl': '../src/assets/sofa.png'
   },
+  {
+    'id': 3,
+    'name': 'cama',
+    'imgUrl': '../src/assets/bed.png'
+  },
 
   ]
 
@@ -149,10 +154,10 @@ const DragDrop = forwardRef(({
 
   return (
     <DndContext onDragEnd={handleDragEnd}>
-      <div className="flex flex-col gap-2 md:flex-row max-w-2xl p-2 border border-dashed border-gray-400 rounded-lg bg-white shadow-sm">
+      <div className="flex flex-col gap-3 md:flex-row max-w-2xl p-2 border border-dashed border-gray-400 rounded-lg bg-white shadow-sm">
         <div>
           <p className="text-sm font-semibold text-black-rock-950 mb-1">Imágenes subidas</p>
-          <p className='text-gray-500 mb-2 text-xs'>(Arrastra hasta {maxItems} elementos)</p>
+          <p className='text-gray-500 mb-3 text-xs'>(Arrastra hasta {maxItems} elementos)</p>
           <div className="flex flex-wrap gap-2 w-full md:w-38 min-h-24 border-2 border-gray-500 rounded-md shadow-sm p-2">
             {draggableItems.map(item => {
               return (
@@ -172,7 +177,15 @@ const DragDrop = forwardRef(({
         </div>
         <div>
           <h3 className="text-sm font-semibold text-gray-800 mb-1">Imagen principal</h3>
-          <p className='text-gray-500 mb-2 text-xs'>(Arrastra y suelta para mover elementos)</p>
+          <div className="flex justify-between mb-2">
+            <p className='text-gray-500 text-xs'>(Arrastra y suelta para mover elementos)</p>
+            <label className="inline-flex items-center cursor-pointer">
+              <input type="checkbox" value="" onChange={e => setChecked(!checked)} className="sr-only peer" />
+              <div className="relative w-9 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600 dark:peer-checked:bg-blue-600"></div>
+              <span className="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">Mostrar bordes</span>
+            </label>
+          </div>
+          
           <div ref={ref}>
             <Droppable styles={{ backgroundImage: 'url(' + backgroundImg + ')' }}>
               {droppedItems.map((item) => (
@@ -193,13 +206,28 @@ const DragDrop = forwardRef(({
               ))}
             </Droppable>
           </div>
-          {(isCovered) && <p className="text-xs text-red-500 font-semibold">Advertencia hay elementos completamente cubiertos</p>}
-          <div className="flex justify-end mt-2">
-            <label className="inline-flex items-center cursor-pointer">
-              <input type="checkbox" value="" onChange={e => setChecked(!checked)} className="sr-only peer" />
-              <div className="relative w-9 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600 dark:peer-checked:bg-blue-600"></div>
-              <span className="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">Mostrar bordes</span>
-            </label>
+          {(isCovered) && <p className="text-xs text-red-500 font-semibold">Advertencia hay elementos completamente cubiertos</p>}          
+          <div className="mt-2 flex gap-4 bg-gray-100 rounded-lg p-2">
+            <div className="flex-1">              
+              <input
+                type="range"
+                min="32"
+                max="256"
+                step="4"
+                value={sliderValue}
+                onChange={handleSliderChange}
+                className="w-full cursor-pointer"
+              />
+              <p className="text-xs font-semibold text-gray-900">Tamaño: {sliderValue}px</p>
+            </div>
+            <p>Grupo:</p>
+            <div className="w-16">              
+              <select value={selectGroup} onChange={handleSelectChange} className="w-full bg-white px-2 py-1 rounded-sm">
+                {groups.map((i) => (
+                  <option key={i}>{i}</option>
+                ))}
+              </select>
+            </div>
           </div>
           <div className="py-2 rounded-md">
             <p className="text-sm font-semibold text-gray-900 mb-1">Orden de apilamiento de las imagenes</p>
@@ -217,41 +245,17 @@ const DragDrop = forwardRef(({
               setIsCovered={setIsCovered}
               getAllAnswers={getAllAnswers}
             />
-          </div>
-
-          <div className="mt-2 flex gap-4 bg-gray-100 rounded-lg p-2">
-            <div className="flex-1">
-              <p>Elemento</p>
-              <input
-                type="range"
-                min="32"
-                max="256"
-                step="4"
-                value={sliderValue}
-                onChange={handleSliderChange}
-                className="w-full cursor-pointer"
-              />
-              <p className="text-xs font-semibold text-gray-900">Tamaño: {sliderValue}px</p>
-            </div>
-            <div className="w-24">
-              <p>Grupo</p>
-              <select value={selectGroup} onChange={handleSelectChange} className="w-full bg-white p-2 rounded-sm">
-                {groups.map((i) => (
-                  <option key={i}>{i}</option>
-                ))}
-              </select>
-            </div>
-          </div>
+          </div>          
         </div>
         <div>
           <h3 className="text-sm font-semibold text-gray-800 mb-1">Fondo</h3>
-          <p className='text-gray-500 mb-2 text-xs'>(selecciona 1)</p>
+          <p className='text-gray-500 mb-3 text-xs'>(selecciona 1)</p>
           <div className="flex flex-wrap gap-2 w-full md:w-20 min-h-24 border-2 border-gray-500 rounded-md shadow-sm p-2">
             {backgroundImages.map((img, i) => (
               <label key={i} className="inline-flex items-center cursor-pointer">
                 <input type="radio" name="bgOptions" value={img.imgUrl} onChange={e => setBackgroundImg(e.target.value)} className="sr-only peer" />
-                <div className="relative w-16 h-16 bg-gray-200 border-3 border-gray-200 peer-checked:border-blue-600 rounded-md">
-                  <img src={img.imgUrl} alt={img.name} />
+                <div className="flex w-16 h-16 bg-gray-200 border-3 border-gray-200 peer-checked:border-blue-600 rounded-md">
+                  <img src={img.imgUrl} alt={img.name} className="self-center" />
                 </div>
               </label>
             ))}
