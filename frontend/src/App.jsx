@@ -8,6 +8,7 @@ import Home from './pages/Home'
 import QuestionManager from './pages/QuestionManager'
 import ConfigureQuestion from './pages/ConfigureQuestion';
 import NotFound from './pages/NotFound';
+import VerifyEmail from './pages/auth/VerifyEmail';
 
 export default function App() {
   return (
@@ -15,6 +16,7 @@ export default function App() {
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/Register' element={<SignUp />} />
+        <Route path='/verify-email' element={<VerifyEmail />} />
         <Route path='/login' element={<Login />} />
         <Route path='/questions' element={<QuestionManager />} />
         <Route path='/Create-question' element={<CreateQuestion />} />
