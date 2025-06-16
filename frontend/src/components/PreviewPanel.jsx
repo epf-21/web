@@ -109,14 +109,14 @@ export default function PreviewPanel() {
             <h2 className="text-3xl font-bold text-black-rock-950">{question.title}</h2>
           </div>
           <div className="mb-4">
-            <h2 className="text-3xl font-medium text-gray-900 mb-2">Descripción</h2>
+            <h2 className="text-xl font-medium text-gray-900 mb-2">Descripción</h2>
             <p className="text-base text-gray-700">{question.description}</p>
           </div>
 
           <div className="flex justify-center mb-8 ">
             <img
               src={mainImage}
-              className="w-48 h-48 object-contain bg-gray-200"
+              className="w-80 h-80 object-contain bg-gray-200"
             />
           </div>
 
@@ -127,7 +127,7 @@ export default function PreviewPanel() {
             />
           </div>
           <div className="py-2 rounded-md">
-            <h2 className="text-3xl font-medium text-gray-900 mb-2">Explicación</h2>
+            <h2 className="text-xl font-medium text-gray-900 mb-2">Explicación</h2>
             <p className="text-sm text-gray-700">{question.explanation}</p>
           </div>
 
@@ -135,7 +135,7 @@ export default function PreviewPanel() {
             {boxes.map((box) => (
               <div
                 key={box.id}
-                className={`w-28 h-28 flex justify-center items-center rounded-lg transition-all duration-300 cursor-pointer
+                className={`w-24 h-24 flex justify-center items-center rounded-lg transition-all duration-300 cursor-pointer
                   ${box.filled
                     ? 'border-2 border-black-rock-800 bg-blue-50'
                     : 'border-2 border-dashed border-gray-500 bg-gray-50 hover:border-blue-400'
