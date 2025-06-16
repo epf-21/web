@@ -12,7 +12,7 @@ export default function PreviewPanel() {
   const [options, setOptions] = useState([]);
 
   const { data: question, isLoading, error } = useQuestionById(id);
-  const mainImage = '../assets/completo2.png';
+  const mainImage = question.imageMain;
 
   useEffect(() => {
     if (!question || !question.images) return;
