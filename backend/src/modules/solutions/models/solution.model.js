@@ -9,4 +9,28 @@ export class SolutionModel {
       }
     })
   }
+
+  static async findSolutionsById (id) {
+    return await prisma.respuesta.findUnique({
+      where: {
+        id
+      }
+    })
+  }
+
+  static async deleteSolutionById (id) {
+    return await prisma.respuesta.delete({
+      where: {
+        id
+      }
+    })
+  }
+
+  static async deleteAllSolutions (idPregunta) {
+    return await prisma.respuesta.deleteMany({
+      where: {
+        idPregunta
+      }
+    })
+  }
 }
