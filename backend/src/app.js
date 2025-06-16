@@ -18,7 +18,7 @@ app.get('/', (req, res) => {
 
 app.use('/api/auth', authRouter)
 app.use('/api/questions', questionRouter)
-app.use('/api/solution', solutionRouter)
+app.use('/api/solutions', solutionRouter)
 
 app.use(errorHandler)
 
