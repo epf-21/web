@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import {
   DndContext,
   closestCenter,
@@ -16,35 +15,19 @@ import {
 
 import { SortableItem } from './SortableItem';
 
-export default function Sortable() {
-  const listItems = [
-    {
-      id: 1,
-      name: 'Plato',
-      imageUrl: 'plate.png'
-    },
-    {
-      id: 2,
-      name: 'Galleta',
-      imageUrl: 'saltine_cracker.png'
-    },
-    {
-      id: 3,
-      name: 'Cucharilla',
-      imageUrl: 'soup_spoon.png'
-    },
-    {
-      id: 4,
-      name: 'Taza de Café',
-      imageUrl: 'mug.png'
-    },
-    {
-      id: 5,
-      name: 'Cuernito',
-      imageUrl: 'croissant.png'
-    }
-  ]
-  const [items, setItems] = useState(listItems);
+export default function Sortable({
+  draggableItems, 
+  setDraggableItems, 
+  droppedItems, 
+  setDroppedItems, 
+  setActiveItemId, 
+  setSliderValue, 
+  setSelectGroup, 
+  updateGroups, 
+  checkCoveredItems, 
+  setIsCovered,
+  getAllAnswers
+  }) {
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -52,16 +35,36 @@ export default function Sortable() {
       coordinateGetter: sortableKeyboardCoordinates,
     })
   );
+
   const handleDragEnd = (event) => {
     const { active, over } = event;
 
     if (active.id !== over.id) {
-      setItems((items) => {
-        const oldIndex = items.findIndex(item => item.id === active.id);
-        const newIndex = items.findIndex(item => item.id === over.id);        
-        return arrayMove(items, oldIndex, newIndex);
-      });
+      const _items = [...droppedItems]
+      const oldIndex = _items.findIndex(item => item.id === active.id);
+      const newIndex = _items.findIndex(item => item.id === over.id);
+      const orderedItems = arrayMove(_items, oldIndex, newIndex)
+      setIsCovered(checkCoveredItems(orderedItems))
+      updateGroups(orderedItems)
+      setDroppedItems(orderedItems)
+      getAllAnswers(orderedItems)
     }
+    const item = droppedItems.find((x) => x.id === event.active.id)
+    setActiveItemId(item.id)
+    setSliderValue(item.width)
+    setSelectGroup(item.group)    
+    
+  }
+
+  const removeItem = (id) => {
+    const item = droppedItems.find((x) => x.id === id)   
+    item.group = 0
+    item.x = 0
+    item.y = 0    
+    setDroppedItems(droppedItems.filter((x) => x.id !== id))
+    setDraggableItems([...draggableItems,item])    
+    updateGroups(droppedItems)
+    getAllAnswers(droppedItems)
   }
 
   return (
@@ -71,11 +74,17 @@ export default function Sortable() {
       onDragEnd={handleDragEnd}
     >
       <SortableContext
-        items={items}
+        items={droppedItems}
         strategy={horizontalListSortingStrategy}
       >
-        {items.map(item =>
-          <SortableItem key={item.id} id={item.id} src={item.imageUrl} name={item.name} >
+        {droppedItems.map(item =>
+          <SortableItem 
+          key={item.id} 
+          id={item.id} 
+          src={item.imageUrl} 
+          group={item.group} 
+          removeItem={removeItem}
+          >
           </SortableItem>
         )}
       </SortableContext>

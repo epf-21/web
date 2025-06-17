@@ -1,30 +1,41 @@
-import { useState } from 'react';
-import { UserCircle2 } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import Header from './Header';
+import { useQuestionById } from '../hooks/useQuestion';
 
 export default function PreviewPanel() {
+  const { id } = useParams();
+
   const [filledBoxes, setFilledBoxes] = useState(0);
   const [currentlyDragging, setCurrentlyDragging] = useState(null);
-  const [boxes, setBoxes] = useState([
-    { id: 1, filled: false, content: null },
-    { id: 2, filled: false, content: null },
-    { id: 3, filled: false, content: null },
-    { id: 4, filled: false, content: null },
-    { id: 5, filled: false, content: null },
+  const [boxes, setBoxes] = useState([]);
+  const [options, setOptions] = useState([]);
 
-  ]);
+  const { data: question, isLoading, error } = useQuestionById(id);
+  const mainImage = question.imageMain;
 
-  const [options, setOptions] = useState([
-    { id: 1, visible: true, imgSrc: 'src/assets/soup_spoon.png', alt: "Opción 1" },
-    { id: 2, visible: true, imgSrc: 'src/assets/saltine_cracker.png', alt: "Opción 2" },
-    { id: 3, visible: true, imgSrc: 'src/assets/plate.png', alt: "Opción 3" },
-    { id: 4, visible: true, imgSrc: 'src/assets/croissant.png', alt: "Opción 4" },
-    { id: 5, visible: true, imgSrc: 'src/assets/mug.png', alt: "Opción 5" },
-  ]);
+  useEffect(() => {
+    if (!question || !question.images) return;
 
-  const title = 'Cual es el orden que esta puesto en la mesa';
-  const description = 'Bob puso la mesa';
-  const explanation = 'Pon el orden correcto de los objetos en la mesa';
-  const mainImage = 'src/assets/completo2.png';
+    const formattedOptions = question.images.map((img) => ({
+      id: img.id,
+      visible: true,
+      imgSrc: img.url,
+      alt: img.name,
+    }));
+
+    setOptions(formattedOptions);
+
+    const initialBoxes = formattedOptions.map((_, index) => ({
+      id: index + 1,
+      filled: false,
+      content: null,
+    }));
+
+    setBoxes(initialBoxes);
+    setFilledBoxes(0);
+  }, [question]);
+
 
   const handleDragStart = (optionId) => {
     setCurrentlyDragging(optionId);
@@ -86,26 +97,26 @@ export default function PreviewPanel() {
     }
   };
 
+  if (isLoading) return <p className="text-gray-500">Cargando pregunta...</p>;
+  if (error) return <p className="text-gray-500">No se pudo cargar la Pregunta.</p>;
+
   return (
     <div className="min-h-screen bg-white">
-      <header className="flex items-center justify-between px-6 py-6 bg-black-rock-950 shadow-sm">
-        <h1 className="text-xl md:text-2xl font-bold text-white">Editor de preguntas interactivas</h1>
-        <UserCircle2 className="w-8 h-8 text-white" />
-      </header>
+      <Header />
       <main className="bg-white w-full p-5 max-w-full overflow-hidden">
         <div className="p-6">
           <div className="mb-10 border-b pb-6 border-gray-300">
-            <h2 className="text-3xl font-bold text-black-rock-950">{title}</h2>
+            <h2 className="text-3xl font-bold text-black-rock-950">{question.title}</h2>
           </div>
           <div className="mb-4">
-            <h2 className="text-3xl font-medium text-gray-900 mb-2">Descripción</h2>
-            <p className="text-base text-gray-700">{description}</p>
+            <h2 className="text-xl font-medium text-gray-900 mb-2">Descripción</h2>
+            <p className="text-base text-gray-700">{question.description}</p>
           </div>
 
           <div className="flex justify-center mb-8 ">
             <img
               src={mainImage}
-              className="w-48 h-48 object-contain bg-gray-200"
+              className="w-80 h-80 object-contain bg-gray-200"
             />
           </div>
 
@@ -116,15 +127,15 @@ export default function PreviewPanel() {
             />
           </div>
           <div className="py-2 rounded-md">
-            <h2 className="text-3xl font-medium text-gray-900 mb-2">Explicación</h2>
-            <p className="text-sm text-gray-700">{explanation}</p>
+            <h2 className="text-xl font-medium text-gray-900 mb-2">Explicación</h2>
+            <p className="text-sm text-gray-700">{question.explanation}</p>
           </div>
 
           <div className="flex justify-center flex-wrap gap-4 mb-8">
             {boxes.map((box) => (
               <div
                 key={box.id}
-                className={`w-28 h-28 flex justify-center items-center rounded-lg transition-all duration-300 cursor-pointer
+                className={`w-24 h-24 flex justify-center items-center rounded-lg transition-all duration-300 cursor-pointer
                   ${box.filled
                     ? 'border-2 border-black-rock-800 bg-blue-50'
                     : 'border-2 border-dashed border-gray-500 bg-gray-50 hover:border-blue-400'

@@ -1,12 +1,31 @@
-import { useNavigate } from 'react-router-dom';
-import { Mail, Lock } from 'lucide-react';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { Mail, Lock, Eye, EyeOff } from 'lucide-react';
+import { useLogin } from '../../hooks/useAuth';
+import { validateLogin } from '../../schemas/auth.schema';
 
 export default function Login() {
-  const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
+  const [errors, setErrors] = useState({});
+  const [form, setForm] = useState({ email: '', password: '' });
+  const { mutate: login, isPending, isError, error } = useLogin();
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setForm((prev) => ({ ...prev, [name]: value }));
+    setErrors((prev) => ({ ...prev, [name]: undefined }));
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    navigate('/');
+
+    const result = validateLogin(form);
+    if (!result.success) {
+      const fieldErrors = result.error.flatten().fieldErrors;
+      setErrors(fieldErrors);
+      return;
+    }
+    login(form)
   };
 
   return (
@@ -22,12 +41,17 @@ export default function Login() {
             <div className="relative">
               <Mail className="absolute left-3 top-2.5 text-gray-400 w-5 h-5" />
               <input
-                type="email"
-                required
+                type="text"
+                name="email"
+                value={form.email}
+                onChange={handleChange}
                 className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-black-rock-950"
-                placeholder="correo@ejemplo.com"
+                placeholder="correo@gmail.com"
               />
             </div>
+            {errors.email && (
+              <p className="text-sm text-red-500 mt-1">{errors.email[0]}</p>
+            )}
           </div>
 
           <div>
@@ -35,29 +59,49 @@ export default function Login() {
             <div className="relative">
               <Lock className="absolute left-3 top-2.5 text-gray-400 w-5 h-5" />
               <input
-                type="password"
-                required
+                type={showPassword ? "text" : "password"}
+                name="password"
+                value={form.password}
+                onChange={handleChange}
                 className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-black-rock-950"
                 placeholder="••••••••"
               />
+              <button
+                type="button"
+                className="absolute right-3 top-2.5 text-gray-500 cursor-pointer"
+                onClick={() => setShowPassword((prev) => !prev)}
+              >
+                {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+              </button>
             </div>
+            {errors.password && (
+              <p className="text-sm text-red-500 mt-1">{errors.password[0]}</p>
+            )}
           </div>
 
-          <div className="flex items-center justify-between text-sm text-gray-600">
-            <label className="flex items-center space-x-2">
-              <input type="checkbox" className="form-checkbox text-blue-600" />
-              <span>Recordarme</span>
-            </label>
-            <a href="#" className="text-black-rock-700 hover:underline">¿Olvidaste tu contraseña?</a>
-          </div>
+          {isError && (
+            <p className="text-sm text-red-500">
+              {error?.response?.data?.message || 'Error al iniciar sesión.'}
+            </p>
+          )}
 
           <button
             type="submit"
-            className="w-full py-2 bg-black-rock-600 text-white rounded-xl hover:bg-black-rock-800 transition-all"
+            disabled={isPending}
+            className="w-full py-2 bg-black-rock-950 text-white rounded-xl hover:bg-black transition-all"
           >
-            Ingresar
+            {isPending ? 'Iniciando sesión...' : 'Iniciar sesión'}
           </button>
         </form>
+        <p className="text-sm text-center text-gray-500 mt-6">
+          ¿No tienes cuenta? {' '}
+          <Link
+            to="/register"
+            className="text-black-rock-950 font-medium underline"
+          >
+            Registrate aquí
+          </Link>
+        </p>
       </div>
     </div>
   );

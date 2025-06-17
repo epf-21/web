@@ -1,4 +1,3 @@
-import React from 'react';
 import {useDroppable} from '@dnd-kit/core';
 
 export function Droppable(props) {
@@ -7,7 +6,7 @@ export function Droppable(props) {
   });
   const style = {
     color: isOver ? 'green' : undefined,
-    backgroundImage: `url(${'src/assets/table.png'})`,
+    zIndex: 0,
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     backgroundRepeat: 'no-repeat'
@@ -15,7 +14,7 @@ export function Droppable(props) {
   
   
   return (
-    <div className='relative bg-gray-100 w-100 h-80 border-2 rounded-md border-gray-500  p-2' ref={setNodeRef} style={style}>
+    <div className='relative bg-gray-100 w-100 h-80 border-2 rounded-md border-gray-500  p-2' ref={setNodeRef} style={{ ...style, ...props.styles}}>
       {props.children}
     </div>
   );

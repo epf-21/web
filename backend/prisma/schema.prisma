@@ -1,0 +1,58 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum Rol {
+  PROFESOR
+  ADMINISTRADOR
+}
+
+enum Nivel {
+  FACIL
+  MEDIO
+  DIFICIL
+}
+
+model Usuario {
+  id          String     @id @default(uuid())
+  nombre      String
+  rol         Rol        @default(PROFESOR)
+  email       String     @unique
+  contrasenia String
+  preguntas   Pregunta[]
+}
+
+model Pregunta {
+  id              String      @id @default(uuid())
+  titulo          String
+  descripcion     String
+  explicacion     String
+  estado          String
+  imagenPrincipal String?
+  nivel           Nivel
+  usuario         Usuario     @relation(fields: [idUsuario], references: [id])
+  idUsuario       String
+  respuestas      Respuesta[]
+  imagenes        Imagen[]
+}
+
+model Respuesta {
+  id         String   @id @default(uuid())
+  respuesta  String[]
+  pregunta   Pregunta @relation(fields: [idPregunta], references: [id])
+  idPregunta String
+}
+
+model Imagen {
+  id         String   @id @default(uuid())
+  nombre     String
+  url        String
+  idPregunta String
+  pregunta   Pregunta @relation(fields: [idPregunta], references: [id])
+}

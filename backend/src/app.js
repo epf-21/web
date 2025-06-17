@@ -1,6 +1,10 @@
 import express, { json } from 'express'
 import cors from 'cors'
 import morgan from 'morgan'
+import { errorHandler } from './middlewares/errorHandler.js'
+import authRouter from './modules/auth/routes.js'
+import questionRouter from './modules/questions/routes.js'
+import solutionRouter from './modules/solutions/routes.js'
 
 const app = express()
 
@@ -9,11 +13,13 @@ app.use(json())
 app.use(morgan('dev'))
 
 app.get('/', (req, res) => {
-  res.send('Nuevo proyecto')
+  res.send('Editor de preguntas interactivas')
 })
 
-const PORT = process.env.PORT || 4000
+app.use('/api/auth', authRouter)
+app.use('/api/questions', questionRouter)
+app.use('/api/solutions', solutionRouter)
 
-app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`)
-})
+app.use(errorHandler)
+
+export default app
