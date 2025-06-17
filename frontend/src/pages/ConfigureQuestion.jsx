@@ -56,13 +56,15 @@ export default function ConfigureQuestion() {
     return permutations;
   }
 
-  const getAllAnswers = (items) => {    
+  const getAllAnswers = (allItems) => {    
     const allAnswers = []
     const grouppedItems = []    
+    const items = [...allItems]
+    console.log(items)    
     items.sort((a, b) => a.group - b.group);
     for (let i = 0; i < items.length; i++) {
       const group = items.filter((x) => x.group === (i + 1))
-      if (group.length > 1) {
+      if (group.length > 0) {
         grouppedItems.push(group)
       }
     }
@@ -203,13 +205,13 @@ export default function ConfigureQuestion() {
 
           <div className="py-2 rounded-md">
             <h2 className="text-lg font-medium text-gray-900 mb-2">Vista previa respuestas</h2>
-            <ol>
+            <ol className='list-decimal'>
               {answers.map((arr, i) => (
-                <li key={i}> <span className='inline-block w-8'>{i + 1}</span>
+                <li key={i}>
                   {arr.map((id, j) => {
                     const item = droppedItems.find((x) => x.id === id)
                     if (item) {
-                      return (
+                      return (                        
                         <div key={j} className="w-12 h-12 inline-block mx-1 bg-gray-300 rounded-sm">
                           <img src={item.imageUrl} alt={item.name} className='max-w-12 max-h-12' />
                         </div>
