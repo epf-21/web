@@ -44,11 +44,13 @@ const DragDrop = forwardRef(({
     setSelectGroup(event.target.value)
     const item = droppedItems.find((x) => x.id === activeItemId)
     if (item) {
-      item.group = event.target.value
+      item.group = parseInt(event.target.value)
       const _items = [...droppedItems]
       setDroppedItems(_items)
-      getAllAnswers(_items)
+      getAllAnswers(_items)     
     }
+    
+    
   }
 
   const handleSliderChange = (event) => {
