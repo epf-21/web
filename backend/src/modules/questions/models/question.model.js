@@ -57,7 +57,7 @@ export class QuestionModel {
     })
   }
 
-  static async updateQuestionById ({ id, titulo, descripcion, explicacion, estado, nivel, imagenes }) {
+  static async updateQuestionById ({ id, titulo, descripcion, explicacion, nivel, imagenes }) {
     await prisma.imagen.deleteMany({
       where: {
         idPregunta: id
