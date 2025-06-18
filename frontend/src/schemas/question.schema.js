@@ -7,8 +7,6 @@ const questionSchema = z.object({
     .min(8, 'La descripcion debe tener al menos 8 caracteres'),
   explicacion: z.string()
     .min(8, 'La explicación debe tener al menos 8 catacteres'),
-  estado: z.string()
-    .nonempty('Estado requerido'),
   nivel: z.string()
     .nonempty('Nivel requerido'),
   imagenes: z.array(

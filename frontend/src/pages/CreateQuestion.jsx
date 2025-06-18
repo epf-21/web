@@ -12,7 +12,6 @@ import Header from '../components/Header';
 export default function CreateQuestion() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const age = searchParams.get('age');
   const level = searchParams.get('level')?.toUpperCase();
 
   const [title, setTitle] = useState('');
@@ -64,7 +63,6 @@ export default function CreateQuestion() {
         titulo: title,
         descripcion: description,
         explicacion: explanation,
-        estado: "ACTIVA",
         nivel: level,
         imagenes: uploadedImages,
       };
