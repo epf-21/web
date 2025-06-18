@@ -59,30 +59,30 @@ export default function ConfigureQuestion() {
   const getAllAnswers = (allItems) => {    
     const allAnswers = []
     const grouppedItems = []    
-    const items = [...allItems]
-    console.log(items)    
+    const items = [...allItems]    
     items.sort((a, b) => a.group - b.group);
     for (let i = 0; i < items.length; i++) {
       const group = items.filter((x) => x.group === (i + 1))
-      if (group.length > 0) {
-        grouppedItems.push(group)
+      if (group.length > 1) {
+        grouppedItems.push({'group':i + 1, 'elements': group})
       }
-    }
+    }        
     for (let i = 0; i < grouppedItems.length; i++) {
-      const permutations = getPermutations(grouppedItems[i])
+      const permutations = getPermutations(grouppedItems[i].elements)
+      const g = grouppedItems[i].group
       for (let j = 0; j < permutations.length; j++) {
         const answersIds = []
         let c = 0
         for (let k = 0; k < items.length; k++) {
-          if (items[k].group === (i + 1)) {
+          if (items[k].group === g) {
             answersIds.push(permutations[j][c].id)
             c++
           } else {
-            answersIds.push(items[k].id)
+            answersIds.push(items[k].id)            
           }
         }
         allAnswers.push(answersIds)
-      }
+      }      
     }
     if (allAnswers.length === 0) {
       const singleAnswer = []
