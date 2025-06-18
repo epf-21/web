@@ -33,7 +33,6 @@ model Pregunta {
   titulo          String
   descripcion     String
   explicacion     String
-  estado          String
   imagenPrincipal String?
   nivel           Nivel
   usuario         Usuario     @relation(fields: [idUsuario], references: [id])
