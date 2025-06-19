@@ -2,6 +2,9 @@ import { useEffect } from 'react'
 import { useSearchParams, useNavigate } from 'react-router-dom'
 import Icon from '../components/Icon';
 import Header from '../components/Header';
+import QuestionCard from '../components/QuestionCard';
+import Loading from '../components/Loading';
+import Error from '../components/Error';
 import { useAuthStore } from '../stores/useAuthStore';
 import { useDeleteQuestion, useQuestionByLevel } from '../hooks/useQuestion';
 
@@ -49,41 +52,22 @@ export default function QuestionManager() {
           </button>
         </div>
         {
-          isLoading && <p className="text-black-rock-950"> Cargando Preguntas</p>
+          isLoading && <Loading />
         }
         {
-          error && <p className="text-red-500">Error al cargar preguntas</p>
+          error && <Error message="Error al cargar las preguntas" />
         }
 
         <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-          {data && data.map((q) => (
-            <div
-              key={q.id}
-              className="flex items-center justify-between bg-gray-50 border border-gray-200 rounded-2xl px-6 py-4 shadow-sm hover:shadow-md transition"
-            >
-              <div>
-                <h3 className="text-lg font-semibold text-black-rock-950">{q.title}</h3>
-                <p className="text-sm text-gray-600">{q.description}</p>
-              </div>
-              <div className="flex gap-2">
-                <button
-                  onClick={() => navigate(`/preview/${q.id}`)}
-                  className="p-2 rounded-full bg-black-rock-100 text-black-rock-950 hover:bg-black-rock-200 transition transform hover:scale-110">
-                  <Icon name="Eye" />
-                </button>
-                <button
-                  onClick={() => navigate(`/configure-question/${q.id}`)}
-                  className="p-2 rounded-full bg-black-rock-100 text-black-rock-950 hover:bg-black-rock-200 transition transform hover:scale-110">
-                  <Icon name="Pencil" />
-                </button>
-                <button
-                  onClick={() => deleteQuestion(q.id)}
-                  disabled={isPending}
-                  className="p-2 rounded-full bg-black-rock-100 text-black-rock-950 hover:bg-black-rock-200 transition transform hover:scale-110">
-                  <Icon name="Trash2" />
-                </button>
-              </div>
-            </div>
+          {data && data.map((question) => (
+            <QuestionCard
+              key={question.id}
+              question={question}
+              onPreview={() => navigate(`/preview/${question.id}`)}
+              onEdit={() => navigate(`/configure-question/${question.id}`)}
+              onDelete={() => deleteQuestion(question.id)}
+              isDeleting={isPending}
+            />
           ))}
         </div>
       </main>
