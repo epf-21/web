@@ -1,8 +1,8 @@
 import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../stores/useAuthStore';
 import Header from '../components/Header';
-import Icon from '../components/Icon';
 import { LEVELS } from '../constants/levels';
+import LevelCard from '../components/LevelCard';
 
 export default function Home() {
   const navigate = useNavigate();
@@ -28,19 +28,14 @@ export default function Home() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
           {LEVELS.map(({ age, level, label, icon }) => (
-            <div
+            <LevelCard
               key={level}
+              age={age}
+              level={level}
+              label={label}
+              icon={icon}
               onClick={() => handleSelect(age, level)}
-              className="cursor-pointer p-6 rounded-2xl bg-black-rock-950 text-white hover:scale-105 transform transition-all duration-200 shadow-xl border border-black-rock-900"
-            >
-              <div className="flex items-center justify-center mb-4 bg-white/10 p-3 rounded-full">
-                <Icon name={icon} className="mr-2" />
-              </div>
-              <h3 className="text-lg font-semibold text-center">{label}</h3>
-              <p className="text-sm text-gray-300 text-center mt-1">
-                Edad: {age} &bull; Nivel: {level}
-              </p>
-            </div>
+            />
           ))}
         </div>
       </main>
