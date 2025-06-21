@@ -30,6 +30,15 @@ const DragDrop = forwardRef(({
 
   ]
 
+  const groupColors = [
+    '#CCCCCC', //gray
+    '#e74c3c', //red
+    '#9b59b6', //purple
+    '#f1c40f', //yellow
+    '#2ecc71', //green
+    '#3498db', //blue
+  ]
+
   const maxItems = 5
 
   const [activeItemId, setActiveItemId] = useState(null);
@@ -198,7 +207,7 @@ const DragDrop = forwardRef(({
                     top: `${item.y}px`,
                     width: `${item.width}px`,
                     height: `${item.height}px`,
-                    outline: checked ? '2px solid #00FF00' : 'none'
+                    outline: checked ? '2px solid ' + groupColors[item.group] : 'none'
                   }}
                   key={item.id}
                   id={item.id}
@@ -219,12 +228,16 @@ const DragDrop = forwardRef(({
                 value={sliderValue}
                 onChange={handleSliderChange}
                 className="w-full cursor-pointer"
+                disabled = {(activeItemId === null)} 
               />
               <p className="text-xs font-semibold text-gray-900">Tamaño: {sliderValue}px</p>
             </div>
             <p>Grupo:</p>
             <div className="w-16">              
-              <select value={selectGroup} onChange={handleSelectChange} className="w-full bg-white px-2 py-1 rounded-sm">
+              <select value={selectGroup} 
+              onChange={handleSelectChange} 
+              disabled = {(activeItemId === null)} 
+              className="w-full bg-white px-2 py-1 rounded-sm">                
                 {groups.map((i) => (
                   <option key={i}>{i}</option>
                 ))}
@@ -252,11 +265,11 @@ const DragDrop = forwardRef(({
         <div>
           <h3 className="text-sm font-semibold text-gray-800 mb-1">Fondo</h3>
           <p className='text-gray-500 mb-3 text-xs'>(selecciona 1)</p>
-          <div className="flex flex-wrap gap-2 w-full md:w-20 min-h-24 border-2 border-gray-500 rounded-md shadow-sm p-2">
+          <div className="flex flex-wrap gap-2 w-full md:w-20 min-h-24 border-2 border-gray-500 rounded-md shadow-sm p-2">            
             {backgroundImages.map((img, i) => (
               <label key={i} className="inline-flex items-center cursor-pointer">
                 <input type="radio" name="bgOptions" value={img.imgUrl} onChange={e => setBackgroundImg(e.target.value)} className="sr-only peer" />
-                <div className="flex w-16 h-16 bg-gray-200 border-3 border-gray-200 peer-checked:border-blue-600 rounded-md">
+                <div className="flex w-16 h-16 bg-gray-200 border-3 border-gray-200 peer-checked:border-blue-500 rounded-md">
                   <img src={img.imgUrl} alt={img.name} className="self-center" />
                 </div>
               </label>

@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import DragDrop from '../components/DragDrop';
+import Header from '../components/Header';
 import { useQuestionById, useUpdateMainImage } from "../hooks/useQuestion";
 import { uploadImage } from '../services/uploadService';
 import domtoimage from 'dom-to-image-more'
@@ -35,8 +36,8 @@ export default function ConfigureQuestion() {
     setDraggableItems(processedItems);
   }, [question]);
 
-  if (isLoading) return <p className="text-gray-500">Cargando pregunta...</p>;
-  if (error) return <p className="text-gray-500">No se pudo cargar la Pregunta.</p>;
+  if (isLoading) return <p className="text-gray-500 m-4">Cargando pregunta...</p>;
+  if (error) return <p className="text-gray-500 m-4">No se pudo cargar la Pregunta.</p>;
 
   const getPermutations = (arr) => {
     const permutations = [];
@@ -175,9 +176,11 @@ export default function ConfigureQuestion() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 px-8 py-10">
+    <div className="min-h-screen">
+      <Header />
+      <div className="bg-gray-50 px-8 py-6">
       <div className="mb-4 border-b pb-2 border-gray-300">
-        <h1 className="text-2xl font-bold text-black-rock-950">{question.title}</h1>
+        <h1 className="text-xl font-bold text-black-rock-950">{question.title}</h1>
       </div>
 
       <div className="flex flex-col md:flex-row gap-4">
@@ -205,7 +208,7 @@ export default function ConfigureQuestion() {
 
           <div className="py-2 rounded-md">
             <h2 className="text-lg font-medium text-gray-900 mb-2">Vista previa respuestas</h2>
-            <ol className='list-decimal'>
+            <ol className='list-decimal pl-4'>
               {answers.map((arr, i) => (
                 <li key={i}>
                   {arr.map((id, j) => {
@@ -234,6 +237,7 @@ export default function ConfigureQuestion() {
             </button>
           </div>
         </div>
+      </div>
       </div>
     </div>
   );
