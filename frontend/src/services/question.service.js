@@ -20,6 +20,11 @@ export const createQuestion = async (data) => {
   return response.data;
 }
 
+export const updateQuestion = async (id) => {
+  const response = await api.put(`/questions/${id}`);
+  return response.data;
+}
+
 export const updateMainImage = async ({ id, mainImage }) => {
   const response = await api.patch(`/questions/${id}/image-main`, mainImage);
   return response.data;
