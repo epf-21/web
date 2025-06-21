@@ -199,10 +199,9 @@ export default function PreviewPanel() {
             </button>
             <button
               onClick={handleCheck}
-              className="px-6 py-3 bg-gradient-to-r from-black-rock-800 to-black-rock-900 hover:from-black-rock-400 hover:to-black-rock-600 
-                text-white font-semibold rounded-full transition-all duration-300 transform hover:-translate-y-1"
+              className="px-6 py-3 bg-black-rock-900 hover:bg-black-rock-950 text-white font-semibold rounded-full transition-all duration-300 transform hover:-translate-y-1"
             >
-              Comprobar
+              Verificar
             </button>
           </div>
         </div>
