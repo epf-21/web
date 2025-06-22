@@ -46,7 +46,7 @@ export default function QuestionManager() {
         <div className="mb-6 flex justify-start">
           <button
             onClick={handleClick}
-            className="flex items-center gap-2 bg-black-rock-900 hover:bg-black-rock-950 text-white py-2 px-4 rounded-xl transition shadow-md">
+            className="flex items-center gap-2 bg-black-rock-950 hover:bg-black text-white py-2 px-4 rounded-xl transition shadow-md">
             <Icon name="Plus" />
             Crear nueva pregunta
           </button>
