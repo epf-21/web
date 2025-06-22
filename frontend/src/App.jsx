@@ -9,6 +9,7 @@ import QuestionManager from './pages/QuestionManager'
 import ConfigureQuestion from './pages/ConfigureQuestion';
 import NotFound from './pages/NotFound';
 import VerifyEmail from './pages/auth/VerifyEmail';
+import EditQuestion from './pages/EditQuestion';
 
 export default function App() {
   return (
@@ -20,6 +21,7 @@ export default function App() {
         <Route path='/login' element={<Login />} />
         <Route path='/questions' element={<QuestionManager />} />
         <Route path='/Create-question' element={<CreateQuestion />} />
+        <Route path='/edit-question/:id' element={<EditQuestion />} />
         <Route path='/configure-question/:id' element={<ConfigureQuestion />} />
         <Route path='/preview/:id' element={<Preview />} />
         <Route path='*' element={<NotFound />} />
