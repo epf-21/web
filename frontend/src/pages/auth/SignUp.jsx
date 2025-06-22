@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import { useRegister } from '../../hooks/useAuth';
-import { Mail, Lock, User, Eye, EyeOff, X, Code } from 'lucide-react';
 import { validateRegister } from '../../schemas/auth.schema';
 import VerificationModal from '../../components/VerificationModal';
+import FormField from '../../components/FormField';
+import Icon from '../../components/Icon';
+import Button from '../../components/Button';
 
 export default function SignUp() {
   const [showPassword, setShowPassword] = useState(false);
@@ -59,66 +61,47 @@ export default function SignUp() {
           </h2>
 
           <form onSubmit={handleSubmit} className="space-y-5">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Nombre completo</label>
-              <div className="relative">
-                <User className="absolute left-3 top-2.5 text-gray-400 w-5 h-5" />
-                <input
-                  type="text"
-                  name="name"
-                  value={form.name}
-                  onChange={handleChange}
-                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-black-rock-950"
-                  placeholder="Tu nombre"
-                />
-              </div>
-              {errors.name && (
-                <p className="text-sm text-red-500 mt-1">{errors.name[0]}</p>
-              )}
-            </div>
+            <FormField
+              label="Nombre completo"
+              name="name"
+              type="text"
+              value={form.name}
+              onChange={handleChange}
+              placeholder="Tu nombre"
+              icon="User"
+              error={errors.name?.[0]}
+            />
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Correo electrónico</label>
-              <div className="relative">
-                <Mail className="absolute left-3 top-2.5 text-gray-400 w-5 h-5" />
-                <input
-                  type="text"
-                  name="email"
-                  value={form.email}
-                  onChange={handleChange}
-                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-black-rock-950"
-                  placeholder="correo@gmail.com"
-                />
-              </div>
-              {errors.email && (
-                <p className="text-sm text-red-500 mt-1">{errors.email[0]}</p>
-              )}
-            </div>
+            <FormField
+              label="Correo electrónico"
+              name="email"
+              type="text"
+              value={form.value}
+              onChange={handleChange}
+              placeholder="ejemplo@gmail.com"
+              icon="Mail"
+              error={errors.email?.[0]}
+            />
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Contraseña</label>
-              <div className="relative">
-                <Lock className="absolute left-3 top-2.5 text-gray-400 w-5 h-5" />
-                <input
-                  type={showPassword ? "text" : "password"}
-                  name="password"
-                  value={form.password}
-                  onChange={handleChange}
-                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-black-rock-950"
-                  placeholder="••••••••"
-                />
+            <FormField
+              label="Contraseña"
+              name="password"
+              type={showPassword ? "text" : "password"}
+              value={form.password}
+              onChange={handleChange}
+              placeholder="••••••••"
+              icon="Lock"
+              rightIcon={
                 <button
                   type="button"
                   className="absolute right-3 top-2.5 text-gray-500 cursor-pointer"
                   onClick={() => setShowPassword((prev) => !prev)}
                 >
-                  {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                  {showPassword ? <Icon name="EyeOff" /> : <Icon name="Eye" />}
                 </button>
-              </div>
-              {errors.password && (
-                <p className="text-sm text-red-500 mt-1">{errors.password[0]}</p>
-              )}
-            </div>
+              }
+              error={errors.password?.[0]}
+            />
 
             {isError && (
               <p className="text-sm text-red-500">
@@ -126,13 +109,15 @@ export default function SignUp() {
               </p>
             )}
 
-            <button
+            <Button
               type="submit"
-              className="w-full py-2 bg-black-rock-950 text-white rounded-xl hover:bg-black transition-all"
               disabled={isPending}
+              isLoading={isPending}
+              loadingText="Registrando..."
+              className="w-full"
             >
-              {isPending ? 'Registrando...' : 'Registrarse'}
-            </button>
+              Resgistrase
+            </Button>
           </form>
         </div>
       </div>

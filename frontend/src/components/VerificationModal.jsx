@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useVerifyEmail, useResendCode } from '../hooks/useAuth';
 import Icon from './Icon';
+import Button from './Button';
 
 
 export default function VerificationModal({ email, onClose }) {
@@ -55,14 +56,15 @@ export default function VerificationModal({ email, onClose }) {
               {verifyErrorData?.response?.data?.message || 'Error al verificar el código'}
             </p>
           )}
-
-          <button
+          <Button
             type="submit"
-            className="w-full py-2 bg-black-rock-950 text-white rounded-xl hover:bg-black transition-all"
             disabled={isVerifying}
+            isLoading={isVerifying}
+            loadingText="Verficando..."
+            className="w-full"
           >
-            {isVerifying ? 'Verificando...' : 'Verificar'}
-          </button>
+            Verificar
+          </Button>
         </form>
 
         <div className="mt-4 text-sm text-center text-gray-600">
