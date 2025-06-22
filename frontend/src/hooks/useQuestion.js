@@ -1,6 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { createQuestion, deleteQuestion,updateQuestion, getQuestionById, getQuestionByLevel, updateMainImage } from '../services/question.service';
-import { data } from 'react-router-dom';
+import { createQuestion, deleteQuestion, updateQuestion, getQuestionById, getQuestionByLevel, updateMainImage } from '../services/question.service';
 
 export const useQuestionByLevel = ({ level, enabled = true }) => {
   return useQuery({
@@ -46,7 +45,7 @@ export const useCreateQuestion = () => {
 
 export const useUpdateQuestion = () => {
   return useMutation({
-    mutationFn: deleteQuestion,
+    mutationFn: updateQuestion,
     onError: (error) => {
       console.error('Error al actualizar la pregunta:', error);
     }

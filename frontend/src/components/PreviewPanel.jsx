@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import Header from './Header';
 import { useQuestionById } from '../hooks/useQuestion';
+import { useAllSolutions } from '../hooks/useSolutions';
 
 export default function PreviewPanel() {
   const { id } = useParams();
@@ -12,7 +13,8 @@ export default function PreviewPanel() {
   const [options, setOptions] = useState([]);
 
   const { data: question, isLoading, error } = useQuestionById(id);
-  const mainImage = question.imageMain;
+  const { data: solutions, isLoading: isLoadingSolutions, error: errorSolutions } = useAllSolutions(id);
+  const mainImage = question?.imageMain;
 
   useEffect(() => {
     if (!question || !question.images) return;
@@ -35,7 +37,6 @@ export default function PreviewPanel() {
     setBoxes(initialBoxes);
     setFilledBoxes(0);
   }, [question]);
-
 
   const handleDragStart = (optionId) => {
     setCurrentlyDragging(optionId);
@@ -90,15 +91,28 @@ export default function PreviewPanel() {
   };
 
   const handleCheck = () => {
-    if (filledBoxes === boxes.length) {
-      alert('¡Muy bien! Has completado el ejercicio correctamente.');
-    } else {
+    if (filledBoxes !== boxes.length) {
       alert('Debes completar todos los espacios antes de comprobar.');
+      return;
+    }
+
+    const userSolution = boxes.map(box => box.content?.id).filter(Boolean);
+    const correctSolutions = Object.values(solutions || {});
+    console.log(correctSolutions)
+
+    const isCorrect = correctSolutions.some(
+      (solution) => JSON.stringify(solution) === JSON.stringify(userSolution)
+    );
+
+    if (isCorrect) {
+      alert('¡Muy bien! La respuesta es correcta.');
+    } else {
+      alert('La respuesta es incorrecta. Intenta de nuevo.');
     }
   };
 
-  if (isLoading) return <p className="text-gray-500">Cargando pregunta...</p>;
-  if (error) return <p className="text-gray-500">No se pudo cargar la Pregunta.</p>;
+  if (isLoading || isLoadingSolutions) return <p className="text-gray-500">Cargando pregunta...</p>;
+  if (error || errorSolutions) return <p className="text-gray-500">No se pudo cargar la Pregunta o las soluciones.</p>;
 
   return (
     <div className="min-h-screen bg-white">
@@ -113,10 +127,11 @@ export default function PreviewPanel() {
             <p className="text-base text-gray-700">{question.description}</p>
           </div>
 
-          <div className="flex justify-center mb-8 ">
+          <div className="flex justify-center mb-8">
             <img
               src={mainImage}
-              className="w-80 h-80 object-contain bg-gray-200"
+              alt="Imagen principal"
+              className="w-80 h-64 object-contain bg-gray-200"
             />
           </div>
 
@@ -126,6 +141,7 @@ export default function PreviewPanel() {
               style={{ width: `${(filledBoxes / boxes.length) * 100}%` }}
             />
           </div>
+
           <div className="py-2 rounded-md">
             <h2 className="text-xl font-medium text-gray-900 mb-2">Explicación</h2>
             <p className="text-sm text-gray-700">{question.explanation}</p>
