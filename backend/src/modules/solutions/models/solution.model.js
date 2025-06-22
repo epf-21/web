@@ -18,6 +18,14 @@ export class SolutionModel {
     })
   }
 
+  static async getAllSolutions (id) {
+    return await prisma.respuesta.findMany({
+      where: {
+        idPregunta: id
+      }
+    })
+  }
+
   static async deleteSolutionById (id) {
     return await prisma.respuesta.delete({
       where: {

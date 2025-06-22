@@ -17,6 +17,19 @@ export class SolutionController {
     }
   }
 
+  static async getAllSolutions (req, res, next) {
+    try {
+      const { id } = req.params
+      const solutions = await SolutionService.getAllSolutions(id)
+      res.status(200).json({
+        ok: true,
+        data: solutions
+      })
+    } catch (error) {
+      next(error)
+    }
+  }
+
   static async deleteSolutionById (req, res, next) {
     try {
       const data = req.params

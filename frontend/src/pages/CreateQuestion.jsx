@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { UserCircle2 } from 'lucide-react'
 import QuestionForm from '../components/QuestionForm';
 import ImageUploader from '../components/ImageUploader';
 import { useImageUploader } from '../hooks/useImageUploader';
@@ -123,7 +122,7 @@ export default function CreateQuestion() {
           <div className="flex justify-start pt-3">
             <button
               type="submit"
-              className="px-6 py-3 bg-black-rock-900 text-white rounded-xl text-sm hover:bg-black-rock-950 transition focus:outline-none focus:ring-2 focus:ring-blue-300"
+              className="px-6 py-3 bg-black-rock-950 text-white rounded-xl text-sm hover:bg-black transition focus:outline-none focus:ring-2 focus:ring-blue-300"
             >
               {(isPending || isPendingImage) ? 'Guardando' : 'Guardar'}
             </button>

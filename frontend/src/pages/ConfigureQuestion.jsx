@@ -1,16 +1,19 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import domtoimage from 'dom-to-image-more'
 import DragDrop from '../components/DragDrop';
 import Header from '../components/Header';
 import { useQuestionById, useUpdateMainImage } from "../hooks/useQuestion";
 import { uploadImage } from '../services/uploadService';
-import domtoimage from 'dom-to-image-more'
+import { useCreateSolutions } from '../hooks/useSolutions';
 
 export default function ConfigureQuestion() {
   const navigate = useNavigate();
   const { id } = useParams();
   const { data: question, isLoading, error } = useQuestionById(id);
   const updateMainImageMutation = useUpdateMainImage();
+  const createSolutionsMutation = useCreateSolutions();
+
 
   const mainImageRef = useRef(null);
 
@@ -57,17 +60,17 @@ export default function ConfigureQuestion() {
     return permutations;
   }
 
-  const getAllAnswers = (allItems) => {    
+  const getAllAnswers = (allItems) => {
     const allAnswers = []
-    const grouppedItems = []    
-    const items = [...allItems]    
+    const grouppedItems = []
+    const items = [...allItems]
     items.sort((a, b) => a.group - b.group);
     for (let i = 0; i < items.length; i++) {
       const group = items.filter((x) => x.group === (i + 1))
       if (group.length > 1) {
-        grouppedItems.push({'group':i + 1, 'elements': group})
+        grouppedItems.push({ 'group': i + 1, 'elements': group })
       }
-    }        
+    }
     for (let i = 0; i < grouppedItems.length; i++) {
       const permutations = getPermutations(grouppedItems[i].elements)
       const g = grouppedItems[i].group
@@ -79,11 +82,11 @@ export default function ConfigureQuestion() {
             answersIds.push(permutations[j][c].id)
             c++
           } else {
-            answersIds.push(items[k].id)            
+            answersIds.push(items[k].id)
           }
         }
         allAnswers.push(answersIds)
-      }      
+      }
     }
     if (allAnswers.length === 0) {
       const singleAnswer = []
@@ -159,10 +162,14 @@ export default function ConfigureQuestion() {
         imagenPrincipal: mainImageUrl,
       };
 
-      console.log(updateData)
       await updateMainImageMutation.mutateAsync({
         id: question.id,
         mainImage: updateData
+      });
+
+      await createSolutionsMutation.mutateAsync({
+        id: question.id,
+        allAnswers: answers
       });
 
       navigate(`/preview/${question.id}`);
@@ -175,69 +182,70 @@ export default function ConfigureQuestion() {
     }
   };
 
+
   return (
     <div className="min-h-screen">
       <Header />
       <div className="bg-gray-50 px-8 py-6">
-      <div className="mb-4 border-b pb-2 border-gray-300">
-        <h1 className="text-xl font-bold text-black-rock-950">{question.title}</h1>
-      </div>
+        <div className="mb-4 border-b pb-2 border-black-rock-950">
+          <h1 className="text-xl font-bold text-black-rock-950">{question.title}</h1>
+        </div>
 
-      <div className="flex flex-col md:flex-row gap-4">
-        <div className="flex-1">
-          <div className="mb-4">
-            <h2 className="text-lg font-medium text-gray-900 mb-2">Descripción</h2>
-            <p className="text-base text-gray-700">{question.description}</p>
-          </div>
+        <div className="flex flex-col md:flex-row gap-4">
+          <div className="flex-1">
+            <div className="mb-4">
+              <h2 className="text-lg font-medium text-gray-900 mb-2">Descripción</h2>
+              <p className="text-base text-gray-700">{question.description}</p>
+            </div>
 
-          <div>
-            <DragDrop
-              ref={mainImageRef}
-              draggableItems={draggableItems}
-              droppedItems={droppedItems}
-              setDraggableItems={setDraggableItems}
-              setDroppedItems={setDroppedItems}
-              getAllAnswers={getAllAnswers}
-            />
-          </div>
+            <div>
+              <DragDrop
+                ref={mainImageRef}
+                draggableItems={draggableItems}
+                droppedItems={droppedItems}
+                setDraggableItems={setDraggableItems}
+                setDroppedItems={setDroppedItems}
+                getAllAnswers={getAllAnswers}
+              />
+            </div>
 
-          <div className="py-2 rounded-md">
-            <h2 className="text-lg font-medium text-gray-900 mb-2">Explicación</h2>
-            <p className="text-sm text-gray-700">{question.explanation}</p>
-          </div>
+            <div className="py-2 rounded-md">
+              <h2 className="text-lg font-medium text-gray-900 mb-2">Explicación</h2>
+              <p className="text-sm text-gray-700">{question.explanation}</p>
+            </div>
 
-          <div className="py-2 rounded-md">
-            <h2 className="text-lg font-medium text-gray-900 mb-2">Vista previa respuestas</h2>
-            <ol className='list-decimal pl-4'>
-              {answers.map((arr, i) => (
-                <li key={i}>
-                  {arr.map((id, j) => {
-                    const item = droppedItems.find((x) => x.id === id)
-                    if (item) {
-                      return (                        
-                        <div key={j} className="w-12 h-12 inline-block mx-1 bg-gray-300 rounded-sm">
-                          <img src={item.imageUrl} alt={item.name} className='max-w-12 max-h-12' />
-                        </div>
-                      )
+            <div className="py-2 rounded-md">
+              <h2 className="text-lg font-medium text-gray-900 mb-2">Vista previa respuestas</h2>
+              <ol className='list-decimal pl-4'>
+                {answers.map((arr, i) => (
+                  <li key={i}>
+                    {arr.map((id, j) => {
+                      const item = droppedItems.find((x) => x.id === id)
+                      if (item) {
+                        return (
+                          <div key={j} className="w-12 h-12 inline-block mx-1 bg-gray-300 rounded-sm">
+                            <img src={item.imageUrl} alt={item.name} className='max-w-12 max-h-12' />
+                          </div>
+                        )
+                      }
                     }
-                  }
-                  )}
+                    )}
 
-                </li>
-              ))}
-            </ol>
-          </div>
-          <div className="pt-3">
-            <button
-              onClick={handleSave}
-              disabled={isSaving || updateMainImageMutation.isPending}
-              className="px-6 py-3 bg-black-rock-900 text-white rounded-xl text-sm hover:bg-black-rock-950 transition focus:outline-none focus:ring-2 focus:ring-blue-300 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {isSaving || updateMainImageMutation.isPending ? 'Guardando...' : 'Guardar'}
-            </button>
+                  </li>
+                ))}
+              </ol>
+            </div>
+            <div className="pt-3">
+              <button
+                onClick={handleSave}
+                disabled={isSaving || updateMainImageMutation.isPending}
+                className=" cursor-pointer px-6 py-3 bg-black-rock-950 text-white rounded-xl text-sm hover:bg-black transition focus:outline-none focus:ring-2 focus:ring-blue-300 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {isSaving || updateMainImageMutation.isPending ? 'Guardando...' : 'Guardar'}
+              </button>
+            </div>
           </div>
         </div>
-      </div>
       </div>
     </div>
   );
