@@ -5,8 +5,12 @@ export function useImageUploader() {
   const [imageURLS, setImageURLs] = useState([]);
 
   useEffect(() => {
-
-    const newImageUrls = images.map((image) => URL.createObjectURL(image));
+    const newImageUrls = images.map((image) => {
+      if (image instanceof File) {
+        return URL.createObjectURL(image);
+      }
+      return image;
+    });
     setImageURLs(newImageUrls);
 
     return () => {
@@ -22,11 +26,15 @@ export function useImageUploader() {
   const removeFile = (index) => {
     setImages((prev) => prev.filter((_, i) => i !== index));
   };
+  const addImageURL = (url) => {
+    setImages((prev) => [...prev, url]);
+  };
 
   return {
     images,
     imageURLS,
     onSelectChange,
     removeFile,
+    addImageURL
   }
 }

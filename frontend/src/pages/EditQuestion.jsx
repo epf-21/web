@@ -19,8 +19,7 @@
     const [description, setDescription] = useState('');
     const [explanation, setExplanation] = useState('');
     const [formErrors, setFormErrors] = useState({})
-    const [imagenes, setimagenes] = useState([])
-    const { images, imageURLS, onSelectChange, removeFile} = useImageUploader();
+    const { images, imageURLS, onSelectChange, removeFile,addImageURL} = useImageUploader();
     const { mutateAsync: uploadImages, isPending: isPendingImage } = useUploadImages();
     const { mutate: createQuestion, isPending } = useCreateQuestion();
     useEffect(() => {
@@ -28,8 +27,7 @@
         setTitle(question.title || '');
         setDescription(question.description || '');
         setExplanation(question.explanation || '');
-        let urls = question.images.map(img => img.url)
-        setimagenes(urls);
+        question.images.map(img => addImageURL(img.url))
       }
     }, [question]);
 
@@ -123,7 +121,7 @@
               error={formErrors}
             />
             <ImageUploader
-              imageURLS={imageURLS.concat(imagenes)}
+              imageURLS={imageURLS}
               onSelectChange={handleImageChange}
               removeFile={removeFile}
               error={formErrors}
