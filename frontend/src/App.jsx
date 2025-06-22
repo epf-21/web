@@ -8,7 +8,6 @@ import Home from './pages/Home'
 import QuestionManager from './pages/QuestionManager'
 import ConfigureQuestion from './pages/ConfigureQuestion';
 import NotFound from './pages/NotFound';
-import VerifyEmail from './pages/auth/VerifyEmail';
 import EditQuestion from './pages/EditQuestion';
 
 export default function App() {

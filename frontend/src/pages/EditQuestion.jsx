@@ -1,6 +1,5 @@
   import { useState,useEffect  } from 'react';
   import { useNavigate, useSearchParams, useParams} from 'react-router-dom';
-  import { UserCircle2 } from 'lucide-react'
   import QuestionForm from '../components/QuestionForm';
   import ImageUploader from '../components/ImageUploader';
   import { useImageUploader } from '../hooks/useImageUploader';
@@ -20,17 +19,19 @@
     const [description, setDescription] = useState('');
     const [explanation, setExplanation] = useState('');
     const [formErrors, setFormErrors] = useState({})
+    const [imagenes, setimagenes] = useState([])
+    const { images, imageURLS, onSelectChange, removeFile} = useImageUploader();
+    const { mutateAsync: uploadImages, isPending: isPendingImage } = useUploadImages();
+    const { mutate: createQuestion, isPending } = useCreateQuestion();
     useEffect(() => {
-      if (question) {
+      if (question && question.images?.length) {
         setTitle(question.title || '');
         setDescription(question.description || '');
         setExplanation(question.explanation || '');
+        let urls = question.images.map(img => img.url)
+        setimagenes(urls);
       }
     }, [question]);
-    const { images, imageURLS, onSelectChange, removeFile } = useImageUploader();
-
-    const { mutateAsync: uploadImages, isPending: isPendingImage } = useUploadImages();
-    const { mutate: createQuestion, isPending } = useCreateQuestion();
 
     const handleTitleChange = (e) => {
       setTitle(e.target.value);
@@ -122,7 +123,7 @@
               error={formErrors}
             />
             <ImageUploader
-              imageURLS={imageURLS}
+              imageURLS={imageURLS.concat(imagenes)}
               onSelectChange={handleImageChange}
               removeFile={removeFile}
               error={formErrors}
