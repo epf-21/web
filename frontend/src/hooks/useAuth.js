@@ -4,14 +4,8 @@ import { useAuthStore } from '../stores/useAuthStore';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 export const useRegister = () => {
-  const navigate = useNavigate();
   return useMutation({
-    mutationFn: register,
-    onSuccess: (data) => {
-      if (data.requiresVerification) {
-        navigate('/verify-email', { state: { email: data.email } });
-      }
-    },
+    mutationFn: register
   })
 }
 
@@ -22,7 +16,7 @@ export const useVerifyEmail = () => {
     mutationFn: verifyEmail,
     onSuccess: (data) => {
       login(data.token);
-      navigate('/')
+      navigate('/');
     }
   })
 }
