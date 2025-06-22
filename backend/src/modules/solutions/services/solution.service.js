@@ -14,6 +14,20 @@ export class SolutionService {
     return await SolutionModel.createSolutions(idPregunta, respuestas)
   }
 
+  static async getAllSolutions (id) {
+    const question = await QuestionModel.getQuestionById(id)
+    if (!question) {
+      throw new AppError('Pregunta no encontrada', 404)
+    }
+
+    const solutions = await SolutionModel.getAllSolutions(id)
+
+    return solutions.reduce((acc, solution, index) => {
+      acc[`solution_${index + 1}`] = solution.respuesta
+      return acc
+    }, {})
+  }
+
   static async deleteSolutionById (data) {
     const { idRespuesta, idPregunta } = data
 
