@@ -92,6 +92,8 @@ const DragDrop = forwardRef(({
           setIsCovered(checkCoveredItems([...droppedItems, dgItem]))
           const levels = getLayerLevels([...droppedItems, dgItem])
           dgItem.group = levels[levels.length - 1]
+          setSliderValue(dgItem.width)
+          setSelectGroup(dgItem.group)
           setDraggableItems(draggableItems.filter((x) => x.id !== event.active.id))
           setDroppedItems([...droppedItems, dgItem])
           getAllAnswers([...droppedItems, dgItem])
@@ -99,14 +101,14 @@ const DragDrop = forwardRef(({
       }
       const item = droppedItems.find((x) => x.id === event.active.id)
       if (item) {
-        setActiveItemId(item.id)        
-        setSliderValue(item.width)
-        setSelectGroup(item.group)
+        setActiveItemId(item.id)                
         item.x += event.delta.x;
         item.y += event.delta.y;
         setIsCovered(checkCoveredItems(droppedItems))
         const _items = [...droppedItems];
         updateGroups(_items)
+        setSliderValue(item.width)
+        setSelectGroup(item.group)
         setDroppedItems(_items);
         getAllAnswers(_items)
       }
