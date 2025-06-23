@@ -50,8 +50,13 @@ model Respuesta {
 
 model Imagen {
   id         String   @id @default(uuid())
+  x          Int?      @default(0)
+  y          Int?      @default(0)
+  width      Int?      @default(128)
+  height     Int?      @default(128)
+  group      Int?      @default(0)
   nombre     String
   url        String
-  idPregunta String
+  idPregunta String  
   pregunta   Pregunta @relation(fields: [idPregunta], references: [id])
 }
