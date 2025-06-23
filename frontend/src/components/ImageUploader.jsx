@@ -29,7 +29,7 @@ export default function ImageUploader({ imageURLS, onSelectChange, removeFile, e
               <div
                 key={i}
                 className="relative min-w-[100px] max-w-[100px] h-[100px] flex-shrink-0 border border-gray-300 rounded-lg overflow-hidden"
-              ><span className="absolute top-0 left-0 p-1 bg-gray-100 rounded-md text-xs font-semibold">{i+1}</span>
+              ><span className="absolute top-0 left-0 p-1 bg-gray-100 rounded-md text-xs font-semibold">{i + 1}</span>
                 <img
                   src={url}
                   alt={`preview-${i}`}
@@ -38,7 +38,7 @@ export default function ImageUploader({ imageURLS, onSelectChange, removeFile, e
                 <button
                   type="button"
                   onClick={() => removeFile(i)}
-                  className="absolute top-1 right-1 bg-blue-950 text-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition hover:opacity-100"
+                  className="absolute top-1 right-1 bg-blue-950 text-white p-1 rounded-full opacity-100 transition cursor-pointer"
                 >
                   <Trash2 size={16} />
                 </button>
