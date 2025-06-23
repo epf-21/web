@@ -20,6 +20,7 @@ export default function Sortable({
   setDraggableItems, 
   droppedItems, 
   setDroppedItems, 
+  activeItemId,
   setActiveItemId, 
   setSliderValue, 
   setSelectGroup, 
@@ -36,6 +37,11 @@ export default function Sortable({
     })
   );
 
+  const handleDragStart = (event) => {
+    const item = droppedItems.find((x) => x.id === event.active.id)
+    setActiveItemId(item.id)
+  }  
+
   const handleDragEnd = (event) => {
     const { active, over } = event;
 
@@ -50,7 +56,7 @@ export default function Sortable({
       getAllAnswers(orderedItems)
     }
     const item = droppedItems.find((x) => x.id === event.active.id)
-    setActiveItemId(item.id)
+    setActiveItemId(item.id)    
     setSliderValue(item.width)
     setSelectGroup(item.group)    
     
@@ -61,6 +67,7 @@ export default function Sortable({
     item.group = 0
     item.x = 0
     item.y = 0    
+    setActiveItemId(null)
     setDroppedItems(droppedItems.filter((x) => x.id !== id))
     setDraggableItems([...draggableItems,item])    
     updateGroups(droppedItems)
@@ -71,6 +78,7 @@ export default function Sortable({
     <DndContext
       sensors={sensors}
       collisionDetection={closestCenter}
+      onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
     >
       <SortableContext
@@ -78,7 +86,7 @@ export default function Sortable({
         strategy={horizontalListSortingStrategy}
       >
         {droppedItems.map(item =>
-          <SortableItem 
+          <SortableItem styles={{outline: (item.id === activeItemId)? '3px solid #1E90FF':'none'}}
           key={item.id} 
           id={item.id} 
           src={item.imageUrl} 

@@ -158,7 +158,7 @@ export default function ConfigureQuestion() {
       }
       
       if (showBorders) {
-        alert('debes quitar los bordes antes de guardar');
+        alert('Debes quitar la opcion --mostrar bordes-- antes de guardar');
         return;
       }
 

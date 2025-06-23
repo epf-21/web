@@ -25,8 +25,8 @@ export function SortableItem(props) {
   ]
 
   return (
-    <div className='relative inline-block mx-1 p-1 w-18 h-18 bg-gray-100 border-3 border-gray-500 rounded-md focus: focus:border-blue-500 cursor-grab'
-      ref={setNodeRef} style={style} {...attributes} {...listeners}>
+    <div className='relative inline-block mx-1 p-1 w-18 h-18 bg-gray-200 border-2 border-gray-300 rounded-md cursor-grab'
+      ref={setNodeRef} style={{ ...style, ...props.styles }} {...attributes} {...listeners}>
       <button type='button'
         className='absolute hover:bg-gray-300 font-semibold text-gray-700 w-5 h-5 p-0 text-xs rounded-sm top-0 right-0'
         onClick={(event) => { event.stopPropagation(); props.removeItem(props.id) }}
