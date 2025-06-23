@@ -57,6 +57,11 @@ export default function CreateQuestion() {
     setFormErrors({});
 
     try {
+      if (images.length > 10) {
+        alert('Solo puedes subir un maximo de 10 imagenes');
+        return;
+      }
+
       const uploadedImages = await uploadImages(images);
       const questionData = {
         titulo: title,

@@ -28,8 +28,8 @@ export default function ImageUploader({ imageURLS, onSelectChange, removeFile, e
             {imageURLS.map((url, i) => (
               <div
                 key={i}
-                className="relative min-w-[160px] max-w-[160px] h-[120px] flex-shrink-0 border border-gray-300 rounded-lg overflow-hidden"
-              >
+                className="relative min-w-[100px] max-w-[100px] h-[100px] flex-shrink-0 border border-gray-300 rounded-lg overflow-hidden"
+              ><span className="absolute top-0 left-0 p-1 bg-gray-100 rounded-md text-xs font-semibold">{i+1}</span>
                 <img
                   src={url}
                   alt={`preview-${i}`}
