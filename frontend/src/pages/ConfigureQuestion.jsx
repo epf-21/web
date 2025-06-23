@@ -17,6 +17,7 @@ export default function ConfigureQuestion() {
 
   const mainImageRef = useRef(null);
 
+  const [showBorders, setShowborders] = useState(false);
   const [draggableItems, setDraggableItems] = useState([])
   const [droppedItems, setDroppedItems] = useState([]);
   const [answers, setAnswers] = useState([]);
@@ -143,7 +144,7 @@ export default function ConfigureQuestion() {
   };
 
   const handleSave = async () => {
-    try {
+    try {      
       setIsSaving(true);
 
       if (droppedItems.length === 0) {
@@ -153,6 +154,11 @@ export default function ConfigureQuestion() {
 
       if (answers.length === 0) {
         alert('No hay respuestas configuradas');
+        return;
+      }
+      
+      if (showBorders) {
+        alert('debes quitar los bordes antes de guardar');
         return;
       }
 
@@ -206,6 +212,8 @@ export default function ConfigureQuestion() {
                 setDraggableItems={setDraggableItems}
                 setDroppedItems={setDroppedItems}
                 getAllAnswers={getAllAnswers}
+                showBorders={showBorders}
+                setShowborders={setShowborders}
               />
             </div>
 
