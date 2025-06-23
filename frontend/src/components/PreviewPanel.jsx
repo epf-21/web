@@ -1,12 +1,15 @@
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import Header from './Header';
 import { useQuestionById } from '../hooks/useQuestion';
 import { useAllSolutions } from '../hooks/useSolutions';
+import { LEVELS } from '../constants/levels';
 
 export default function PreviewPanel() {
   const { id } = useParams();
+  const navigate = useNavigate();
 
+  const [message, setMessage] = useState(null);
   const [filledBoxes, setFilledBoxes] = useState(0);
   const [currentlyDragging, setCurrentlyDragging] = useState(null);
   const [boxes, setBoxes] = useState([]);
@@ -15,6 +18,8 @@ export default function PreviewPanel() {
   const { data: question, isLoading, error } = useQuestionById(id);
   const { data: solutions, isLoading: isLoadingSolutions, error: errorSolutions } = useAllSolutions(id);
   const mainImage = question?.imageMain;
+
+  console.log(question)
 
   useEffect(() => {
     if (!question || !question.images) return;
@@ -88,11 +93,15 @@ export default function PreviewPanel() {
     setBoxes(boxes.map(box => ({ ...box, filled: false, content: null })));
     setOptions(options.map(option => ({ ...option, visible: true })));
     setFilledBoxes(0);
+    setMessage(null)
   };
 
   const handleCheck = () => {
     if (filledBoxes !== boxes.length) {
-      alert('Debes completar todos los espacios antes de comprobar.');
+      setMessage({
+        type: 'error',
+        message: 'Debes completar todos los espacios antes de verificar.'
+      });
       return;
     }
 
@@ -104,10 +113,22 @@ export default function PreviewPanel() {
       (solution) => JSON.stringify(solution) === JSON.stringify(userSolution)
     );
 
-    if (isCorrect) {
-      alert('¡Muy bien! La respuesta es correcta.');
-    } else {
-      alert('La respuesta es incorrecta. Intenta de nuevo.');
+    setMessage({
+      type: isCorrect ? 'success' : 'error',
+      message: isCorrect
+        ? '¡Muy bien! Has completado correctamente.'
+        : 'Respuesta incorrecta. Intenta nuevamente.'
+    });
+  };
+
+  const handleGoBack = () => {
+    if (!question?.level) return;
+
+    const levelLower = question.level.toLowerCase();
+    const found = LEVELS.find(l => l.level === levelLower);
+
+    if (found) {
+      navigate(`/questions?age=${found.age}&level=${found.level}`);
     }
   };
 
@@ -122,6 +143,24 @@ export default function PreviewPanel() {
           <div className="mb-10 border-b pb-6 border-gray-300">
             <h2 className="text-3xl font-bold text-black-rock-950">{question.title}</h2>
           </div>
+          <div className="mb-4 flex items-center gap-2">
+            <button
+              onClick={handleGoBack}
+              className="flex items-center text-sm text-blue-600 hover:text-blue-800 transition cursor-pointer"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-5 w-5 mr-1"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
+              Volver a listado de preguntas
+            </button>
+          </div>
+
           <div className="mb-4">
             <h2 className="text-xl font-medium text-gray-900 mb-2">Descripción</h2>
             <p className="text-base text-gray-700">{question.description}</p>
@@ -146,6 +185,19 @@ export default function PreviewPanel() {
             <h2 className="text-xl font-medium text-gray-900 mb-2">Explicación</h2>
             <p className="text-sm text-gray-700">{question.explanation}</p>
           </div>
+
+          {message && (
+            <p
+              className={`my-4 px-4 py-3 rounded-lg text-sm font-medium border
+              ${message.type === 'success'
+                  ? 'bg-green-100 text-green-800 border-green-300'
+                  : 'bg-red-100 text-red-800 border-red-300'}
+              `}
+            >
+              {message.message}
+            </p>
+          )}
+
 
           <div className="flex justify-center flex-wrap gap-4 mb-8">
             {boxes.map((box) => (
