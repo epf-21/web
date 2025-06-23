@@ -1,18 +1,20 @@
 import { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import Header from '../components/Header';
 import QuestionForm from '../components/QuestionForm';
 import ImageUploader from '../components/ImageUploader';
+import FeedbackMessage from '../components/FeedbackMessage';
 import { useImageUploader } from '../hooks/useImageUploader';
 import { useUploadImages } from '../hooks/useUploadImage';
 import { useCreateQuestion } from '../hooks/useQuestion';
 import { validateQuestion } from '../schemas/question.schema';
-import Header from '../components/Header';
 
 export default function CreateQuestion() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const level = searchParams.get('level')?.toUpperCase();
 
+  const [message, setMessage] = useState(null);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [explanation, setExplanation] = useState('');
@@ -58,7 +60,19 @@ export default function CreateQuestion() {
 
     try {
       if (images.length > 10) {
-        alert('Solo puedes subir un maximo de 10 imagenes');
+        setMessage({
+          type: 'error',
+          message: 'Solo puedes subir un maximo de 10 imagenes'
+        });
+        return;
+      }
+      const result = validateQuestion(questionData);
+      if (!result.success) {
+        const fieldErrors = {};
+        result.error.errors.forEach((err) => {
+          fieldErrors[err.path[0]] = err.message;
+        });
+        setFormErrors(fieldErrors);
         return;
       }
 
@@ -71,28 +85,24 @@ export default function CreateQuestion() {
         imagenes: uploadedImages,
       };
 
-      const result = validateQuestion(questionData);
-      if (!result.success) {
-        const fieldErrors = {};
-        result.error.errors.forEach((err) => {
-          fieldErrors[err.path[0]] = err.message;
-        });
-        setFormErrors(fieldErrors);
-        return;
-      }
-
       createQuestion(questionData, {
         onSuccess: (data) => {
           const id = data.data.id;
           navigate(`/configure-question/${id}`);
         },
         onError: () => {
-          alert('Error al crear la pregunta')
+          setMessage({
+            type: 'error',
+            message: 'Error al crear la pregunta'
+          });
         }
       })
     } catch (error) {
       console.error(error);
-      alert('Error al subir las imágenes');
+      setMessage({
+        type: 'error',
+        message: 'Error al subir las imágenes'
+      })
     }
 
   };
@@ -124,7 +134,13 @@ export default function CreateQuestion() {
             error={formErrors}
           />
 
-          <div className="flex justify-start pt-3">
+          <div>
+            {message && (
+              <FeedbackMessage
+                type={message.type}
+                message={message.message}
+              />
+            )}
             <button
               type="submit"
               className="px-6 py-3 bg-black-rock-950 text-white rounded-xl text-sm hover:bg-black transition focus:outline-none focus:ring-2 focus:ring-blue-300"

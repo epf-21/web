@@ -6,6 +6,7 @@ import Header from '../components/Header';
 import { useQuestionById, useUpdateMainImage } from "../hooks/useQuestion";
 import { uploadImage } from '../services/uploadService';
 import { useCreateSolutions } from '../hooks/useSolutions';
+import FeedbackMessage from '../components/FeedbackMessage';
 
 export default function ConfigureQuestion() {
   const navigate = useNavigate();
@@ -186,7 +187,7 @@ export default function ConfigureQuestion() {
         id: question.id,
         allAnswers: answers
       });
-      setMessage(null)
+      setMessage(null);
       navigate(`/preview/${question.id}`);
 
     } catch (error) {
@@ -255,14 +256,13 @@ export default function ConfigureQuestion() {
                 ))}
               </ol>
             </div>
+
             <div>
               {message && (
-                <p
-                  className={` mb-2 text-sm font-medium ${message.type === 'error' ? 'text-red-600' : 'text-green-600'
-                    }`}
-                >
-                  {message.message}
-                </p>
+                <FeedbackMessage
+                  type={message.type}
+                  message={message.message}
+                />
               )}
               <button
                 onClick={handleSave}
