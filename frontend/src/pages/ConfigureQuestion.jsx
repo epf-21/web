@@ -30,12 +30,12 @@ export default function ConfigureQuestion() {
       id: img.id,
       name: img.name,
       imageUrl: img.url,
-      x: 0,
-      y: 0,
-      width: 128,
-      height: 128,
-      group: 0,
-    }));
+      x: img.x,
+      y: img.y,
+      width: img.width,
+      height: img.height,
+      group: img.group,
+    }));    
 
     setDraggableItems(processedItems);
   }, [question]);

@@ -19,7 +19,12 @@ export class QuestionService {
       images: question.imagenes.map(image => ({
         id: image.id,
         name: image.nombre,
-        url: image.url
+        url: image.url,
+        x: image.x,
+        y: image.y,
+        width: image.width, 
+        height: image.height,
+        group: image.group
       }))
     }
   }
