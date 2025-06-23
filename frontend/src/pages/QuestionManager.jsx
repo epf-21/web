@@ -65,6 +65,7 @@ export default function QuestionManager() {
               question={question}
               onPreview={() => navigate(`/preview/${question.id}`)}
               onEdit={() => navigate(`/edit-question/${question.id}`)}
+              onConfig={() => navigate(`/configure-question/${question.id}`)}
               onDelete={() => deleteQuestion(question.id)}
               isDeleting={isPending}
             />
