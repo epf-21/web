@@ -10,6 +10,8 @@ export class SolutionService {
       throw new AppError('Pregunta no encontrada', 404)
     }
 
+    await SolutionModel.deleteAllSolutions(idPregunta)
+
     const { respuestas } = validateCreateSolution(data)
     return await SolutionModel.createSolutions(idPregunta, respuestas)
   }
