@@ -29,6 +29,11 @@ const DragDrop = forwardRef(({
     'name': 'cama',
     'imgUrl': '../src/assets/bed.png'
   },
+  {
+    'id': 4,
+    'name': 'taburete',
+    'imgUrl': '../src/assets/stool.png'
+  },
 
   ]
 
