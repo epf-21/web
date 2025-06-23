@@ -17,11 +17,11 @@ export function SortableItem(props) {
 
   const groupColors = [
     '#CCCCCC', //gray
-    '#8B0000', //red
-    '#FF8C00', //orange
-    '#FFD700', //gold
-    '#008000', //green
-    '#0000CD', //blue
+    '#e74c3c', //red
+    '#9b59b6', //purple
+    '#f1c40f', //yellow
+    '#2ecc71', //green
+    '#3498db', //blue
   ]
 
   return (

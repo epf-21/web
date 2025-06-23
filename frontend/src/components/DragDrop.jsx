@@ -9,6 +9,8 @@ const DragDrop = forwardRef(({
   droppedItems,
   setDroppedItems,
   setDraggableItems,
+  showBorders,
+  setShowborders,
   getAllAnswers
 }, ref) => {
 
@@ -27,7 +29,21 @@ const DragDrop = forwardRef(({
     'name': 'cama',
     'imgUrl': '../src/assets/bed.png'
   },
+  {
+    'id': 4,
+    'name': 'taburete',
+    'imgUrl': '../src/assets/stool.png'
+  },
 
+  ]
+
+  const groupColors = [
+    '#CCCCCC', //gray
+    '#e74c3c', //red
+    '#9b59b6', //purple
+    '#f1c40f', //yellow
+    '#2ecc71', //green
+    '#3498db', //blue
   ]
 
   const maxItems = 5
@@ -35,8 +51,7 @@ const DragDrop = forwardRef(({
   const [activeItemId, setActiveItemId] = useState(null);
   const [sliderValue, setSliderValue] = useState(32);
   const groups = [1, 2, 3, 4, 5]
-  const [selectGroup, setSelectGroup] = useState(0);
-  const [checked, setChecked] = useState(false);
+  const [selectGroup, setSelectGroup] = useState(0);  
   const [isCovered, setIsCovered] = useState(false);
   const [backgroundImg, setBackgroundImg] = useState(null);
 
@@ -44,11 +59,13 @@ const DragDrop = forwardRef(({
     setSelectGroup(event.target.value)
     const item = droppedItems.find((x) => x.id === activeItemId)
     if (item) {
-      item.group = event.target.value
+      item.group = parseInt(event.target.value)
       const _items = [...droppedItems]
       setDroppedItems(_items)
-      getAllAnswers(_items)
+      getAllAnswers(_items)     
     }
+    
+    
   }
 
   const handleSliderChange = (event) => {
@@ -180,7 +197,7 @@ const DragDrop = forwardRef(({
           <div className="flex justify-between mb-2">
             <p className='text-gray-500 text-xs'>(Arrastra y suelta para mover elementos)</p>
             <label className="inline-flex items-center cursor-pointer">
-              <input type="checkbox" value="" onChange={e => setChecked(!checked)} className="sr-only peer" />
+              <input type="checkbox" value="" onChange={() => setShowborders(!showBorders)} className="sr-only peer" />
               <div className="relative w-9 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600 dark:peer-checked:bg-blue-600"></div>
               <span className="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">Mostrar bordes</span>
             </label>
@@ -195,8 +212,8 @@ const DragDrop = forwardRef(({
                     left: `${item.x}px`,
                     top: `${item.y}px`,
                     width: `${item.width}px`,
-                    height: `${item.height}px`,
-                    outline: checked ? '2px solid #00FF00' : 'none'
+                    height: `${item.height}px`,                    
+                    outline: showBorders ? '2px solid ' +  groupColors[item.group] : 'none'
                   }}
                   key={item.id}
                   id={item.id}
@@ -217,12 +234,16 @@ const DragDrop = forwardRef(({
                 value={sliderValue}
                 onChange={handleSliderChange}
                 className="w-full cursor-pointer"
+                disabled = {(activeItemId === null)} 
               />
               <p className="text-xs font-semibold text-gray-900">Tamaño: {sliderValue}px</p>
             </div>
-            <p>Grupo:</p>
+            <p>Nivel:</p>
             <div className="w-16">              
-              <select value={selectGroup} onChange={handleSelectChange} className="w-full bg-white px-2 py-1 rounded-sm">
+              <select value={selectGroup} 
+              onChange={handleSelectChange} 
+              disabled = {(activeItemId === null)} 
+              className="w-full bg-white px-2 py-1 rounded-sm">                
                 {groups.map((i) => (
                   <option key={i}>{i}</option>
                 ))}
@@ -250,11 +271,11 @@ const DragDrop = forwardRef(({
         <div>
           <h3 className="text-sm font-semibold text-gray-800 mb-1">Fondo</h3>
           <p className='text-gray-500 mb-3 text-xs'>(selecciona 1)</p>
-          <div className="flex flex-wrap gap-2 w-full md:w-20 min-h-24 border-2 border-gray-500 rounded-md shadow-sm p-2">
+          <div className="flex flex-wrap gap-2 w-full md:w-20 min-h-24 border-2 border-gray-500 rounded-md shadow-sm p-2">            
             {backgroundImages.map((img, i) => (
               <label key={i} className="inline-flex items-center cursor-pointer">
                 <input type="radio" name="bgOptions" value={img.imgUrl} onChange={e => setBackgroundImg(e.target.value)} className="sr-only peer" />
-                <div className="flex w-16 h-16 bg-gray-200 border-3 border-gray-200 peer-checked:border-blue-600 rounded-md">
+                <div className="flex w-16 h-16 bg-gray-200 border-3 border-gray-200 peer-checked:border-blue-500 rounded-md">
                   <img src={img.imgUrl} alt={img.name} className="self-center" />
                 </div>
               </label>

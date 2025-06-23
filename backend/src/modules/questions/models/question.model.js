@@ -24,13 +24,12 @@ export class QuestionModel {
     })
   }
 
-  static async createQuestion ({ titulo, descripcion, explicacion, estado, nivel, idUsuario, imagenes }) {
+  static async createQuestion ({ titulo, descripcion, explicacion, nivel, idUsuario, imagenes }) {
     return await prisma.pregunta.create({
       data: {
         titulo,
         descripcion,
         explicacion,
-        estado,
         nivel,
         idUsuario,
         imagenes: {
@@ -58,7 +57,7 @@ export class QuestionModel {
     })
   }
 
-  static async updateQuestionById ({ id, titulo, descripcion, explicacion, estado, nivel, imagenes }) {
+  static async updateQuestionById ({ id, titulo, descripcion, explicacion, nivel, imagenes }) {
     await prisma.imagen.deleteMany({
       where: {
         idPregunta: id
@@ -71,7 +70,6 @@ export class QuestionModel {
         titulo,
         descripcion,
         explicacion,
-        estado,
         nivel,
         imagenes: {
           create: imagenes.map(({ nombre, url }) => ({

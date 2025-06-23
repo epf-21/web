@@ -1,18 +1,25 @@
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import Header from './Header';
 import { useQuestionById } from '../hooks/useQuestion';
+import { useAllSolutions } from '../hooks/useSolutions';
+import { LEVELS } from '../constants/levels';
 
 export default function PreviewPanel() {
   const { id } = useParams();
+  const navigate = useNavigate();
 
+  const [message, setMessage] = useState(null);
   const [filledBoxes, setFilledBoxes] = useState(0);
   const [currentlyDragging, setCurrentlyDragging] = useState(null);
   const [boxes, setBoxes] = useState([]);
   const [options, setOptions] = useState([]);
 
   const { data: question, isLoading, error } = useQuestionById(id);
-  const mainImage = question.imageMain;
+  const { data: solutions, isLoading: isLoadingSolutions, error: errorSolutions } = useAllSolutions(id);
+  const mainImage = question?.imageMain;
+
+  console.log(question)
 
   useEffect(() => {
     if (!question || !question.images) return;
@@ -35,7 +42,6 @@ export default function PreviewPanel() {
     setBoxes(initialBoxes);
     setFilledBoxes(0);
   }, [question]);
-
 
   const handleDragStart = (optionId) => {
     setCurrentlyDragging(optionId);
@@ -87,18 +93,47 @@ export default function PreviewPanel() {
     setBoxes(boxes.map(box => ({ ...box, filled: false, content: null })));
     setOptions(options.map(option => ({ ...option, visible: true })));
     setFilledBoxes(0);
+    setMessage(null)
   };
 
   const handleCheck = () => {
-    if (filledBoxes === boxes.length) {
-      alert('¡Muy bien! Has completado el ejercicio correctamente.');
-    } else {
-      alert('Debes completar todos los espacios antes de comprobar.');
+    if (filledBoxes !== boxes.length) {
+      setMessage({
+        type: 'error',
+        message: 'Debes completar todos los espacios antes de verificar.'
+      });
+      return;
+    }
+
+    const userSolution = boxes.map(box => box.content?.id).filter(Boolean);
+    const correctSolutions = Object.values(solutions || {});
+    console.log(correctSolutions)
+
+    const isCorrect = correctSolutions.some(
+      (solution) => JSON.stringify(solution) === JSON.stringify(userSolution)
+    );
+
+    setMessage({
+      type: isCorrect ? 'success' : 'error',
+      message: isCorrect
+        ? '¡Muy bien! Has completado correctamente.'
+        : 'Respuesta incorrecta. Intenta nuevamente.'
+    });
+  };
+
+  const handleGoBack = () => {
+    if (!question?.level) return;
+
+    const levelLower = question.level.toLowerCase();
+    const found = LEVELS.find(l => l.level === levelLower);
+
+    if (found) {
+      navigate(`/questions?age=${found.age}&level=${found.level}`);
     }
   };
 
-  if (isLoading) return <p className="text-gray-500">Cargando pregunta...</p>;
-  if (error) return <p className="text-gray-500">No se pudo cargar la Pregunta.</p>;
+  if (isLoading || isLoadingSolutions) return <p className="text-gray-500">Cargando pregunta...</p>;
+  if (error || errorSolutions) return <p className="text-gray-500">No se pudo cargar la Pregunta o las soluciones.</p>;
 
   return (
     <div className="min-h-screen bg-white">
@@ -108,15 +143,34 @@ export default function PreviewPanel() {
           <div className="mb-10 border-b pb-6 border-gray-300">
             <h2 className="text-3xl font-bold text-black-rock-950">{question.title}</h2>
           </div>
+          <div className="mb-4 flex items-center gap-2">
+            <button
+              onClick={handleGoBack}
+              className="flex items-center text-sm text-blue-600 hover:text-blue-800 transition cursor-pointer"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-5 w-5 mr-1"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
+              Volver a listado de preguntas
+            </button>
+          </div>
+
           <div className="mb-4">
             <h2 className="text-xl font-medium text-gray-900 mb-2">Descripción</h2>
             <p className="text-base text-gray-700">{question.description}</p>
           </div>
 
-          <div className="flex justify-center mb-8 ">
+          <div className="flex justify-center mb-8">
             <img
               src={mainImage}
-              className="w-80 h-80 object-contain bg-gray-200"
+              alt="Imagen principal"
+              className="w-80 h-64 object-contain bg-gray-200"
             />
           </div>
 
@@ -126,10 +180,24 @@ export default function PreviewPanel() {
               style={{ width: `${(filledBoxes / boxes.length) * 100}%` }}
             />
           </div>
+
           <div className="py-2 rounded-md">
             <h2 className="text-xl font-medium text-gray-900 mb-2">Explicación</h2>
             <p className="text-sm text-gray-700">{question.explanation}</p>
           </div>
+
+          {message && (
+            <p
+              className={`my-4 px-4 py-3 rounded-lg text-sm font-medium border
+              ${message.type === 'success'
+                  ? 'bg-green-100 text-green-800 border-green-300'
+                  : 'bg-red-100 text-red-800 border-red-300'}
+              `}
+            >
+              {message.message}
+            </p>
+          )}
+
 
           <div className="flex justify-center flex-wrap gap-4 mb-8">
             {boxes.map((box) => (
@@ -199,10 +267,9 @@ export default function PreviewPanel() {
             </button>
             <button
               onClick={handleCheck}
-              className="px-6 py-3 bg-gradient-to-r from-black-rock-800 to-black-rock-900 hover:from-black-rock-400 hover:to-black-rock-600 
-                text-white font-semibold rounded-full transition-all duration-300 transform hover:-translate-y-1"
+              className="px-6 py-3 bg-black-rock-900 hover:bg-black-rock-950 text-white font-semibold rounded-full transition-all duration-300 transform hover:-translate-y-1"
             >
-              Comprobar
+              Verificar
             </button>
           </div>
         </div>

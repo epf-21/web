@@ -1,11 +1,16 @@
 import { useState } from 'react';
 import { useRegister } from '../../hooks/useAuth';
-import { Mail, Lock, User, Eye, EyeOff } from 'lucide-react';
 import { validateRegister } from '../../schemas/auth.schema';
+import VerificationModal from '../../components/VerificationModal';
+import FormField from '../../components/FormField';
+import Icon from '../../components/Icon';
+import Button from '../../components/Button';
 
 export default function SignUp() {
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState({});
+  const [showModal, setShowModal] = useState(false);
+  const [registeredEmail, setRegisteredEmail] = useState('');
   const [form, setForm] = useState({
     name: '',
     email: '',
@@ -26,98 +31,103 @@ export default function SignUp() {
     const result = validateRegister(form);
     if (!result.success) {
       const formattedErrors = result.error.flatten().fieldErrors;
+
       console.log('Errores:', formattedErrors);
       setErrors(formattedErrors);
       return;
     }
 
-    register(form);
+    register(form, {
+      onSuccess: (data) => {
+        if (data.requiresVerification) {
+          setRegisteredEmail(data.email || form.email);
+          setShowModal(true)
+        }
+      },
+    });
   };
 
+
+  const closeModal = () => {
+    setShowModal(false);
+  }
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-100 to-white px-4">
-      <div className="w-full max-w-sm p-8 rounded-2xl shadow-lg border border-gray-200 bg-white">
-        <h2 className="text-2xl font-bold text-center text-black-rock-950 mb-8">
-          Crear Cuenta
-        </h2>
+    <>
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-100 to-white px-4">
+        <div className="w-full max-w-sm p-8 rounded-2xl shadow-lg border border-gray-200 bg-white">
+          <h2 className="text-2xl font-bold text-center text-black-rock-950 mb-8">
+            Crear Cuenta
+          </h2>
 
-        <form onSubmit={handleSubmit} className="space-y-5">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Nombre completo</label>
-            <div className="relative">
-              <User className="absolute left-3 top-2.5 text-gray-400 w-5 h-5" />
-              <input
-                type="text"
-                name="name"
-                value={form.name}
-                onChange={handleChange}
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-black-rock-950"
-                placeholder="Tu nombre"
-              />
-            </div>
-            {errors.name && (
-              <p className="text-sm text-red-500 mt-1">{errors.name[0]}</p>
+          <form onSubmit={handleSubmit} className="space-y-5">
+            <FormField
+              label="Nombre completo"
+              name="name"
+              type="text"
+              value={form.name}
+              onChange={handleChange}
+              placeholder="Tu nombre"
+              icon="User"
+              error={errors.name?.[0]}
+            />
+
+            <FormField
+              label="Correo electrónico"
+              name="email"
+              type="text"
+              value={form.value}
+              onChange={handleChange}
+              placeholder="ejemplo@gmail.com"
+              icon="Mail"
+              error={errors.email?.[0]}
+            />
+
+            <FormField
+              label="Contraseña"
+              name="password"
+              type={showPassword ? "text" : "password"}
+              value={form.password}
+              onChange={handleChange}
+              placeholder="••••••••"
+              icon="Lock"
+              rightIcon={
+                <button
+                  type="button"
+                  className="absolute right-3 top-2.5 text-gray-500 cursor-pointer"
+                  onClick={() => setShowPassword((prev) => !prev)}
+                >
+                  {showPassword ? <Icon name="EyeOff" /> : <Icon name="Eye" />}
+                </button>
+              }
+              error={errors.password?.[0]}
+            />
+
+            {isError && (
+              <p className="text-sm text-red-500">
+                {error?.response?.data?.message || 'Error al registrarse'}
+              </p>
             )}
-          </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Correo electrónico</label>
-            <div className="relative">
-              <Mail className="absolute left-3 top-2.5 text-gray-400 w-5 h-5" />
-              <input
-                type="text"
-                name="email"
-                value={form.email}
-                onChange={handleChange}
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-black-rock-950"
-                placeholder="correo@gmail.com"
-              />
-            </div>
-            {errors.email && (
-              <p className="text-sm text-red-500 mt-1">{errors.email[0]}</p>
-            )}
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Contraseña</label>
-            <div className="relative">
-              <Lock className="absolute left-3 top-2.5 text-gray-400 w-5 h-5" />
-              <input
-                type={showPassword ? "text" : "password"}
-                name="password"
-                value={form.password}
-                onChange={handleChange}
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-black-rock-950"
-                placeholder="••••••••"
-              />
-              <button
-                type="button"
-                className="absolute right-3 top-2.5 text-gray-500 cursor-pointer"
-                onClick={() => setShowPassword((prev) => !prev)}
-              >
-                {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-              </button>
-            </div>
-            {errors.password && (
-              <p className="text-sm text-red-500 mt-1">{errors.password[0]}</p>
-            )}
-          </div>
-
-
-          {isError && (
-            <p className="text-sm text-red-500">
-              {error?.response?.data?.message || 'Error al registrarse'}
-            </p>
-          )}
-
-          <button
-            type="submit"
-            className="w-full py-2 bg-black-rock-950 text-white rounded-xl hover:bg-black transition-all"
-          >
-            {isPending ? 'Registrando...' : 'Registrarse'}
-          </button>
-        </form>
+            <Button
+              type="submit"
+              disabled={isPending}
+              isLoading={isPending}
+              loadingText="Registrando..."
+              className="w-full"
+            >
+              Resgistrase
+            </Button>
+          </form>
+        </div>
       </div>
-    </div>
+
+      {showModal && (
+        <VerificationModal
+          email={registeredEmail}
+          onClose={closeModal}
+        />
+      )}
+    </>
   );
 }

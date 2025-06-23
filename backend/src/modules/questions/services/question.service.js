@@ -14,13 +14,17 @@ export class QuestionService {
       title: question.titulo,
       description: question.descripcion,
       explanation: question.explicacion,
-      state: question.estado,
       level: question.nivel,
       imageMain: question.imagenPrincipal,
       images: question.imagenes.map(image => ({
         id: image.id,
         name: image.nombre,
-        url: image.url
+        url: image.url,
+        x: image.x,
+        y: image.y,
+        width: image.width, 
+        height: image.height,
+        group: image.group
       }))
     }
   }
@@ -37,13 +41,12 @@ export class QuestionService {
   }
 
   static async createQuestion (data) {
-    const { idUsuario, titulo, descripcion, explicacion, estado, nivel, imagenes } = validateQuestionCreate(data)
+    const { idUsuario, titulo, descripcion, explicacion, nivel, imagenes } = validateQuestionCreate(data)
     return await QuestionModel.createQuestion({
       idUsuario,
       titulo,
       descripcion,
       explicacion,
-      estado,
       nivel,
       imagenes
     })
@@ -54,7 +57,7 @@ export class QuestionService {
   }
 
   static async updateQuestion (id, data) {
-    const { titulo, descripcion, explicacion, estado, nivel, imagenes } = validateQuestionUpdate(data)
+    const { titulo, descripcion, explicacion, nivel, imagenes } = validateQuestionUpdate(data)
 
     const existing = await QuestionModel.getQuestionById(id)
     if (!existing) {
@@ -66,7 +69,6 @@ export class QuestionService {
       titulo,
       descripcion,
       explicacion,
-      estado,
       nivel,
       imagenes
     })
@@ -76,7 +78,6 @@ export class QuestionService {
       title: updated.titulo,
       description: updated.descripcion,
       explanation: updated.explicacion,
-      state: updated.estado,
       level: updated.nivel,
       images: updated.imagenes.map(image => ({
         id: image.id,
