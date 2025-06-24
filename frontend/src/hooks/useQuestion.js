@@ -6,11 +6,6 @@ export const useQuestionByLevel = ({ level, enabled = true }) => {
     queryKey: ['questions', level],
     queryFn: () => getQuestionByLevel(level),
     enabled,
-    staleTime: 1000 * 60 * 5,
-    cacheTime: 1000 * 60 * 10,
-    refetchOnWindowFocus: false,
-    refetchOnMount: false,
-    refetchOnReconnect: false,
   })
 }
 
@@ -18,12 +13,7 @@ export const useQuestionById = (id) => {
   return useQuery({
     queryKey: ['question', id],
     queryFn: () => getQuestionById(id),
-    enabled: !!id,
-    staleTime: 1000 * 60 * 5,
-    cacheTime: 1000 * 60 * 10,
-    refetchOnWindowFocus: false,
-    refetchOnMount: false,
-    refetchOnReconnect: false,
+    enabled: !!id
   })
 }
 
