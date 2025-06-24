@@ -276,7 +276,13 @@ const DragDrop = forwardRef(({
         <div>
           <h3 className="text-sm font-semibold text-gray-800 mb-1">Fondo</h3>
           <p className='text-gray-500 mb-3 text-xs'>(selecciona 1)</p>
-          <div className="flex flex-wrap gap-2 w-full md:w-20 min-h-24 border-2 border-gray-500 rounded-md shadow-sm p-2">            
+          <div className="flex flex-wrap gap-2 w-full md:w-20 min-h-24 border-2 border-gray-500 rounded-md shadow-sm p-2">
+            <label className="inline-flex items-center cursor-pointer">
+                <input type="radio" name="bgOptions" value='' onChange={e => setBackgroundImg(null)} className="sr-only peer" />
+                <div className="flex w-16 h-16 bg-gray-200 border-3 border-gray-200 peer-checked:border-blue-500 rounded-md">
+                  <span className="p-3 text-xs text-gray-900 font-semibold text-center"> Sin Fondo</span>
+                </div>
+              </label>
             {backgroundImages.map((img, i) => (
               <label key={i} className="inline-flex items-center cursor-pointer">
                 <input type="radio" name="bgOptions" value={img.imgUrl} onChange={e => setBackgroundImg(e.target.value)} className="sr-only peer" />
