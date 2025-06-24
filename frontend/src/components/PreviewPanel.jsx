@@ -1,12 +1,11 @@
 import { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Header from './Header';
 import { useQuestionById } from '../hooks/useQuestion';
 import { useAllSolutions } from '../hooks/useSolutions';
 import { LEVELS } from '../constants/levels';
 
-export default function PreviewPanel() {
-  const { id } = useParams();
+export default function PreviewPanel({ id }) {
   const navigate = useNavigate();
 
   const [message, setMessage] = useState(null);
