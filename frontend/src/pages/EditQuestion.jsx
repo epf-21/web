@@ -4,13 +4,13 @@
   import ImageUploader from '../components/ImageUploader';
   import { useImageUploader } from '../hooks/useImageUploader';
   import { useUploadImages } from '../hooks/useUploadImage';
-  import { useCreateQuestion,useQuestionById } from '../hooks/useQuestion';
+  import { useQuestionById, useUpdateQuestion } from '../hooks/useQuestion';
   import { validateQuestion } from '../schemas/question.schema';
   import Header from '../components/Header';
 
   export default function EditQuestion() {
     const navigate = useNavigate();
-    
+
     const [searchParams] = useSearchParams();
     const level = searchParams.get('level')?.toUpperCase();
     const { id } = useParams();
@@ -19,15 +19,22 @@
     const [description, setDescription] = useState('');
     const [explanation, setExplanation] = useState('');
     const [formErrors, setFormErrors] = useState({})
-    const { images, imageURLS, onSelectChange, removeFile,addImageURL} = useImageUploader();
+    const { images, imageURLS, onSelectChange, removeFile,setImagesFromURLs} = useImageUploader();
     const { mutateAsync: uploadImages, isPending: isPendingImage } = useUploadImages();
-    const { mutate: createQuestion, isPending } = useCreateQuestion();
+    const { mutate: updateQuestion, isPending } = useUpdateQuestion();
+    const [imagenes, setImagenes] = useState([]);
     useEffect(() => {
       if (question && question.images?.length) {
         setTitle(question.title || '');
         setDescription(question.description || '');
         setExplanation(question.explanation || '');
-        question.images.map(img => addImageURL(img.url))
+        const urls = question.images.map(img => img.url);
+        setImagesFromURLs(urls);
+        const imgs = question.images.map(img => ({
+          nombre: img.name,
+          url: img.url
+        }));
+        setImagenes(imgs);
       }
     }, [question]);
 
@@ -65,13 +72,29 @@
       setFormErrors({});
 
       try {
-        const uploadedImages = await uploadImages(images);
+        const imagenesCloudinary = images
+          .filter((img) => {
+            const url = typeof img === 'string' ? img : img?.url;
+            return typeof url === 'string' && url.includes('res.cloudinary.com');
+          })
+          .map((img) => {
+            const url = typeof img === 'string' ? img : img.url;
+            const imagenCompleta = imagenes.find(imgOriginal => imgOriginal.url === url);
+            return imagenCompleta || { url };
+          });
+        const imagenesFiltradas = imagenesCloudinary;
+        const archivosLocales = images.filter((img) => img instanceof File);
+        const uploaded = await uploadImages(archivosLocales);
+        const imagenesFinales = [
+          ...imagenesFiltradas,
+          ...uploaded
+        ];
         const questionData = {
           titulo: title,
           descripcion: description,
           explicacion: explanation,
           nivel: level,
-          imagenes: uploadedImages,
+          imagenes: imagenesFinales,
         };
 
         const result = validateQuestion(questionData);
@@ -84,22 +107,14 @@
           return;
         }
 
-        createQuestion(questionData, {
-          onSuccess: (data) => {
-            const id = data.data.id;
-            navigate(`/configure-question/${id}`);
-          },
-          onError: () => {
-            alert('Error al crear la pregunta')
-          }
-        })
+        updateQuestion({id:id,data:questionData});
       } catch (error) {
         console.error(error);
         alert('Error al subir las imágenes');
       }
 
     };
-
+    
     return (
       <div className="min-h-screen bg-white">
         <Header />
@@ -108,7 +123,7 @@
             Editar Pregunta
           </h2>
           <h3 className="text-lg font-semibold mb-4 border-b pb-2">
-            Llenar el formulario
+            Editar el formulario
           </h3>
           <form onSubmit={handleSubmit} className="space-y-2">
             <QuestionForm

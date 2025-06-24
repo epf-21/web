@@ -6,6 +6,7 @@ import Header from '../components/Header';
 import { useQuestionById, useUpdateMainImage } from "../hooks/useQuestion";
 import { uploadImage } from '../services/uploadService';
 import { useCreateSolutions } from '../hooks/useSolutions';
+import FeedbackMessage from '../components/FeedbackMessage';
 
 export default function ConfigureQuestion() {
   const navigate = useNavigate();
@@ -16,7 +17,7 @@ export default function ConfigureQuestion() {
 
 
   const mainImageRef = useRef(null);
-
+  const [message, setMessage] = useState(null);
   const [showBorders, setShowborders] = useState(false);
   const [draggableItems, setDraggableItems] = useState([])
   const [droppedItems, setDroppedItems] = useState([]);
@@ -35,7 +36,7 @@ export default function ConfigureQuestion() {
       width: img.width,
       height: img.height,
       group: img.group,
-    }));    
+    }));
 
     setDraggableItems(processedItems);
   }, [question]);
@@ -144,21 +145,30 @@ export default function ConfigureQuestion() {
   };
 
   const handleSave = async () => {
-    try {      
+    try {
       setIsSaving(true);
 
       if (droppedItems.length === 0) {
-        alert('Debes agregar al menos un elemento a la imagen principal');
+        setMessage({
+          type: 'error',
+          message: 'Debes agregar al menos un elemento a la imagen principal'
+        });
         return;
       }
 
       if (answers.length === 0) {
-        alert('No hay respuestas configuradas');
+        setMessage({
+          type: 'error',
+          message: 'No hay respuestas configuradas'
+        });
         return;
       }
-      
+
       if (showBorders) {
-        alert('Debes quitar la opcion --mostrar bordes-- antes de guardar');
+        setMessage({
+          type: 'error',
+          message: 'Debes quitar la opción --mostrar bordes-- antes de guardar'
+        });
         return;
       }
 
@@ -177,12 +187,15 @@ export default function ConfigureQuestion() {
         id: question.id,
         allAnswers: answers
       });
-
+      setMessage(null);
       navigate(`/preview/${question.id}`);
 
     } catch (error) {
       console.error('Error al guardar:', error);
-      alert('Error al guardar la configuración. Inténtalo de nuevo.');
+      setMessage({
+        type: 'error',
+        message: 'Error al guardar la configuración. Inténtalo de nuevo.'
+      });
     } finally {
       setIsSaving(false);
     }
@@ -243,7 +256,14 @@ export default function ConfigureQuestion() {
                 ))}
               </ol>
             </div>
-            <div className="pt-3">
+
+            <div>
+              {message && (
+                <FeedbackMessage
+                  type={message.type}
+                  message={message.message}
+                />
+              )}
               <button
                 onClick={handleSave}
                 disabled={isSaving || updateMainImageMutation.isPending}
