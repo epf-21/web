@@ -25,13 +25,15 @@ Los profesores podrán:
 - **Formato recomendado**: `.png`
 - **Fondo**: Transparente
 
-## Sitios donde descargar imagenes con  fondo transparente
+## Sitios donde descargar imagenes con fondo transparente
 
-[Thiings.co](https://www.thiings.co/things)  
-[pngimg.com](https://pngimg.com/)  
-[pngtree.com](https://pngtree.com/)  
-[cleanpng.com](https://www.cleanpng.com/)  
-[pngegg.com](https://www.pngegg.com/)  
+| Sitio        | Enlace                                                          |
+| ------------ | --------------------------------------------------------------- |
+| Thiings      | [https://www.thiings.co/things](https://www.thiings.co/things)  |
+| pngimg       | [https://pngimg.com/](https://pngimg.com/)                      |
+| pngtree      | [https://pngtree.com/](https://pngtree.com/)                    |
+| cleanpng     | [https://www.cleanpng.com/](https://www.cleanpng.com/)          |
+| pngegg       | [https://www.pngegg.com/](https://www.pngegg.com/)              |
 
 ### ¿Qué sucede si no es transparente?
 
