@@ -66,6 +66,17 @@ export default function CreateQuestion() {
         });
         return;
       }
+
+      const uploadedImages = await uploadImages(images);
+
+      const questionData = {
+        titulo: title,
+        descripcion: description,
+        explicacion: explanation,
+        nivel: level,
+        imagenes: uploadedImages,
+      };
+
       const result = validateQuestion(questionData);
       if (!result.success) {
         const fieldErrors = {};
@@ -75,16 +86,6 @@ export default function CreateQuestion() {
         setFormErrors(fieldErrors);
         return;
       }
-
-      const uploadedImages = await uploadImages(images);
-      const questionData = {
-        titulo: title,
-        descripcion: description,
-        explicacion: explanation,
-        nivel: level,
-        imagenes: uploadedImages,
-      };
-
       createQuestion(questionData, {
         onSuccess: (data) => {
           const id = data.data.id;
