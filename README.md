@@ -27,11 +27,11 @@ Los profesores podrán:
 
 ## Sitios donde descargar imagenes con  fondo transparente
 
-[Thiings.co: iconos e ideas en PNG transparente ](https://www.thiings.co/things)  
-[pngimg.com: Banco de imágenes PNG transparente ](https://pngimg.com/)  
-[pngtree.com: Banco de imágenes PNG transparente ](https://pngtree.com/)  
-[cleanpng.com: Banco de imágenes PNG transparente ](https://www.cleanpng.com/)  
-[pngegg.com: Banco de imágenes PNG transparente ](https://www.pngegg.com/)  
+[Thiings.co](https://www.thiings.co/things)  
+[pngimg.com](https://pngimg.com/)  
+[pngtree.com](https://pngtree.com/)  
+[cleanpng.com](https://www.cleanpng.com/)  
+[pngegg.com](https://www.pngegg.com/)  
 
 ### ¿Qué sucede si no es transparente?
 
