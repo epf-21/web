@@ -17,6 +17,19 @@ Los profesores podrán:
 > Para poder **crear, editar o visualizar preguntas**, es necesario estar **registrado y autenticado** en la plataforma.  
 > Durante el registro, se enviará un **código de verificación por correo electrónico** que el usuario deberá ingresar para completar el proceso de activación de su cuenta.
 
+## Recomendaciones para las Imágenes
+
+> Las imágenes que se suben deben tener **fondo transparente**, preferiblemente en formato `.png`.  
+> Esto asegura una correcta visualización e integración con la imagen principal, evitando bloques blancos o recortes no deseados.
+
+- **Formato recomendado**: `.png`
+- **Fondo**: Transparente
+
+### ¿Qué sucede si no es transparente?
+
+- El sistema aceptará la imagen, pero puede **afectar negativamente** la claridad del ejercicio.
+- El fondo no deseado puede **ocultar otros elementos** o distorsionar la apariencia visual de la imagen principal.
+
 ---
 
 ## Requisitos Previos
