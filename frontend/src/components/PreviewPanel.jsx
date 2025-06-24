@@ -22,8 +22,8 @@ export default function PreviewPanel({ id }) {
 
   useEffect(() => {
     if (!question || !question.images) return;
-
-    const formattedOptions = question.images.map((img) => ({
+    const filteredOptions = question.images.filter((x) => x.group !== 0)
+    const formattedOptions = filteredOptions.map((img) => ({
       id: img.id,
       visible: true,
       imgSrc: img.url,
