@@ -26,8 +26,8 @@ export function useImageUploader() {
   const removeFile = (index) => {
     setImages((prev) => prev.filter((_, i) => i !== index));
   };
-  const addImageURL = (url) => {
-    setImages((prev) => [...prev, url]);
+  const setImagesFromURLs = (urls) => {
+    setImages(urls);
   };
 
   return {
@@ -35,6 +35,6 @@ export function useImageUploader() {
     imageURLS,
     onSelectChange,
     removeFile,
-    addImageURL
+    setImagesFromURLs
   }
 }
