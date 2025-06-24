@@ -45,10 +45,7 @@ export const useCreateQuestion = () => {
 
 export const useUpdateQuestion = () => {
   return useMutation({
-    mutationFn: updateQuestion,
-    onError: (error) => {
-      console.error('Error al actualizar la pregunta:', error);
-    }
+    mutationFn: updateQuestion
   })
 }
 

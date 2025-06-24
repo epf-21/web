@@ -89,6 +89,7 @@ export default function CreateQuestion() {
       createQuestion(questionData, {
         onSuccess: (data) => {
           const id = data.data.id;
+          setMessage(null);
           navigate(`/configure-question/${id}`);
         },
         onError: () => {
