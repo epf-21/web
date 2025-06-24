@@ -101,4 +101,11 @@ export class QuestionService {
       imageMain: updated.imagenPrincipal
     }
   }
+
+  static async updateImages (data) {    
+    const updated = await QuestionModel.updateImages({ data })
+    return {
+      updated
+    }
+  }
 }

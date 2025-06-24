@@ -94,4 +94,21 @@ export class QuestionModel {
       }
     })
   }
+
+  static async updateImages (imgArr) {
+    imgArr['data'].forEach(async img => {
+      await prisma.imagen.update({
+        where: { 
+          id: img.id },        
+        data: {
+          x:img.x,
+          y:img.y,
+          width:img.width,
+          height:img.height,
+          group:img.group
+        }
+      });
+    })
+    return imgArr['data']
+  }
 }

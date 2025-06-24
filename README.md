@@ -25,6 +25,14 @@ Los profesores podrán:
 - **Formato recomendado**: `.png`
 - **Fondo**: Transparente
 
+## Sitios donde descargar imagenes con  fondo transparente
+
+[Thiings.co: Objetos digitales, iconos e ideas en PNG transparente ](https://www.thiings.co/things)
+[pngimg.com: Banco de imágenes PNG transparente ](https://pngimg.com/)
+[pngtree.com: Banco de imágenes PNG transparente ](https://pngtree.com/)
+[cleanpng.com: Banco de imágenes PNG transparente ](https://www.cleanpng.com/)
+[pngegg.com: Banco de imágenes PNG transparente ](https://www.pngegg.com/)
+
 ### ¿Qué sucede si no es transparente?
 
 - El sistema aceptará la imagen, pero puede **afectar negativamente** la claridad del ejercicio.
