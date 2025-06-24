@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { createQuestion, deleteQuestion, updateQuestion, getQuestionById, getQuestionByLevel, updateMainImage } from '../services/question.service';
+import { createQuestion, deleteQuestion, updateQuestion, getQuestionById, getQuestionByLevel, updateMainImage, updateImages } from '../services/question.service';
 
 export const useQuestionByLevel = ({ level, enabled = true }) => {
   return useQuery({
@@ -36,6 +36,12 @@ export const useCreateQuestion = () => {
 export const useUpdateQuestion = () => {
   return useMutation({
     mutationFn: updateQuestion
+  })
+}
+
+export const useUpdateImages = () => {
+  return useMutation({
+    mutationFn: updateImages
   })
 }
 

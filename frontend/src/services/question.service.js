@@ -29,3 +29,8 @@ export const updateMainImage = async ({ id, mainImage }) => {
   const response = await api.patch(`/questions/${id}/image-main`, mainImage);
   return response.data;
 }
+
+export const updateImages = async ({ id, images }) => {
+  const response = await api.patch(`/questions/${id}/images`, images);
+  return response.data;
+}

@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import domtoimage from 'dom-to-image-more'
 import DragDrop from '../components/DragDrop';
 import Header from '../components/Header';
-import { useQuestionById, useUpdateMainImage } from "../hooks/useQuestion";
+import { useQuestionById, useUpdateMainImage, useUpdateImages} from "../hooks/useQuestion";
 import { uploadImage } from '../services/uploadService';
 import { useCreateSolutions } from '../hooks/useSolutions';
 import FeedbackMessage from '../components/FeedbackMessage';
@@ -14,7 +14,7 @@ export default function ConfigureQuestion() {
   const { data: question, isLoading, error } = useQuestionById(id);
   const updateMainImageMutation = useUpdateMainImage();
   const createSolutionsMutation = useCreateSolutions();
-
+  const updateImagesMutation = useUpdateImages();
 
   const mainImageRef = useRef(null);
   const [message, setMessage] = useState(null);
@@ -37,8 +37,11 @@ export default function ConfigureQuestion() {
       height: img.height,
       group: img.group,
     }));
+    const sortedByGroup = [...processedItems].sort((a, b) => a.group - b.group);
 
-    setDraggableItems(processedItems);
+    setDroppedItems(sortedByGroup.filter((x) => x.group !== 0));
+    console.log(droppedItems);
+    setDraggableItems(sortedByGroup.filter((x) => x.group === 0));
   }, [question]);
 
   if (isLoading) return <p className="text-gray-500 m-4">Cargando pregunta...</p>;
@@ -181,6 +184,11 @@ export default function ConfigureQuestion() {
       await updateMainImageMutation.mutateAsync({
         id: question.id,
         mainImage: updateData
+      });
+
+      await updateImagesMutation.mutateAsync({
+        id: question.id,
+        images: [...draggableItems, ...droppedItems]
       });
 
       await createSolutionsMutation.mutateAsync({
