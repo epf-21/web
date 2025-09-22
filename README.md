@@ -27,13 +27,13 @@ Los profesores podrán:
 
 ## Sitios donde descargar imagenes con fondo transparente
 
-| Sitio        | Enlace                                                          |
-| ------------ | --------------------------------------------------------------- |
-| Thiings      | [https://www.thiings.co/things](https://www.thiings.co/things)  |
-| pngimg       | [https://pngimg.com/](https://pngimg.com/)                      |
-| pngtree      | [https://pngtree.com/](https://pngtree.com/)                    |
-| cleanpng     | [https://www.cleanpng.com/](https://www.cleanpng.com/)          |
-| pngegg       | [https://www.pngegg.com/](https://www.pngegg.com/)              |
+| Sitio    | Enlace                                                         |
+| -------- | -------------------------------------------------------------- |
+| Thiings  | [https://www.thiings.co/things](https://www.thiings.co/things) |
+| pngimg   | [https://pngimg.com/](https://pngimg.com/)                     |
+| pngtree  | [https://pngtree.com/](https://pngtree.com/)                   |
+| cleanpng | [https://www.cleanpng.com/](https://www.cleanpng.com/)         |
+| pngegg   | [https://www.pngegg.com/](https://www.pngegg.com/)             |
 
 ### ¿Qué sucede si no es transparente?
 
@@ -51,30 +51,3 @@ Los profesores podrán:
 | npm         | 10.9.2         | Incluido con Node.js                                             |
 
 ---
-
-## Instalación y Ejecución
-
-Para ejecutar correctamente este proyecto en un entorno local, consulte el archivo [install.txt](./install.txt), el cual contiene instrucciones detalladas sobre:
-
-- Clonado del repositorio.
-- Configuración de variables de entorno para frontend y backend.
-- Instalación de dependencias.
-- Ejecución de ambos entornos (cliente y servidor).
-
----
-
-## Estructura General del Proyecto
-
-- **Frontend** (`/frontend`): Aplicación construida con Vite + React, responsable de la interfaz de usuario y la experiencia interactiva.
-- **Backend** (`/backend`): Servidor Express que maneja la autenticación, persistencia de datos y la lógica.
-
----
-
-## Autenticación
-
-El flujo de autenticación incluye:
-
-1. Registro con nombre, correo electrónico y contraseña.
-2. Envío de un código de verificación al correo proporcionado.
-3. Validación del código para habilitar la cuenta.
-4. Login con token JWT para autenticación de sesiones.
